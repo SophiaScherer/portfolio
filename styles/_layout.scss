@@ -1,0 +1,25 @@
+.ambient {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+}
+.ambient-blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(120px); opacity: 0.5;
+  transition: opacity 0.5s;
+}
+.ambient-blob-1 {
+  width: 600px; height: 600px;
+  top: -10%; right: -8%;
+  background: var(--glow-a);
+}
+.ambient-blob-2 {
+  width: 700px; height: 700px;
+  bottom: 5%; left: -10%;
+  background: var(--glow-b);
+}
+[data-theme="dark"] .ambient-blob { opacity: 0.18; }
+
+.hero-dots {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(var(--hero-dot) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+}
