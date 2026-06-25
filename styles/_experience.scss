@@ -1,0 +1,53 @@
+.experience-section {
+  background: var(--bg-2);
+  border-radius: 3rem;
+  margin: 0 clamp(8px, 2vw, 32px);
+  transition: background 0.35s;
+  position: relative; overflow: hidden;
+}
+.experience-section::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 35%; height: 100%;
+  background: linear-gradient(135deg, transparent 0%, var(--secondary-soft) 100%);
+  clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+}
+
+.exp-grid { display: grid; grid-template-columns: 340px 1fr; gap: 72px; align-items: start; }
+
+.skills-cloud { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+
+.timeline { display: flex; flex-direction: column; gap: 0; margin-top: 28px; }
+.timeline-item {
+  position: relative;
+  padding-left: 32px;
+  padding-bottom: 40px;
+  border-left: 2px solid var(--timeline-line);
+  transition: border-color 0.35s;
+}
+.timeline-item:last-child { border-left-color: transparent; padding-bottom: 0; }
+.timeline-dot {
+  position: absolute; left: -9px; top: 4px;
+  width: 16px; height: 16px;
+  background: var(--timeline-dot);
+  border-radius: 50%;
+  border: 3px solid var(--bg-2);
+  transition: background 0.35s, border-color 0.35s;
+}
+.timeline-dot.dim-1 { background: rgba(170,49,77,0.6); }
+.timeline-dot.dim-2 { background: rgba(170,49,77,0.35); }
+.timeline-dot.dim-3 { background: rgba(170,49,77,0.15); }
+[data-theme="dark"] .timeline-dot.dim-1 { background: rgba(255,178,188,0.6); }
+[data-theme="dark"] .timeline-dot.dim-2 { background: rgba(255,178,188,0.35); }
+[data-theme="dark"] .timeline-dot.dim-3 { background: rgba(255,178,188,0.15); }
+
+.timeline-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 12px;
+  margin-bottom: 4px; flex-wrap: wrap;
+}
+.timeline-title { font-family: 'Epilogue', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--text); transition: color 0.35s; }
+.timeline-date { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--secondary); flex-shrink: 0; }
+.timeline-org { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 6px; transition: color 0.35s; }
+.timeline-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; transition: color 0.35s; }

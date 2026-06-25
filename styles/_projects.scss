@@ -1,0 +1,129 @@
+.projects-section {
+  background: var(--bg-2);
+  border-radius: 3rem;
+  margin: 0 clamp(8px, 2vw, 32px);
+  transition: background 0.35s;
+}
+.projects-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  flex-wrap: wrap; gap: 16px; margin-bottom: 48px;
+}
+.projects-header p {
+  max-width: 340px; color: var(--text-muted); font-size: 0.975rem;
+  transition: color 0.35s;
+}
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+.bento-1 { grid-column: span 7; }
+.bento-2 { grid-column: span 5; }
+.bento-3 { grid-column: span 12; }
+
+.project-card {
+  border-radius: 2rem; overflow: hidden;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.project-card:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+
+.project-img-wrap {
+  height: 260px; overflow: hidden; position: relative; flex-shrink: 0;
+}
+.project-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.project-card:hover .project-img-wrap img { transform: scale(1.06); }
+.img-tags {
+  position: absolute; top: 14px; left: 14px; display: flex; gap: 6px;
+}
+.img-tag {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(10px);
+  color: var(--secondary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 999px;
+}
+[data-theme="dark"] .img-tag {
+  background: rgba(30,28,34,0.82);
+  color: var(--secondary);
+}
+
+.project-body { padding: 28px 28px 28px; flex: 1; }
+.project-body .h3 { margin-bottom: 10px; }
+.project-body p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 18px; line-height: 1.65; }
+.project-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.project-meta-item {
+  color: var(--secondary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 4px;
+}
+
+.project-card-icon {
+  border-radius: 2rem; padding: 32px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 360px;
+}
+.project-card-icon:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+.icon-chip {
+  width: 60px; height: 60px;
+  background: var(--secondary);
+  border-radius: 16px; display: flex;
+  align-items: center; justify-content: center;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+  transition: transform 0.3s, background 0.35s;
+  rotate: 3deg;
+}
+.project-card-icon:hover .icon-chip { rotate: 12deg; }
+.icon-chip .material-symbols-outlined {
+  font-size: 28px; color: #fff;
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.perf-table { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+.perf-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--outline);
+}
+.perf-row:last-child { border-bottom: none; padding-bottom: 0; }
+.perf-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--secondary);
+}
+.perf-value {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 700; font-size: 0.95rem; color: var(--text);
+  transition: color 0.35s;
+}
+
+.project-card-wide {
+  flex-direction: row;
+  border-radius: 2rem; overflow: hidden;
+}
+.project-card-wide:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+.project-card-wide .project-body { padding: 40px 40px 40px; display: flex; flex-direction: column; justify-content: center; }
+.project-card-wide .project-img-wrap { height: auto; flex: 0 0 46%; }
+.tech-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.tech-pill {
+  background: var(--glow-a);
+  color: #7a1800;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 5px 13px; border-radius: 8px;
+  transition: background 0.35s, color 0.35s;
+}
+[data-theme="dark"] .tech-pill {
+  background: rgba(255,138,112,0.15);
+  color: var(--primary);
+}
