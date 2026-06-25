@@ -74,9 +74,15 @@ export default function Navbar() {
         <a href="#contact" className="mobile-link">
           Contact
         </a>
-        <a href="/Sophia_s_Resume.pdf" download="Sophia_Resume.pdf" className="btn-primary" style={{ marginTop: "8px" }}>
+        <Link
+            href="/Sophia_s_Resume.pdf"
+            download="Sophia_Resume.pdf"
+            prefetch={false}
+            className="btn-primary"
+            style={{ marginTop: "8px" }}
+        >
           Resume
-        </a>
+        </Link>
       </div>
     </>
   );
