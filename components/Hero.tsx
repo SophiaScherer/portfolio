@@ -1,36 +1,29 @@
 "use client";
 
-import { useEffect } from "react";
+import { useReveal } from "../hooks/useReveal";
 
 export default function Hero() {
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
-    );
-
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
+  const sectionRef = useReveal<HTMLElement>();
 
   return (
-    <section className="hero section-pad relative overflow-hidden" id="about">
+    <section
+      className="hero section-pad"
+      id="about"
+      ref={sectionRef}
+    >
       <div className="hero-dots" aria-hidden="true" />
-      <div className="container relative z-10">
+      <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <div className="hero-grid">
           <div className="hero-body">
             <span className="label-cap reveal">
               Sophia Scherer — Computer Science @ OSU
             </span>
-            <h1 className="h1 reveal reveal-delay-1" style={{ marginBottom: "24px" }}>
-              Designing systems<br />
+            <h1
+              className="h1 reveal reveal-delay-1"
+              style={{ marginBottom: "24px" }}
+            >
+              Designing systems
+              <br />
               that feel like <em className="text-accent">magic.</em>
             </h1>
             <p className="reveal reveal-delay-2">
@@ -39,10 +32,7 @@ export default function Hero() {
               algorithms with a vibrant approach to software engineering.
             </p>
             <div className="hero-ctas reveal reveal-delay-3">
-              <a
-                href="#projects"
-                className="btn-primary"
-              >
+              <a href="#projects" className="btn-primary">
                 View Lab{" "}
                 <span
                   className="material-symbols-outlined"
@@ -61,7 +51,8 @@ export default function Hero() {
             <div className="hero-card">
               <span className="material-symbols-outlined">code_blocks</span>
               <span className="hero-card-label">
-                Oregon State University<br />
+                Oregon State University
+                <br />
                 Class of 2027
               </span>
             </div>

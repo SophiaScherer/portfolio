@@ -1,35 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
-    );
-
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Thank you for your message!");
   };
 
   return (
@@ -43,8 +16,8 @@ export default function Contact() {
                 Let&apos;s build <span className="text-accent">together.</span>
               </h2>
               <p
-                className="text-muted"
                 style={{
+                  color: "var(--text-muted)",
                   marginTop: "16px",
                   fontSize: "1rem",
                   lineHeight: 1.7,
@@ -74,27 +47,11 @@ export default function Contact() {
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name">Your Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="Alex Chen"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                />
+                <input id="name" type="text" placeholder="Alex Chen" />
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="alex@example.com"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                />
+                <input id="email" type="email" placeholder="alex@example.com" />
               </div>
               <div className="form-group">
                 <label htmlFor="message">Message</label>
@@ -102,11 +59,7 @@ export default function Contact() {
                   id="message"
                   rows={4}
                   placeholder="Tell me about your magic system..."
-                  value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
-                />
+                ></textarea>
               </div>
               <button className="btn-send" type="submit">
                 Send Connection Request

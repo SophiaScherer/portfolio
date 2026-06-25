@@ -1,23 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import ThemeToggle from "./ThemeToggle";
-
-const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#projects", label: "Projects" },
-  { href: "#experience", label: "Experience" },
-  { href: "#interests", label: "Interests" },
-  { href: "#contact", label: "Contact" },
-];
+import { useNavActive } from "../hooks/useNavActive";
+import { useHamburger } from "../hooks/useHamburger";
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleMobileLinkClick = () => {
-    setMobileMenuOpen(false);
-    document.body.style.overflow = "";
-  };
+  useNavActive();
+  const { toggle } = useHamburger();
 
   return (
     <>
@@ -26,62 +15,59 @@ export default function Navbar() {
           <a href="#about" className="nav-logo">
             Technical Scholar
           </a>
-
           <ul className="nav-links">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="nav-link"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            <li>
+              <a href="#about">About</a>
+            </li>
+            <li>
+              <a href="#projects">Projects</a>
+            </li>
+            <li>
+              <a href="#experience">Experience</a>
+            </li>
+            <li>
+              <a href="#interests">Interests</a>
+            </li>
+            <li>
+              <a href="#contact">Contact</a>
+            </li>
           </ul>
-
           <div className="nav-right">
             <ThemeToggle />
             <a href="#" className="btn-resume">
               Resume
             </a>
             <button
-              onClick={() => {
-                setMobileMenuOpen(true);
-                document.body.style.overflow = "hidden";
-              }}
               className="hamburger"
+              id="hamburger"
               aria-label="Open menu"
+              onClick={toggle}
             >
-              <span />
-              <span />
-              <span />
+              <span></span>
+              <span></span>
+              <span></span>
             </button>
           </div>
         </nav>
       </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={`mobile-menu ${mobileMenuOpen ? "open" : ""}`}
-        aria-hidden={!mobileMenuOpen}
-      >
-        {navLinks.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            onClick={handleMobileLinkClick}
-            className="mobile-link"
-          >
-            {link.label}
-          </a>
-        ))}
-        <a
-          href="#"
-          onClick={handleMobileLinkClick}
-          className="btn-primary"
-          style={{ marginTop: "8px" }}
-        >
+      <div className="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <a href="#about" className="mobile-link">
+          About
+        </a>
+        <a href="#projects" className="mobile-link">
+          Projects
+        </a>
+        <a href="#experience" className="mobile-link">
+          Experience
+        </a>
+        <a href="#interests" className="mobile-link">
+          Interests
+        </a>
+        <a href="#contact" className="mobile-link">
+          Contact
+        </a>
+        <a href="#" className="btn-primary" style={{ marginTop: "8px" }}>
           Resume
         </a>
       </div>
