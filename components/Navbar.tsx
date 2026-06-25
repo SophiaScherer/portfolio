@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import { useNavActive } from "../hooks/useNavActive";
 import { useHamburger } from "../hooks/useHamburger";
@@ -34,9 +35,15 @@ export default function Navbar() {
           </ul>
           <div className="nav-right">
             <ThemeToggle />
-            <a href="#" className="btn-resume">
+            <Link
+                href="/Sophia_s_Resume.pdf"
+                download="Sophia_Resume.pdf"
+                prefetch={false}
+                className="btn-primary"
+                style={{ marginTop: "8px" }}
+            >
               Resume
-            </a>
+            </Link>
             <button
               className="hamburger"
               id="hamburger"
@@ -67,7 +74,7 @@ export default function Navbar() {
         <a href="#contact" className="mobile-link">
           Contact
         </a>
-        <a href="#" className="btn-primary" style={{ marginTop: "8px" }}>
+        <a href="/Sophia_s_Resume.pdf" download="Sophia_Resume.pdf" className="btn-primary" style={{ marginTop: "8px" }}>
           Resume
         </a>
       </div>
