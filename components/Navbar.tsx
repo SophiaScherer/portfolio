@@ -14,7 +14,7 @@ export default function Navbar() {
       <div className="nav-wrap">
         <nav className="nav">
           <a href="#about" className="nav-logo">
-            Technical Scholar
+            Sophia Scherer
           </a>
           <ul className="nav-links">
             <li>
