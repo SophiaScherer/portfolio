@@ -4,7 +4,6 @@
  * Goals:
  *   - One GraphQL query per resource (no duplicate round-trips).
  *   - Stable, typed selectors so components don't talk to GraphQL directly.
- *   - Sensible fallbacks to `/public` assets while content is being seeded.
  *
  * Adding new CMS-managed assets later:
  *   1. Extend the `PORTFOLIO_QUERY` selection set.
@@ -28,19 +27,16 @@ export type HygraphAsset = {
   height: number | null;
 };
 
+export type ResumeDownload = {
+  url: string;
+  fileName: string;
+};
+
 export type PortfolioContent = {
   title: string;
   resumeFile: HygraphAsset | null;
   images: HygraphAsset[];
 };
-
-/* -------------------------------------------------------------------------- */
-/* Fallbacks (public assets that ship with the repo)                          */
-/* -------------------------------------------------------------------------- */
-
-const FALLBACK_RESUME_URL = "/Sophia_s_Resume.pdf";
-const FALLBACK_RESUME_FILENAME = "Sophia_Resume.pdf";
-const FALLBACK_HERO_IMAGE_URL = "/vectorVisPicture.png";
 
 /* -------------------------------------------------------------------------- */
 /* Single shared GraphQL query                                                */
@@ -98,26 +94,25 @@ export const getPortfolioContent = async (): Promise<PortfolioContent | null> =>
 };
 
 /**
- * Resolve the resume download URL, falling back to the bundled PDF in `/public`
- * until the CMS asset is published.
+ * Resolve the resume download URL. Returns `null` when no resume has been
+ * published in the CMS — callers are responsible for hiding the link.
  */
-export const getResumeDownload = async (): Promise<{ url: string; fileName: string }> => {
+export const getResumeDownload = async (): Promise<ResumeDownload | null> => {
   const content = await getPortfolioContent();
   const resume = content?.resumeFile;
-  if (!resume?.url) {
-    return { url: FALLBACK_RESUME_URL, fileName: FALLBACK_RESUME_FILENAME };
-  }
+  if (!resume?.url) return null;
   return {
     url: resume.url,
-    fileName: resume.fileName || FALLBACK_RESUME_FILENAME,
+    fileName: resume.fileName,
   };
 };
 
 /**
- * Resolve the hero image URL used in the first project card. Falls back to the
- * bundled PNG in `/public` until the CMS asset is published.
+ * Resolve the hero image URL used in the first project card. Returns `null`
+ * when no image has been published in the CMS — callers are responsible for
+ * hiding the image.
  */
-export const getHeroImageUrl = async (): Promise<string> => {
+export const getHeroImageUrl = async (): Promise<string | null> => {
   const content = await getPortfolioContent();
-  return content?.images[0]?.url ?? FALLBACK_HERO_IMAGE_URL;
+  return content?.images[0]?.url ?? null;
 };

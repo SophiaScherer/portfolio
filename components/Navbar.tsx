@@ -6,13 +6,24 @@ import { useNavActive } from "../hooks/useNavActive";
 import { useHamburger } from "../hooks/useHamburger";
 
 type NavbarProps = {
-  resumeUrl: string;
-  resumeFileName: string;
+  resume: { url: string; fileName: string } | null;
 };
 
-export default function Navbar({ resumeUrl, resumeFileName }: NavbarProps) {
+export default function Navbar({ resume }: NavbarProps) {
   useNavActive();
   const { toggle } = useHamburger();
+
+  const resumeLink = resume ? (
+    <Link
+      href={resume.url}
+      download={resume.fileName}
+      prefetch={false}
+      className="btn-primary"
+      style={{ marginTop: "8px" }}
+    >
+      Resume
+    </Link>
+  ) : null;
 
   return (
     <>
@@ -40,15 +51,7 @@ export default function Navbar({ resumeUrl, resumeFileName }: NavbarProps) {
           </ul>
           <div className="nav-right">
             <ThemeToggle />
-            <Link
-                href={resumeUrl}
-                download={resumeFileName}
-                prefetch={false}
-                className="btn-primary"
-                style={{ marginTop: "8px" }}
-            >
-              Resume
-            </Link>
+            {resumeLink}
             <button
               className="hamburger"
               id="hamburger"
@@ -79,15 +82,7 @@ export default function Navbar({ resumeUrl, resumeFileName }: NavbarProps) {
         <a href="#contact" className="mobile-link">
           Contact
         </a>
-        <Link
-            href={resumeUrl}
-            download={resumeFileName}
-            prefetch={false}
-            className="btn-primary"
-            style={{ marginTop: "8px" }}
-        >
-          Resume
-        </Link>
+        {resumeLink}
       </div>
     </>
   );

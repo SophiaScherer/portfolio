@@ -36,7 +36,7 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const { url: resumeUrl, fileName: resumeFileName } = await getResumeDownload();
+  const resume = await getResumeDownload();
 
   return (
     <html
@@ -63,7 +63,7 @@ export default async function RootLayout({
           <div className="ambient-blob ambient-blob-2" />
         </div>
 
-        <Navbar resumeUrl={resumeUrl} resumeFileName={resumeFileName} />
+        <Navbar resume={resume} />
 
         {children}
 

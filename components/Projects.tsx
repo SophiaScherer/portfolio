@@ -4,7 +4,7 @@ import { useReveal } from "../hooks/useReveal";
 import Image from "next/image";
 
 type ProjectsProps = {
-  heroImageUrl: string;
+  heroImageUrl: string | null;
 };
 
 export default function Projects({ heroImageUrl }: ProjectsProps) {
@@ -30,16 +30,18 @@ export default function Projects({ heroImageUrl }: ProjectsProps) {
         <div className="bento">
           <div className="bento-1 reveal">
             <div className="card project-card" style={{ height: "100%" }}>
-              <div className="project-img-wrap">
-                <img
-                  src={heroImageUrl}
-                  alt="2D Vector Field Visualization"
-                />
-                <div className="img-tags">
-                  <span className="img-tag">OpenGL</span>
-                  <span className="img-tag">GLSL</span>
+              {heroImageUrl && (
+                <div className="project-img-wrap">
+                  <img
+                    src={heroImageUrl}
+                    alt="2D Vector Field Visualization"
+                  />
+                  <div className="img-tags">
+                    <span className="img-tag">OpenGL</span>
+                    <span className="img-tag">GLSL</span>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="project-body">
                 <h3 className="h3">2D Vector Field Visualization</h3>
                 <p>
