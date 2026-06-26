@@ -112,12 +112,6 @@ export default function Contact() {
                 on a project or discussing opportunities, I'd be glad to connect.
               </p>
               <div className="contact-links">
-                <a href="mailto:sophiasch@gmail.com" className="contact-link">
-                  <div className="contact-link-icon">
-                    <span className="material-symbols-outlined">mail</span>
-                  </div>
-                  <span className="contact-link-text">sophiasch@gmail.com</span>
-                </a>
                 <div className="contact-link" style={{ cursor: "default" }}>
                   <div className="contact-link-icon">
                     <span className="material-symbols-outlined">location_on</span>
