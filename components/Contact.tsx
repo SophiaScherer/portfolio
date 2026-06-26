@@ -11,7 +11,7 @@ export default function Contact() {
         <div className="card contact-card">
           <div className="contact-grid">
             <div>
-              <span className="label-cap">Get in Touch</span>
+              <span className="label-cap">Contact</span>
               <h2 className="h2">
                 Let&apos;s build <span className="text-accent">together.</span>
               </h2>
@@ -46,12 +46,12 @@ export default function Contact() {
 
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="name">Your Name</label>
-                <input id="name" type="text" placeholder="Alex Chen" />
+                <label htmlFor="name">Full Name</label>
+                <input id="name" type="text" placeholder="Your name" />
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
-                <input id="email" type="email" placeholder="alex@example.com" />
+                <input id="email" type="email" placeholder="you@example.com" />
               </div>
               <div className="form-group">
                 <label htmlFor="message">Message</label>
