@@ -83,7 +83,6 @@ export default function Contact() {
         kind: "error",
         message: "Network error. Please try again.",
       });
-    }
     } finally {
       setSending(false);
     }
