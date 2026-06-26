@@ -14,15 +14,16 @@ export default function Navbar({ resume }: NavbarProps) {
   const { toggle } = useHamburger();
 
   const resumeLink = resume ? (
-    <Link
+    <a
       href={resume.url}
+      target={"_blank"}
+      rel={"noopener noreferrer"}
       download={resume.fileName}
-      prefetch={false}
       className="btn-primary"
       style={{ marginTop: "8px" }}
     >
       Resume
-    </Link>
+    </a>
   ) : null;
 
   return (
