@@ -16,13 +16,11 @@ export default function Interests() {
             style={{ borderRadius: "1.5rem" }}
           >
             <div className="interest-icon">
-              <span className="material-symbols-outlined">sports_esports</span>
+              <span className="material-symbols-outlined">analytics</span>
             </div>
-            <h3 className="h3">Game Dev &amp; Graphics</h3>
+            <h3 className="h3">Data Visualization</h3>
             <p>
-              Fascinated by the intersection of mathematics and visual
-              storytelling. Building interactive simulations and real-time
-              renderers.
+              I enjoy transforming complex datasets into intuitive visualizations that help people understand patterns, relationships, and decisions more clearly.
             </p>
           </div>
           <div
@@ -30,12 +28,11 @@ export default function Interests() {
             style={{ borderRadius: "1.5rem" }}
           >
             <div className="interest-icon">
-              <span className="material-symbols-outlined">auto_stories</span>
+              <span className="material-symbols-outlined">ssid_chart</span>
             </div>
-            <h3 className="h3">Worldbuilding</h3>
+            <h3 className="h3">Systems & Performance</h3>
             <p>
-              Crafting elaborate fictional universes with internally consistent
-              rules — applying systems thinking to creative storytelling.
+              I'm fascinated by how software performs under the hood, from parallel algorithms and GPU computing to optimizing systems for speed, scalability, and efficiency.
             </p>
           </div>
           <div
@@ -45,10 +42,9 @@ export default function Interests() {
             <div className="interest-icon">
               <span className="material-symbols-outlined">hiking</span>
             </div>
-            <h3 className="h3">Scouting &amp; Outdoors</h3>
+            <h3 className="h3">Leadership & Service</h3>
             <p>
-              Leadership through adventure. Order of the Arrow experience shaped
-              my approach to teamwork and community service.
+              My experience in Scouting taught me how to lead teams, communicate effectively, and build communities through service. Those lessons continue to shape how I approach collaboration.
             </p>
           </div>
           <div
@@ -58,11 +54,9 @@ export default function Interests() {
             <div className="interest-icon">
               <span className="material-symbols-outlined">psychology</span>
             </div>
-            <h3 className="h3">Parallel Systems</h3>
+            <h3 className="h3">Beyond the Keyboard</h3>
             <p>
-              Obsessed with how massive concurrency unlocks computational
-              problems that were previously intractable. GPU architecture is
-              beautiful.
+              Outside of computing, you'll usually find me hiking, running, attending a baseball game, or working on creative projects that blend technical and artistic thinking.
             </p>
           </div>
         </div>
