@@ -13,7 +13,7 @@ export default function Contact() {
             <div>
               <span className="label-cap">Contact</span>
               <h2 className="h2">
-                Let&apos;s build <span className="text-accent">together.</span>
+                Get in <span className="text-accent">touch.</span>
               </h2>
               <p
                 style={{
@@ -24,9 +24,9 @@ export default function Contact() {
                   maxWidth: "380px",
                 }}
               >
-                I&apos;m always open to discussing technical projects, research
-                opportunities, or just chatting about the future of CS. Based in
-                Woodinville, WA.
+                I'm currently seeking internship and research opportunities in software engineering,
+                data visualization, and high-performance computing. If you're interested in collaborating
+                on a project or discussing opportunities, I'd be glad to connect.
               </p>
               <div className="contact-links">
                 <a href="mailto:sophiasch@gmail.com" className="contact-link">
@@ -58,11 +58,11 @@ export default function Contact() {
                 <textarea
                   id="message"
                   rows={4}
-                  placeholder="Tell me about your magic system..."
+                  placeholder="Your message..."
                 ></textarea>
               </div>
               <button className="btn-send" type="submit">
-                Send Connection Request
+                Send Message
               </button>
             </form>
           </div>
