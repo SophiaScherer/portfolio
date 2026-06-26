@@ -5,6 +5,7 @@ import "../styles/main.scss";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getResumeDownload } from "../lib/content";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const epilogue = Epilogue({
   subsets: ["latin"],
@@ -26,7 +27,7 @@ const grotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Sophia Scherer | Technical Scholar",
+  title: "Sophia Scherer | Portfolio",
   description:
     "Honors B.S. Computer Science student at Oregon State University specializing in high-performance computing and visualization.",
 };
@@ -68,6 +69,7 @@ export default async function RootLayout({
         {children}
 
         <Footer />
+      <SpeedInsights />
       </body>
     </html>
   );
