@@ -13,6 +13,8 @@
  * No component should construct its own GraphQL query.
  */
 
+import "server-only";
+
 import { request } from "./hygraph";
 
 /* -------------------------------------------------------------------------- */

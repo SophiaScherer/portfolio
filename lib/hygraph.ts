@@ -12,6 +12,8 @@
  *     requests get the cached payload until the tag is invalidated.
  */
 
+import "server-only";
+
 import { cache } from "react";
 
 const HYGRAPH_ENDPOINT = process.env.HYGRAPH_ENDPOINT;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useReveal } from "../hooks/useReveal";
-import Image from "next/image";
 
 type ProjectsProps = {
   heroImageUrl: string | null;
