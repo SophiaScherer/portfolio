@@ -24,11 +24,10 @@ export default function Hero() {
               <em className="text-accent">high-performance</em> software
             </h1>
             <p className="reveal reveal-delay-2">
-              Honors Computer Science student at Oregon State University
-              specializing in systems programming, computer graphics, and
-              high-performance computing. I enjoy solving complex technical
-              problems and building software that is efficient, reliable, and
-              thoughtfully designed.
+              Honors Computer Science student at Oregon State University specializing
+              in systems programming, data visualization, and high-performance computing.
+              I enjoy solving complex technical problems and building software that is
+              efficient, reliable, and easy to use.
             </p>
             <div className="hero-ctas reveal reveal-delay-3">
               <a href="#projects" className="btn-primary">

@@ -19,7 +19,7 @@ export default function Projects() {
             <h2 className="h2 reveal reveal-delay-1">Personal Projects</h2>
           </div>
           <p className="reveal reveal-delay-2">
-            Projects exploring computer graphics, high-performance computing, systems programming, and full-stack development.
+            A selection of projects showcasing my work in data visualization, systems programming, high-performance computing, and full-stack development.
           </p>
         </div>
 
@@ -39,7 +39,7 @@ export default function Projects() {
               <div className="project-body">
                 <h3 className="h3">2D Vector Field Visualization</h3>
                 <p>
-                  Interactive OpenGL system for visualizing complex fields.
+                  Interactive OpenGL system for visualizing vector and scalar fields.
                   Features real-time GLSL Line Integral Convolution (LIC) and
                   streamline tracing for fluid flow analysis.
                 </p>
@@ -84,8 +84,7 @@ export default function Projects() {
                   }}
                 >
                   Benchmarked and optimized parallel algorithms using CUDA and
-                  OpenMP. Conducted rigorous speedup analysis for Monte Carlo
-                  simulations.
+                  OpenMP. Measured performance and analyzed speedup across Monte Carlo simulations.
                 </p>
               </div>
               <div className="perf-table">
@@ -113,8 +112,7 @@ export default function Projects() {
                 </h3>
                 <p>
                   A comprehensive fitness companion built with React and
-                  MongoDB. Engineered a robust RESTful API for seamless data
-                  persistence and real-time activity tracking.
+                  MongoDB. Developed a RESTful API for persistent workout tracking and real-time data management.
                 </p>
                 <div className="tech-pills">
                   <span className="tech-pill">React</span>

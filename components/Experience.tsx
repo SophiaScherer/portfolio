@@ -15,7 +15,7 @@ export default function Experience() {
         <div className="exp-grid">
           <div>
             <span className="label-cap reveal">Skills</span>
-            <h2 className="h2 reveal reveal-delay-1">Expertise</h2>
+            <h2 className="h2 reveal reveal-delay-1">Technical Skills</h2>
             <div className="skills-cloud reveal reveal-delay-2">
               <span className="tag">
                 C++
@@ -49,8 +49,7 @@ export default function Experience() {
                 </div>
                 <p className="timeline-org">Oregon State University</p>
                 <p className="timeline-desc">
-                  Focusing on high-level system architecture and parallel
-                  computing. Current GPA: 3.59.
+                  Coursework focused on operating systems, computer graphics, networking, algorithms, and high-performance computing. Current GPA: 3.59.
                 </p>
               </div>
               <div className="timeline-item">
@@ -63,8 +62,7 @@ export default function Experience() {
                   University Housing &amp; Dining Services (UHDS)
                 </p>
                 <p className="timeline-desc">
-                  Developing training protocols and mentoring new staff members
-                  within a large-scale university operation.
+                  Train and mentor new student employees while helping maintain consistent service and food safety standards.
                 </p>
               </div>
               <div className="timeline-item">
@@ -75,8 +73,7 @@ export default function Experience() {
                 </div>
                 <p className="timeline-org">Boy Scouts of America</p>
                 <p className="timeline-desc">
-                  Managed financial reporting and led organizational strategy
-                  for youth leadership divisions.
+                  Managed budgets, coordinated large-scale events, and served in youth leadership roles supporting over 400 participants.
                 </p>
               </div>
               <div className="timeline-item">

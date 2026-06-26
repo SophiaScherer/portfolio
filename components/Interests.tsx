@@ -56,7 +56,7 @@ export default function Interests() {
             </div>
             <h3 className="h3">Building Useful Software</h3>
             <p>
-              Some of my favorite project ideas come from everyday frustrations. I enjoy identifying problems in my own workflow and building software that solves them — whether that's improving productivity, simplifying routine tasks, or making technology easier to use.
+              Many of my favorite project ideas come from everyday frustrations. I enjoy identifying problems in my own workflow and building software that solves them — whether that's improving productivity, simplifying routine tasks, or making technology easier to use.
             </p>
           </div>
         </div>
