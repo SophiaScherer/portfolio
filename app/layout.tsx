@@ -5,6 +5,7 @@ import "../styles/main.scss";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getResumeDownload } from "../lib/content";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const epilogue = Epilogue({
   subsets: ["latin"],
@@ -68,6 +69,7 @@ export default async function RootLayout({
         {children}
 
         <Footer />
+      <SpeedInsights />
       </body>
     </html>
   );
