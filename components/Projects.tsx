@@ -3,7 +3,11 @@
 import { useReveal } from "../hooks/useReveal";
 import Image from "next/image";
 
-export default function Projects() {
+type ProjectsProps = {
+  heroImageUrl: string;
+};
+
+export default function Projects({ heroImageUrl }: ProjectsProps) {
   const sectionRef = useReveal<HTMLElement>();
 
   return (
@@ -28,7 +32,7 @@ export default function Projects() {
             <div className="card project-card" style={{ height: "100%" }}>
               <div className="project-img-wrap">
                 <img
-                  src="/vectorVisPicture.png"
+                  src={heroImageUrl}
                   alt="2D Vector Field Visualization"
                 />
                 <div className="img-tags">

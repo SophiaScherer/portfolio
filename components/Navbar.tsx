@@ -5,7 +5,12 @@ import ThemeToggle from "./ThemeToggle";
 import { useNavActive } from "../hooks/useNavActive";
 import { useHamburger } from "../hooks/useHamburger";
 
-export default function Navbar() {
+type NavbarProps = {
+  resumeUrl: string;
+  resumeFileName: string;
+};
+
+export default function Navbar({ resumeUrl, resumeFileName }: NavbarProps) {
   useNavActive();
   const { toggle } = useHamburger();
 
@@ -36,8 +41,8 @@ export default function Navbar() {
           <div className="nav-right">
             <ThemeToggle />
             <Link
-                href="/Sophia_s_Resume.pdf"
-                download="Sophia_Resume.pdf"
+                href={resumeUrl}
+                download={resumeFileName}
                 prefetch={false}
                 className="btn-primary"
                 style={{ marginTop: "8px" }}
@@ -75,8 +80,8 @@ export default function Navbar() {
           Contact
         </a>
         <Link
-            href="/Sophia_s_Resume.pdf"
-            download="Sophia_Resume.pdf"
+            href={resumeUrl}
+            download={resumeFileName}
             prefetch={false}
             className="btn-primary"
             style={{ marginTop: "8px" }}
