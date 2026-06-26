@@ -78,10 +78,12 @@ export default function Contact() {
         });
       }
     } catch (err) {
+      console.error("Failed to submit contact form", err);
       setStatus({
         kind: "error",
-        message: err instanceof Error ? err.message : "Network error. Please try again.",
+        message: "Network error. Please try again.",
       });
+    }
     } finally {
       setSending(false);
     }

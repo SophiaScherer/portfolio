@@ -34,6 +34,7 @@ export async function POST(req: Request) {
 
   const errors: Record<string, string> = {};
   if (!name) errors.name = "Name is required.";
+  else if (/[\r\n]/.test(name)) errors.name = "Name must be a single line.";
   if (!email) errors.email = "Email is required.";
   else if (!isValidEmail(email)) errors.email = "Please enter a valid email address.";
   if (!message) errors.message = "Message is required.";
@@ -43,10 +44,11 @@ export async function POST(req: Request) {
   }
 
   const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT ?? "587");
+  const portRaw = process.env.SMTP_PORT ?? "587";
+  const port = Number.parseInt(portRaw, 10);
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
-  const to = process.env.CONTACT_TO ?? "sophiasch@gmail.com";
+  const to = process.env.CONTACT_TO ?? user;
 
   if (!host || !user || !pass) {
     return NextResponse.json(
@@ -57,6 +59,10 @@ export async function POST(req: Request) {
       },
       { status: 500 }
     );
+  }
+
+  if (!Number.isFinite(port) || port <= 0 || port > 65535) {
+    return NextResponse.json({ ok: false, error: "Invalid SMTP_PORT value." }, { status: 500 });
   }
 
   try {
@@ -87,9 +93,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    const detail = err instanceof Error ? err.message : "Unknown error";
+    console.error("Failed to send contact message", err);
     return NextResponse.json(
-      { ok: false, error: `Failed to send message: ${detail}` },
+      { ok: false, error: "Failed to send message. Please try again later." },
       { status: 500 }
     );
   }
