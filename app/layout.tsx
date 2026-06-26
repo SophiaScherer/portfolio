@@ -4,6 +4,7 @@ import { Epilogue, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "../styles/main.scss";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { getResumeDownload } from "../lib/content";
 
 const epilogue = Epilogue({
   subsets: ["latin"],
@@ -30,11 +31,13 @@ export const metadata: Metadata = {
     "Honors B.S. Computer Science student at Oregon State University specializing in high-performance computing and visualization.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const resume = await getResumeDownload();
+
   return (
     <html
       lang="en"
@@ -60,7 +63,7 @@ export default function RootLayout({
           <div className="ambient-blob ambient-blob-2" />
         </div>
 
-        <Navbar />
+        <Navbar resume={resume} />
 
         {children}
 

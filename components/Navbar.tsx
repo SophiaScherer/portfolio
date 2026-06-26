@@ -5,9 +5,26 @@ import ThemeToggle from "./ThemeToggle";
 import { useNavActive } from "../hooks/useNavActive";
 import { useHamburger } from "../hooks/useHamburger";
 
-export default function Navbar() {
+type NavbarProps = {
+  resume: { url: string; fileName: string } | null;
+};
+
+export default function Navbar({ resume }: NavbarProps) {
   useNavActive();
   const { toggle } = useHamburger();
+
+  const resumeLink = resume ? (
+    <a
+      href={resume.url}
+      target={"_blank"}
+      rel={"noopener noreferrer"}
+      download={resume.fileName}
+      className="btn-primary"
+      style={{ marginTop: "8px" }}
+    >
+      Resume
+    </a>
+  ) : null;
 
   return (
     <>
@@ -35,15 +52,7 @@ export default function Navbar() {
           </ul>
           <div className="nav-right">
             <ThemeToggle />
-            <Link
-                href="/Sophia_s_Resume.pdf"
-                download="Sophia_Resume.pdf"
-                prefetch={false}
-                className="btn-primary"
-                style={{ marginTop: "8px" }}
-            >
-              Resume
-            </Link>
+            {resumeLink}
             <button
               className="hamburger"
               id="hamburger"
@@ -74,15 +83,7 @@ export default function Navbar() {
         <a href="#contact" className="mobile-link">
           Contact
         </a>
-        <Link
-            href="/Sophia_s_Resume.pdf"
-            download="Sophia_Resume.pdf"
-            prefetch={false}
-            className="btn-primary"
-            style={{ marginTop: "8px" }}
-        >
-          Resume
-        </Link>
+        {resumeLink}
       </div>
     </>
   );
