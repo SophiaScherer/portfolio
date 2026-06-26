@@ -4,14 +4,13 @@ export default function Footer() {
       <div className="footer-inner">
         <a href="#about" className="footer-logo">
           Sophia Scherer
+          <span className="footer-copy">
+            {" "}© 2026
+          </span>
         </a>
-        <span className="footer-copy">
-          © 2024 Technical Scholar. Built with Girlypop Precision.
-        </span>
         <div className="footer-links">
-          <a href="#">GitHub</a>
-          <a href="#">LinkedIn</a>
-          <a href="#">Twitter</a>
+          <a href="https://github.com/SophiaScherer">GitHub</a>
+          <a href="https://www.linkedin.com/in/sophia-scherer/">LinkedIn</a>
         </div>
       </div>
     </footer>

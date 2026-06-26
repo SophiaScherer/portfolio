@@ -1,6 +1,7 @@
 "use client";
 
 import { useReveal } from "../hooks/useReveal";
+import Image from "next/image";
 
 export default function Projects() {
   const sectionRef = useReveal<HTMLElement>();
@@ -15,11 +16,10 @@ export default function Projects() {
         <div className="projects-header">
           <div>
             <span className="label-cap reveal">Portfolio</span>
-            <h2 className="h2 reveal reveal-delay-1">Project Lab</h2>
+            <h2 className="h2 reveal reveal-delay-1">Personal Projects</h2>
           </div>
           <p className="reveal reveal-delay-2">
-            A curated selection of technical explorations spanning graphics,
-            parallel systems, and full-stack architecture.
+            A selection of projects showcasing my work in data visualization, systems programming, high-performance computing, and full-stack development.
           </p>
         </div>
 
@@ -28,7 +28,7 @@ export default function Projects() {
             <div className="card project-card" style={{ height: "100%" }}>
               <div className="project-img-wrap">
                 <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-IP4y4QglIyhF1wpBEPImKWKbNvH9Cv-tSqo_tDXgNDIZkl7cp-wxICPdczj20xw52bu1jqm0r-zrG2PAQSQ7ve257cMu_bAOTV8MS3-jjgSxmUV_UsoLPT-LaE0uWNuqoFWCay-mfSSlUvvin5DyjPWl_rjpbwptPwKZFSwu4-eu0WztdAUOOn2Ubbden_MvvD7iuvWPT6Q-NmyStwszWjfm6jnZGhxLCMmmendGLHchMCdJmKBL9Ke-HIIC3v2PbWCsSenmx_w"
+                  src="/vectorVisPicture.png"
                   alt="2D Vector Field Visualization"
                 />
                 <div className="img-tags">
@@ -39,7 +39,7 @@ export default function Projects() {
               <div className="project-body">
                 <h3 className="h3">2D Vector Field Visualization</h3>
                 <p>
-                  Interactive OpenGL system for visualizing complex fields.
+                  Interactive OpenGL system for visualizing vector and scalar fields.
                   Features real-time GLSL Line Integral Convolution (LIC) and
                   streamline tracing for fluid flow analysis.
                 </p>
@@ -84,8 +84,7 @@ export default function Projects() {
                   }}
                 >
                   Benchmarked and optimized parallel algorithms using CUDA and
-                  OpenMP. Conducted rigorous speedup analysis for Monte Carlo
-                  simulations.
+                  OpenMP. Measured performance and analyzed speedup across Monte Carlo simulations.
                 </p>
               </div>
               <div className="perf-table">
@@ -113,8 +112,7 @@ export default function Projects() {
                 </h3>
                 <p>
                   A comprehensive fitness companion built with React and
-                  MongoDB. Engineered a robust RESTful API for seamless data
-                  persistence and real-time activity tracking.
+                  MongoDB. Developed a RESTful API for persistent workout tracking and real-time data management.
                 </p>
                 <div className="tech-pills">
                   <span className="tech-pill">React</span>

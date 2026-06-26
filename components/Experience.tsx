@@ -14,20 +14,15 @@ export default function Experience() {
       <div className="container">
         <div className="exp-grid">
           <div>
-            <span className="label-cap reveal">The Toolkit</span>
-            <h2 className="h2 reveal reveal-delay-1">Expertise</h2>
+            <span className="label-cap reveal">Skills</span>
+            <h2 className="h2 reveal reveal-delay-1">Technical Skills</h2>
             <div className="skills-cloud reveal reveal-delay-2">
               <span className="tag">
-                <span
-                  className="material-symbols-outlined"
-                  style={{ fontSize: "14px" }}
-                >
-                  terminal
-                </span>{" "}
                 C++
               </span>
               <span className="tag">C</span>
               <span className="tag">Java</span>
+              <span className="tag">JavaScript</span>
               <span className="tag">React</span>
               <span className="tag">MongoDB</span>
               <span className="tag">CUDA</span>
@@ -41,7 +36,7 @@ export default function Experience() {
           </div>
 
           <div>
-            <span className="label-cap reveal">My Journey</span>
+            <span className="label-cap reveal">Work</span>
             <h2 className="h2 reveal reveal-delay-1">Experience</h2>
             <div className="timeline reveal reveal-delay-2">
               <div className="timeline-item">
@@ -54,8 +49,7 @@ export default function Experience() {
                 </div>
                 <p className="timeline-org">Oregon State University</p>
                 <p className="timeline-desc">
-                  Focusing on high-level system architecture and parallel
-                  computing. Current GPA: 3.55.
+                  Coursework focused on operating systems, computer graphics, networking, algorithms, and high-performance computing. Current GPA: 3.59.
                 </p>
               </div>
               <div className="timeline-item">
@@ -68,27 +62,25 @@ export default function Experience() {
                   University Housing &amp; Dining Services (UHDS)
                 </p>
                 <p className="timeline-desc">
-                  Developing training protocols and mentoring new staff members
-                  within a large-scale university operation.
+                  Train and mentor new student employees while helping maintain consistent service and food safety standards.
                 </p>
               </div>
               <div className="timeline-item">
                 <div className="timeline-dot dim-2"></div>
                 <div className="timeline-header">
                   <span className="timeline-title">Treasurer &amp; Vice Chief</span>
-                  <span className="timeline-date">Order of the Arrow</span>
+                  <span className="timeline-date">2023 — 2025</span>
                 </div>
                 <p className="timeline-org">Boy Scouts of America</p>
                 <p className="timeline-desc">
-                  Managed financial reporting and led organizational strategy
-                  for youth leadership divisions.
+                  Managed budgets, coordinated large-scale events, and served in youth leadership roles supporting over 400 participants.
                 </p>
               </div>
               <div className="timeline-item">
                 <div className="timeline-dot dim-3"></div>
                 <div className="timeline-header">
                   <span className="timeline-title">Shift Lead</span>
-                  <span className="timeline-date">Past Experience</span>
+                  <span className="timeline-date">January 2023 — June 2023</span>
                 </div>
                 <p className="timeline-org">Freshii</p>
                 <p className="timeline-desc">

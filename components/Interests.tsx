@@ -9,20 +9,18 @@ export default function Interests() {
     <section className="section-pad" id="interests" ref={sectionRef}>
       <div className="container">
         <span className="label-cap reveal">Beyond the Code</span>
-        <h2 className="h2 reveal reveal-delay-1">What Drives Me</h2>
+        <h2 className="h2 reveal reveal-delay-1">Interests</h2>
         <div className="interests-grid">
           <div
             className="card interest-card reveal reveal-delay-1"
             style={{ borderRadius: "1.5rem" }}
           >
             <div className="interest-icon">
-              <span className="material-symbols-outlined">sports_esports</span>
+              <span className="material-symbols-outlined">insights</span>
             </div>
-            <h3 className="h3">Game Dev &amp; Graphics</h3>
+            <h3 className="h3">Data Visualization</h3>
             <p>
-              Fascinated by the intersection of mathematics and visual
-              storytelling. Building interactive simulations and real-time
-              renderers.
+              I enjoy designing visualizations that make complex information easier to understand. Whether it's scientific data or interactive graphics, I'm interested in helping people see patterns that might otherwise be overlooked.
             </p>
           </div>
           <div
@@ -30,12 +28,11 @@ export default function Interests() {
             style={{ borderRadius: "1.5rem" }}
           >
             <div className="interest-icon">
-              <span className="material-symbols-outlined">auto_stories</span>
+              <span className="material-symbols-outlined">settings</span>
             </div>
-            <h3 className="h3">Worldbuilding</h3>
+            <h3 className="h3">Systems & Performance</h3>
             <p>
-              Crafting elaborate fictional universes with internally consistent
-              rules — applying systems thinking to creative storytelling.
+              I enjoy understanding how software works beneath the surface. From parallel computing and GPU programming to low-level optimization, I'm always looking for ways to make systems faster, more efficient, and more scalable.
             </p>
           </div>
           <div
@@ -43,12 +40,11 @@ export default function Interests() {
             style={{ borderRadius: "1.5rem" }}
           >
             <div className="interest-icon">
-              <span className="material-symbols-outlined">hiking</span>
+              <span className="material-symbols-outlined">handshake</span>
             </div>
-            <h3 className="h3">Scouting &amp; Outdoors</h3>
+            <h3 className="h3">Leadership & Service</h3>
             <p>
-              Leadership through adventure. Order of the Arrow experience shaped
-              my approach to teamwork and community service.
+              Leadership in Scouting taught me how to communicate effectively, support a team, and organize large projects with diverse groups of people. Those experiences continue to shape how I collaborate as an engineer.
             </p>
           </div>
           <div
@@ -56,13 +52,11 @@ export default function Interests() {
             style={{ borderRadius: "1.5rem" }}
           >
             <div className="interest-icon">
-              <span className="material-symbols-outlined">psychology</span>
+              <span className="material-symbols-outlined">lightbulb</span>
             </div>
-            <h3 className="h3">Parallel Systems</h3>
+            <h3 className="h3">Building Useful Software</h3>
             <p>
-              Obsessed with how massive concurrency unlocks computational
-              problems that were previously intractable. GPU architecture is
-              beautiful.
+              Many of my favorite project ideas come from everyday frustrations. I enjoy identifying problems in my own workflow and building software that solves them — whether that's improving productivity, simplifying routine tasks, or making technology easier to use.
             </p>
           </div>
         </div>

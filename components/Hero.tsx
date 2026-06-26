@@ -15,34 +15,32 @@ export default function Hero() {
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <div className="hero-grid">
           <div className="hero-body">
-            <span className="label-cap reveal">
-              Sophia Scherer — Computer Science @ OSU
-            </span>
             <h1
               className="h1 reveal reveal-delay-1"
               style={{ marginBottom: "24px" }}
             >
-              Designing systems
+              Building
               <br />
-              that feel like <em className="text-accent">magic.</em>
+              <em className="text-accent">high-performance</em> software
             </h1>
             <p className="reveal reveal-delay-2">
-              Honors B.S. student at Oregon State University specializing in
-              high-performance computing and visualization. Balancing complex
-              algorithms with a vibrant approach to software engineering.
+              Honors Computer Science student at Oregon State University specializing
+              in systems programming, data visualization, and high-performance computing.
+              I enjoy solving complex technical problems and building software that is
+              efficient, reliable, and easy to use.
             </p>
             <div className="hero-ctas reveal reveal-delay-3">
               <a href="#projects" className="btn-primary">
-                View Lab{" "}
+                Projects{" "}
                 <span
                   className="material-symbols-outlined"
                   style={{ fontSize: "18px" }}
                 >
-                  terminal
+                  code_blocks
                 </span>
               </a>
               <a href="#contact" className="btn-outline">
-                Say Hello
+                Contact Me
               </a>
             </div>
           </div>
@@ -58,7 +56,7 @@ export default function Hero() {
             </div>
             <div className="hero-gpa">
               <span className="hero-gpa-label">GPA</span>
-              <span className="hero-gpa-val">3.55</span>
+              <span className="hero-gpa-val">3.59</span>
             </div>
           </div>
         </div>
