@@ -27,7 +27,7 @@ const grotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Sophia Scherer | Technical Scholar",
+  title: "Sophia Scherer | Portfolio",
   description:
     "Honors B.S. Computer Science student at Oregon State University specializing in high-performance computing and visualization.",
 };
