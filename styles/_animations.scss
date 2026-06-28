@@ -23,6 +23,11 @@
   .exp-grid { grid-template-columns: 1fr; gap: 48px; }
   .contact-grid { grid-template-columns: 1fr; }
   .experience-section::before { display: none; }
+  .project-panel-cols { grid-template-columns: 1fr; gap: 24px; }
+  .project-panel-meta { grid-template-columns: 1fr; }
+  .project-modal-cols { grid-template-columns: 1fr; gap: 24px; }
+  .project-modal-meta { grid-template-columns: 1fr; }
+  .project-modal { padding: 16px; }
 }
 
 @media (max-width: 600px) {
@@ -37,7 +42,7 @@
     flex: 1 1 auto; justify-content: center;
     padding: 14px 22px; font-size: 0.95rem;
   }
-  .projects-section, .experience-section { margin: 0 8px; border-radius: 2rem; }
+  .projects-section, .experience-section { margin: 0 20px; border-radius: 2rem; }
   .project-card-icon { min-height: auto; }
   .interests-grid { grid-template-columns: 1fr 1fr; }
 }

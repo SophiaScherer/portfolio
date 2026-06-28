@@ -31,6 +31,8 @@
   --switch-knob:     #fff;
   --switch-icon-l:   #f59e0b;
   --switch-icon-d:   #aa314d;
+  --modal-bg:        #fcf9f1;
+  --modal-border:    rgba(170,49,77,0.14);
 }
 
 [data-theme="dark"] {
@@ -66,4 +68,6 @@
   --switch-knob:     #18181a;
   --switch-icon-l:   #f59e0b;
   --switch-icon-d:   #ffb2bc;
+  --modal-bg:        #1f1e22;
+  --modal-border:    rgba(255,255,255,0.1);
 }
