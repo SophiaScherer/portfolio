@@ -25,9 +25,7 @@
   .experience-section::before { display: none; }
   .project-panel-cols { grid-template-columns: 1fr; gap: 24px; }
   .project-panel-meta { grid-template-columns: 1fr; }
-  .project-modal-cols { grid-template-columns: 1fr; gap: 24px; }
-  .project-modal-meta { grid-template-columns: 1fr; }
-  .project-modal { padding: 16px; }
+
 }
 
 @media (max-width: 600px) {
