@@ -30,7 +30,18 @@ const grotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "Sophia Scherer | Portfolio",
   description:
-    "Honors B.S. Computer Science student at Oregon State University specializing in high-performance computing and visualization.",
+    "Honors B.S. Computer Science student at Oregon State University specializing in high-performance computing, visualization, and full-stack development.",
+  keywords: [
+      "portfolio",
+      "C++",
+      "C++ developer",
+      "C",
+      "Javascript",
+      "CUDA",
+      "OpenCL",
+      "Data visualization",
+      "Web development",
+  ]
 };
 
 export default async function RootLayout({
