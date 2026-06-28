@@ -15,6 +15,10 @@ export default function Hero() {
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <div className="hero-grid">
           <div className="hero-body">
+            <span className="hero-eyebrow reveal reveal-delay-1">
+              <span className="hero-eyebrow-dot" aria-hidden="true" />
+              Sophia Scherer · CS @ Oregon State
+            </span>
             <h1
               className="h1 reveal reveal-delay-1"
               style={{ marginBottom: "24px" }}
@@ -24,23 +28,31 @@ export default function Hero() {
               <em className="text-accent">high-performance</em> software
             </h1>
             <p className="reveal reveal-delay-2">
-              Honors Computer Science student at Oregon State University specializing
-              in systems programming, data visualization, and high-performance computing.
-              I enjoy solving complex technical problems and building software that is
+              Honors <strong>Computer Science</strong> student at Oregon State
+              University specializing in systems programming, data
+              visualization, and high-performance computing. I enjoy solving
+              complex technical problems and building software that is
               efficient, reliable, and easy to use.
             </p>
             <div className="hero-ctas reveal reveal-delay-3">
               <a href="#projects" className="btn-primary">
-                Projects{" "}
+                Projects
                 <span
-                  className="material-symbols-outlined"
-                  style={{ fontSize: "18px" }}
+                  className="material-symbols-outlined btn-icon"
+                  aria-hidden="true"
                 >
-                  code_blocks
+                  arrow_forward
                 </span>
               </a>
               <a href="#contact" className="btn-outline">
                 Contact Me
+                <span
+                  className="material-symbols-outlined btn-icon"
+                  aria-hidden="true"
+                  style={{ fontSize: "18px" }}
+                >
+                  mail
+                </span>
               </a>
             </div>
           </div>
