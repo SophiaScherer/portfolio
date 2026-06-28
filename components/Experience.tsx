@@ -16,22 +16,38 @@ export default function Experience() {
           <div>
             <span className="label-cap reveal">Skills</span>
             <h2 className="h2 reveal reveal-delay-1">Technical Skills</h2>
-            <div className="skills-cloud reveal reveal-delay-2">
-              <span className="tag">
-                C++
-              </span>
-              <span className="tag">C</span>
-              <span className="tag">Java</span>
-              <span className="tag">JavaScript</span>
-              <span className="tag">React</span>
-              <span className="tag">MongoDB</span>
-              <span className="tag">CUDA</span>
-              <span className="tag">OpenCL</span>
-              <span className="tag">OpenGL</span>
-              <span className="tag">GLSL</span>
-              <span className="tag">Node.js</span>
-              <span className="tag">Git</span>
-              <span className="tag">OpenMP</span>
+            <div className="skills-groups reveal reveal-delay-2">
+              <div className="skills-group">
+                <h3 className="skills-group-label">Languages</h3>
+                <div className="skills-cloud">
+                  <span className="tag">C++</span>
+                  <span className="tag">C</span>
+                  <span className="tag">Java</span>
+                  <span className="tag">JavaScript</span>
+                  <span className="tag">TypeScript</span>
+                  <span className="tag">GLSL</span>
+                </div>
+              </div>
+
+              <div className="skills-group">
+                <h3 className="skills-group-label">Frameworks &amp; Libraries</h3>
+                <div className="skills-cloud">
+                  <span className="tag">React</span>
+                  <span className="tag">Node.js</span>
+                  <span className="tag">OpenGL</span>
+                  <span className="tag">OpenMP</span>
+                  <span className="tag">OpenCL</span>
+                </div>
+              </div>
+
+              <div className="skills-group">
+                <h3 className="skills-group-label">Tools &amp; Platforms</h3>
+                <div className="skills-cloud">
+                  <span className="tag">CUDA</span>
+                  <span className="tag">MongoDB</span>
+                  <span className="tag">Git</span>
+                </div>
+              </div>
             </div>
           </div>
 
