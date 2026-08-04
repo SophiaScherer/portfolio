@@ -26,8 +26,21 @@
   border-radius: 2rem; overflow: hidden;
   display: flex; flex-direction: column;
   position: relative;
+  cursor: pointer;
 }
 
+/* Resets a <button> back to a block container so a card can be the click
+   target without inheriting button chrome. */
+.project-card-button {
+  text-align: left;
+  cursor: pointer;
+  font: inherit; color: inherit;
+  width: 100%;
+  appearance: none; -webkit-appearance: none;
+  padding: 0; border: 1px solid var(--surface-border);
+  background: var(--surface);
+  transition: background 0.35s, border-color 0.35s, box-shadow 0.35s, transform 0.25s;
+}
 .project-card-button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
@@ -73,6 +86,7 @@
 }
 
 .project-card-icon {
+  cursor: pointer;
   border-radius: 2rem; padding: 32px;
   display: flex; flex-direction: column; justify-content: space-between;
   min-height: 360px;
@@ -123,9 +137,25 @@
 }
 
 .project-card-wide {
+  cursor: pointer;
   flex-direction: row;
   border-radius: 2rem; overflow: hidden;
   position: relative;
+}
+
+/* Invisible click target that turns the entire wide card into a button without
+   changing its visual layout. */
+.project-card-wide-overlay {
+  position: absolute; inset: 0;
+  background: transparent; border: 0; padding: 0; margin: 0;
+  cursor: pointer; z-index: 2;
+  font: inherit; color: inherit;
+  appearance: none; -webkit-appearance: none;
+}
+.project-card-wide-overlay:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 3px var(--secondary);
+  border-radius: 2rem;
 }
 .project-card-wide:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
 .project-card-wide .project-body { padding: 40px 40px 40px; display: flex; flex-direction: column; justify-content: center; }

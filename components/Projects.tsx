@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useReveal } from "../hooks/useReveal";
 import { getProjectById, type Project } from "../lib/projects";
+import ProjectModal from "./ProjectModal";
 
 type ProjectsProps = {
   projects: Project[];
@@ -25,6 +26,12 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
   const vectorField = getProjectById(resolved, "vector-field");
   const parallelComputing = getProjectById(resolved, "parallel-computing");
   const exerciseTracker = getProjectById(resolved, "exercise-tracker");
+
+  const expanded = expandedId ? getProjectById(resolved, expandedId) : null;
+
+  const toggle = (id: string) =>
+    setExpandedId((prev) => (prev === id ? null : id));
+  const close = useCallback(() => setExpandedId(null), []);
 
   return (
     <section
@@ -52,7 +59,10 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
               <button
                 type="button"
                 className="card project-card project-card-button"
+                onClick={() => toggle(vectorField.id)}
                 aria-expanded={expandedId === vectorField.id}
+                aria-controls="project-modal"
+                aria-label={`Open case study: ${vectorField.title}`}
               >
                 {vectorField.imageUrl && (
                   <div className="project-img-wrap">
@@ -102,7 +112,10 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
               <button
                 type="button"
                 className="card project-card-icon project-card-button"
+                onClick={() => toggle(parallelComputing.id)}
                 aria-expanded={expandedId === parallelComputing.id}
+                aria-controls="project-modal"
+                aria-label={`Open case study: ${parallelComputing.title}`}
               >
                 <div>
                   <div className="icon-chip">
@@ -165,11 +178,30 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
                     alt={exerciseTracker.imageAlt}
                   />
                 </div>
+
+                {/* The whole wide card opens the modal when clicked. An overlay
+                    keeps its two-column layout intact — the card can't itself
+                    be a button without restructuring it. */}
+                <button
+                  type="button"
+                  className="project-card-wide-overlay"
+                  onClick={() => toggle(exerciseTracker.id)}
+                  aria-expanded={expandedId === exerciseTracker.id}
+                  aria-controls="project-modal"
+                  aria-label={`Open case study: ${exerciseTracker.title}`}
+                />
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* ---- Modal ---- */}
+      <ProjectModal
+        project={expanded}
+        open={expanded !== null}
+        onClose={close}
+      />
     </section>
   );
 }
