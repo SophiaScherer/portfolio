@@ -4,6 +4,7 @@ import Experience from "../components/Experience";
 import Interests from "../components/Interests";
 import Contact from "../components/Contact";
 import { getHeroImageUrl } from "../lib/content";
+import { PROJECTS } from "../lib/projects";
 
 export default async function Home() {
   const heroImageUrl = await getHeroImageUrl();
@@ -11,7 +12,7 @@ export default async function Home() {
   return (
     <main>
       <Hero />
-      <Projects heroImageUrl={heroImageUrl} />
+      <Projects projects={PROJECTS} heroImageUrl={heroImageUrl} />
       <Experience />
       <Interests />
       <Contact />
