@@ -94,10 +94,12 @@ export default function Contact() {
         <div className="card contact-card">
           <div className="contact-grid">
             <div>
-              <span className="label-cap">Contact</span>
-              <h2 className="h2">
-                Get in <span className="text-accent">touch.</span>
+              <h2 className="h2" style={{ marginBottom: "6px" }}>
+                Get in touch
               </h2>
+              <span className="contact-kicker">
+                Open to internship &amp; research opportunities
+              </span>
               <p
                 style={{
                   color: "var(--text-muted)",

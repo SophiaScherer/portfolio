@@ -60,13 +60,27 @@
 }
 .img-tag {
   background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   color: var(--secondary);
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.7rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 4px 12px; border-radius: 999px;
+  padding: 4px 12px; border-radius: 8px;
+}
+.project-img-placeholder {
+  width: 100%; height: 100%; min-height: 240px;
+  display: flex; align-items: center; justify-content: center;
+  background: repeating-linear-gradient(
+    45deg, var(--bg-3), var(--bg-3) 10px, var(--bg-2) 10px, var(--bg-2) 20px
+  );
+  border: 1px dashed var(--outline);
+}
+.project-img-placeholder span {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.78rem; letter-spacing: 0.02em;
+  color: var(--text-muted);
+  background: var(--surface);
+  padding: 8px 14px; border-radius: 8px;
+  border: 1px solid var(--surface-border);
 }
 [data-theme="dark"] .img-tag {
   background: rgba(30,28,34,0.82);

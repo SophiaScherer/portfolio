@@ -17,6 +17,13 @@
   gap: clamp(40px, 5vw, 72px);
   align-items: center; position: relative; z-index: 1;
 }
+.contact-kicker {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--secondary);
+  transition: color 0.35s;
+}
 .contact-intro {
   max-width: 420px;
 }
