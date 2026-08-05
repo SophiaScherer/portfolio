@@ -16,19 +16,33 @@ import "server-only";
 
 import { cache } from "react";
 
-const HYGRAPH_ENDPOINT = process.env.HYGRAPH_ENDPOINT;
-const HYGRAPH_TOKEN = process.env.HYGRAPH_TOKEN;
+type HygraphConfig = { endpoint: string; token: string };
 
-if (!HYGRAPH_ENDPOINT) {
-  throw new Error(
-    "HYGRAPH_ENDPOINT is not set. Configure it in .env.local before using the Hygraph client."
-  );
-}
+/**
+ * Read and validate the Hygraph credentials.
+ *
+ * Deliberately lazy rather than checked at module scope: a throw during module
+ * evaluation happens before any React error boundary exists, so a missing env
+ * var would take down the whole route with an unrecoverable 500. Throwing from
+ * inside the request lets `lib/content.ts` catch it and degrade gracefully.
+ */
+function resolveConfig(): HygraphConfig {
+  const endpoint = process.env.HYGRAPH_ENDPOINT;
+  const token = process.env.HYGRAPH_TOKEN;
 
-if (!HYGRAPH_TOKEN) {
-  throw new Error(
-    "HYGRAPH_TOKEN is not set. Configure it in .env.local before using the Hygraph client."
-  );
+  if (!endpoint) {
+    throw new Error(
+      "HYGRAPH_ENDPOINT is not set. Configure it in .env.local before using the Hygraph client."
+    );
+  }
+
+  if (!token) {
+    throw new Error(
+      "HYGRAPH_TOKEN is not set. Configure it in .env.local before using the Hygraph client."
+    );
+  }
+
+  return { endpoint, token };
 }
 
 export type GraphQLResponse<T> = {
@@ -51,11 +65,13 @@ async function requestUncached<T>(
   query: string,
   { variables, revalidate = 60, tags = ["hygraph"] }: RequestOptions = {}
 ): Promise<T> {
-  const res = await fetch(HYGRAPH_ENDPOINT as string, {
+  const { endpoint, token } = resolveConfig();
+
+  const res = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ query, variables }),
     next: { revalidate, tags },
