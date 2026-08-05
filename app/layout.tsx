@@ -73,7 +73,6 @@ export default async function RootLayout({
       <body>
         <div className="ambient" aria-hidden="true">
           <div className="ambient-blob ambient-blob-1" />
-          <div className="ambient-blob ambient-blob-2" />
         </div>
 
         <Navbar resume={resume} />
