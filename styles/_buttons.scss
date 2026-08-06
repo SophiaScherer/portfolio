@@ -4,8 +4,6 @@
  * Used site-wide — hero CTAs, the navbar resume link, the modal's GitHub
  * button, and the contact form. Loaded before section partials so those can
  * still override per-context (e.g. `.project-modal-github` tightens padding).
- *
- * `.btn-resume` is a separate, nav-only variant and stays in `_nav.scss`.
  */
 
 .btn-primary {

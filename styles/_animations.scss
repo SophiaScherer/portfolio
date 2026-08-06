@@ -10,7 +10,7 @@
 .reveal-delay-4 { transition-delay: 0.4s; }
 
 @media (max-width: 900px) {
-  .nav-links, .btn-resume { display: none; }
+  .nav-links { display: none; }
   .hamburger { display: flex; }
   .hero-grid { grid-template-columns: 1fr; gap: 48px; }
   .hero-panel {
