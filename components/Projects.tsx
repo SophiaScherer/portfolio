@@ -173,10 +173,16 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
                   </div>
                 </div>
                 <div className="project-img-wrap" style={{ flex: "0 0 46%" }}>
-                  <img
-                    src={exerciseTracker.imageUrl ?? ""}
-                    alt={exerciseTracker.imageAlt}
-                  />
+                  {exerciseTracker.imageUrl ? (
+                    <img
+                      src={exerciseTracker.imageUrl}
+                      alt={exerciseTracker.imageAlt}
+                    />
+                  ) : (
+                    <div className="project-img-placeholder">
+                      <span>app screenshot / GIF</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* The whole wide card opens the modal when clicked. An overlay

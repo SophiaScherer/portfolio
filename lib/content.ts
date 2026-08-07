@@ -83,10 +83,28 @@ type PortfolioQueryResponse = {
 /**
  * Fetch the singleton Portfolio entry. Returns `null` if no entry exists.
  * Memoized per-request via the underlying `request()` cache.
+ *
+ * Never throws. These selectors are awaited directly in the root layout and in
+ * `app/page.tsx`, so an unhandled rejection here would fail the entire render —
+ * the page would 500 rather than merely lose its CMS-backed assets, and no
+ * client component would hydrate. A CMS outage should cost the resume link and
+ * one image, not the whole site, so failures are logged and reported as `null`.
+ * Every caller below already treats `null` as "not published yet".
  */
 export const getPortfolioContent = async (): Promise<PortfolioContent | null> => {
-  const data = await request<PortfolioQueryResponse>(PORTFOLIO_QUERY);
-  const entry = data.portfolios[0];
+  let data: PortfolioQueryResponse;
+
+  try {
+    data = await request<PortfolioQueryResponse>(PORTFOLIO_QUERY);
+  } catch (error) {
+    console.error(
+      "[content] Hygraph request failed; rendering without CMS content.",
+      error
+    );
+    return null;
+  }
+
+  const entry = data.portfolios?.[0];
   if (!entry) return null;
   return {
     title: entry.title,

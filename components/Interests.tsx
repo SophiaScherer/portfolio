@@ -13,7 +13,6 @@ export default function Interests() {
         <div className="interests-grid">
           <div
             className="card interest-card reveal reveal-delay-1"
-            style={{ borderRadius: "1.5rem" }}
           >
             <span className="interest-card-eyebrow">01</span>
             <div className="interest-icon">
@@ -26,7 +25,6 @@ export default function Interests() {
           </div>
           <div
             className="card interest-card reveal reveal-delay-2"
-            style={{ borderRadius: "1.5rem" }}
           >
             <span className="interest-card-eyebrow">02</span>
             <div className="interest-icon">
@@ -39,7 +37,6 @@ export default function Interests() {
           </div>
           <div
             className="card interest-card reveal reveal-delay-3"
-            style={{ borderRadius: "1.5rem" }}
           >
             <span className="interest-card-eyebrow">03</span>
             <div className="interest-icon">
@@ -52,7 +49,6 @@ export default function Interests() {
           </div>
           <div
             className="card interest-card reveal reveal-delay-4"
-            style={{ borderRadius: "1.5rem" }}
           >
             <span className="interest-card-eyebrow">04</span>
             <div className="interest-icon">

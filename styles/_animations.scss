@@ -10,12 +10,11 @@
 .reveal-delay-4 { transition-delay: 0.4s; }
 
 @media (max-width: 900px) {
-  .nav-links, .btn-resume { display: none; }
+  .nav-links { display: none; }
   .hamburger { display: flex; }
   .hero-grid { grid-template-columns: 1fr; gap: 48px; }
-  .hero-card-wrap {
-    display: flex; justify-content: center;
-    margin-top: 8px;
+  .hero-panel {
+    margin-inline: auto;
   }
   .bento-1, .bento-2, .bento-3 { grid-column: span 12; }
   .project-card-wide { flex-direction: column; }

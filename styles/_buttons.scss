@@ -1,0 +1,66 @@
+/**
+ * Shared button primitives.
+ *
+ * Used site-wide — hero CTAs, the navbar resume link, the modal's GitHub
+ * button, and the contact form. Loaded before section partials so those can
+ * still override per-context (e.g. `.project-modal-github` tightens padding).
+ */
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 700; font-size: 1rem;
+  padding: 15px 32px; border-radius: 14px;
+  text-decoration: none; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 10px;
+  box-shadow: 0 8px 24px var(--primary-glow);
+  transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
+              box-shadow 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
+              background 0.35s;
+  position: relative; overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px var(--primary-glow);
+}
+.btn-primary:hover::after { opacity: 1; }
+.btn-primary:active { transform: translateY(0) scale(0.98); }
+.btn-primary:focus-visible {
+  outline: none;
+  box-shadow: 0 8px 24px var(--primary-glow), 0 0 0 3px var(--bg), 0 0 0 5px var(--primary);
+}
+.btn-primary .btn-icon {
+  font-size: 18px;
+  transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.btn-primary:hover .btn-icon { transform: translateX(3px); }
+
+.btn-outline {
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+  background: transparent;
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 700; font-size: 1rem;
+  padding: 14px 30px; border-radius: 14px;
+  text-decoration: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: background 0.25s, color 0.25s, border-color 0.35s, transform 0.25s;
+}
+.btn-outline:hover {
+  background: var(--secondary-soft);
+  transform: translateY(-2px);
+}
+.btn-outline:active { transform: translateY(0) scale(0.98); }
+.btn-outline:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
+}
