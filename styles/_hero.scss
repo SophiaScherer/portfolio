@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 .hero {
   min-height: 100svh;
   display: flex; align-items: center;
@@ -81,4 +83,20 @@
   font-weight: 800; font-size: 1.4rem;
   color: var(--text);
   transition: color 0.35s;
+}
+
+@include bp.down(lg) {
+  .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+  .hero-panel { margin-inline: auto; }
+}
+
+@include bp.down(md) {
+  .hero { padding-top: 88px; }
+  .hero-body p { font-size: 1.05rem; line-height: 1.7; margin-bottom: 36px; }
+  .hero-ctas { width: 100%; }
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-outline {
+    flex: 1 1 auto; justify-content: center;
+    padding: 14px 22px; font-size: 0.95rem;
+  }
 }

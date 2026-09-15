@@ -1,8 +1,6 @@
+@use 'breakpoints' as bp;
+
 .experience-section {
-  background: var(--bg-2);
-  border-radius: 3rem;
-  margin: 0 clamp(32px, 6vw, 96px);
-  transition: background 0.35s;
   position: relative; overflow: hidden;
 }
 .experience-section::before {
@@ -82,3 +80,8 @@
 .timeline-date { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--secondary); flex-shrink: 0; }
 .timeline-org { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 6px; transition: color 0.35s; }
 .timeline-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; transition: color 0.35s; }
+
+@include bp.down(lg) {
+  .exp-grid { grid-template-columns: 1fr; gap: 48px; }
+  .experience-section::before { display: none; }
+}

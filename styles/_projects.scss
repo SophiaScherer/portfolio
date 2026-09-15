@@ -1,9 +1,5 @@
-.projects-section {
-  background: var(--bg-2);
-  border-radius: 3rem;
-  margin: 100px clamp(32px, 6vw, 96px);
-  transition: background 0.35s;
-}
+@use 'breakpoints' as bp;
+
 .projects-header {
   display: flex; justify-content: space-between; align-items: flex-end;
   flex-wrap: wrap; gap: 16px; margin-bottom: 48px;
@@ -187,4 +183,14 @@
 [data-theme="dark"] .tech-pill {
   background: rgba(255,138,112,0.15);
   color: var(--primary);
+}
+
+@include bp.down(lg) {
+  .bento-1, .bento-2, .bento-3 { grid-column: span 12; }
+  .project-card-wide { flex-direction: column; }
+  .project-card-wide .project-img-wrap { height: 240px; flex: none; }
+}
+
+@include bp.down(md) {
+  .project-card-icon { min-height: auto; }
 }

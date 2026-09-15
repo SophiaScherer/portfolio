@@ -7,7 +7,7 @@ export default function Experience() {
 
   return (
     <section
-      className="experience-section section-pad"
+      className="experience-section panel-section section-pad"
       id="experience"
       ref={sectionRef}
     >

@@ -89,7 +89,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="section-pad" id="contact" style={{ paddingBottom: "48px" }}>
+    <section className="section-pad contact-section" id="contact">
       <div className="container">
         <div className="card contact-card">
           <div className="contact-grid">

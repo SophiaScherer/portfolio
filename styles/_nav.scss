@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 .nav-wrap {
   position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
   width: min(95%, 1200px); z-index: 100;
@@ -112,3 +114,8 @@
   transition: color 0.2s;
 }
 .mobile-menu a:not(.btn-primary):hover { color: var(--primary); }
+
+@include bp.down(lg) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+}

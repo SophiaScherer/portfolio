@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 /* Case-study dialog opened from the project cards. Rendered into <body> via a
    portal, so it sits outside the section's rounded/clipped wrappers. */
 
@@ -211,3 +213,9 @@
   text-wrap: pretty;
 }
 .project-modal-case-body:last-child { margin-bottom: 0; }
+
+@include bp.down(lg) {
+  .project-modal-cols { grid-template-columns: 1fr; gap: 24px; }
+  .project-modal-meta { grid-template-columns: 1fr; }
+  .project-modal { padding: 16px; }
+}

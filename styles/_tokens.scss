@@ -1,3 +1,26 @@
+@use 'breakpoints' as bp;
+
+/* Layout tokens shared by every section, so spacing is tuned in one place. */
+:root {
+  --gutter:          clamp(20px, 5vw, 80px);
+  --section-pad-y:   clamp(48px, 10vw, 96px);
+  --section-gap:     clamp(24px, 6vw, 80px);
+  --panel-inset:     clamp(32px, 6vw, 96px);
+  --panel-radius:    3rem;
+  --nav-top:         16px;
+  --nav-height:      80px;
+  --nav-offset:      calc(var(--nav-top) + var(--nav-height) + 16px);
+}
+
+@include bp.down(md) {
+  :root {
+    --panel-inset:   12px;
+    --panel-radius:  1.75rem;
+    --nav-top:       10px;
+    --nav-height:    60px;
+  }
+}
+
 :root {
   --bg:              #f9f4e8;
   --bg-2:            #f1ebdc;

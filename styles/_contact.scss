@@ -1,3 +1,8 @@
+@use 'breakpoints' as bp;
+
+/* Last section before the footer, so it needs less bottom padding. */
+.contact-section { padding-bottom: min(48px, var(--section-pad-y)); }
+
 .contact-card {
   border-radius: 3rem;
   padding: clamp(32px, 5vw, 72px);
@@ -161,3 +166,7 @@
 }
 .btn-send .btn-icon { font-size: 18px; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94); }
 .btn-send:hover:not(:disabled) .btn-icon { transform: translateX(3px); }
+
+@include bp.down(lg) {
+  .contact-grid { grid-template-columns: 1fr; }
+}

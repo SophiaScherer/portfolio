@@ -35,7 +35,7 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
 
   return (
     <section
-      className="projects-section section-pad"
+      className="panel-section section-pad"
       id="projects"
       ref={sectionRef}
     >
