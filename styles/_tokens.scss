@@ -7,6 +7,8 @@
   --section-gap:     clamp(24px, 6vw, 80px);
   --panel-inset:     clamp(32px, 6vw, 96px);
   --panel-radius:    3rem;
+  --card-pad:        32px;
+  --card-radius:     2rem;
   --nav-top:         16px;
   --nav-height:      80px;
   --nav-offset:      calc(var(--nav-top) + var(--nav-height) + 16px);
@@ -16,6 +18,8 @@
   :root {
     --panel-inset:   12px;
     --panel-radius:  1.75rem;
+    --card-pad:      22px;
+    --card-radius:   1.5rem;
     --nav-top:       10px;
     --nav-height:    60px;
   }

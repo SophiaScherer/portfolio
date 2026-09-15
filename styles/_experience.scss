@@ -85,3 +85,12 @@
   .exp-grid { grid-template-columns: 1fr; gap: 48px; }
   .experience-section::before { display: none; }
 }
+
+@include bp.down(md) {
+  .exp-grid { gap: 40px; }
+  .skills-groups { gap: 18px; margin-top: 20px; }
+  .timeline { margin-top: 20px; }
+  .timeline-item { padding-left: 24px; padding-bottom: 28px; }
+  /* Date sits under the title instead of wrapping beside it on narrow screens. */
+  .timeline-header { flex-direction: column; gap: 2px; }
+}

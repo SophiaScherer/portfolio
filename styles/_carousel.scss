@@ -1,0 +1,54 @@
+@use 'breakpoints' as bp;
+
+/* Mobile swipe carousel. A `.carousel-track` keeps its normal layout on larger
+   screens and becomes a horizontal scroll-snap row at `md` and below, with the
+   next slide peeking in. Pair with `useCarouselIndex` for `.carousel-dots`. */
+
+.carousel-dots { display: none; }
+
+@include bp.down(md) {
+  .carousel-track {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* Bleeds to the screen edges so slides swipe past the page gutter. */
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 8px var(--gutter) 20px;
+    /* Snaps slides to the gutter rather than the screen edge. */
+    scroll-padding-inline: var(--gutter);
+  }
+  .carousel-track::-webkit-scrollbar { display: none; }
+  .carousel-track > * {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+  }
+
+  .carousel-dots {
+    display: flex; justify-content: center;
+  }
+  /* 32px tap target around a small visual dot. */
+  .carousel-dot {
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    background: none; border: none; padding: 0; cursor: pointer;
+  }
+  .carousel-dot::before {
+    content: '';
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--outline);
+    transition: width 0.25s cubic-bezier(0.25,0.46,0.45,0.94), background 0.25s;
+  }
+  .carousel-dot[aria-current]::before {
+    width: 22px;
+    background: var(--secondary);
+  }
+  .carousel-dot:focus-visible {
+    outline: none;
+    border-radius: 999px;
+    box-shadow: 0 0 0 2px var(--secondary);
+  }
+}

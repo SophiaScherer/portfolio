@@ -7,6 +7,7 @@ import { useNavActive } from "../hooks/useNavActive";
 import { useHamburger } from "../hooks/useHamburger";
 import { useModal } from "../hooks/useModal";
 import { NAV_LINKS, NAV_SECTION_IDS, SOCIAL_LINKS } from "../lib/links";
+import { toIndexLabel } from "../lib/format";
 
 type Resume = { url: string; fileName: string };
 
@@ -86,7 +87,7 @@ export default function Navbar({ resume }: NavbarProps) {
                   {...activeProps(id)}
                 >
                   <span className="mobile-menu-link-index" aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
+                    {toIndexLabel(i)}
                   </span>
                   {label}
                 </a>

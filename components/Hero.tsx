@@ -18,10 +18,7 @@ export default function Hero() {
             <span className="hero-kicker reveal reveal-delay-1">
               Sophia Scherer · CS @ Oregon State
             </span>
-            <h1
-              className="h1 reveal reveal-delay-1"
-              style={{ marginBottom: "24px" }}
-            >
+            <h1 className="h1 reveal reveal-delay-1">
               Building high-performance software
             </h1>
             <p className="reveal reveal-delay-2">

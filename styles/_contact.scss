@@ -22,6 +22,14 @@
   gap: clamp(40px, 5vw, 72px);
   align-items: center; position: relative; z-index: 1;
 }
+.contact-title { margin-bottom: 6px; }
+.contact-intro {
+  color: var(--text-muted);
+  margin-top: 16px;
+  font-size: 1rem; line-height: 1.7;
+  max-width: 380px;
+  transition: color 0.35s;
+}
 .contact-kicker {
   display: block;
   font-family: 'Space Grotesk', sans-serif;
@@ -169,4 +177,13 @@
 
 @include bp.down(lg) {
   .contact-grid { grid-template-columns: 1fr; }
+}
+
+@include bp.down(md) {
+  .contact-card { border-radius: var(--panel-radius); padding: var(--card-pad); }
+  .contact-grid { gap: 32px; }
+  .contact-links { margin-top: 24px; }
+  /* 16px inputs stop iOS Safari from zooming the page on focus. */
+  .form-group input,
+  .form-group textarea { font-size: 1rem; }
 }

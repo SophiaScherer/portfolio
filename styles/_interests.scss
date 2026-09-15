@@ -71,10 +71,10 @@
   text-wrap: pretty;
 }
 
+/* At `md` and below the grid becomes a swipe carousel (see `_carousel.scss`). */
 @include bp.down(md) {
-  .interests-grid { grid-template-columns: 1fr 1fr; }
-}
-
-@include bp.down(sm) {
-  .interests-grid { grid-template-columns: 1fr; }
+  .interests-grid { margin-top: 24px; }
+  .interest-card { padding: var(--card-pad); }
+  .interest-card-eyebrow { margin-bottom: 10px; }
+  .interest-icon { margin-bottom: 16px; }
 }
