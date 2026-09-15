@@ -4,11 +4,16 @@
    portal, so it sits outside the section's rounded/clipped wrappers. */
 
 .project-modal {
+  /* Space around the dialog, and the dialog's inner horizontal padding. The
+     gutter also sizes the dialog's max-height, so both stay in sync. */
+  --modal-gutter: clamp(20px, 4vw, 56px);
+  --modal-pad: clamp(24px, 4vw, 48px);
+
   position: fixed; inset: 0;
   z-index: 100;
   display: grid;
   place-items: center;
-  padding: clamp(20px, 4vw, 56px);
+  padding: var(--modal-gutter);
   /* `visibility: hidden` is what keeps the closed dialog's controls out of the
      page tab order — the dialog stays mounted so it can transition out. */
   visibility: hidden;
@@ -33,7 +38,7 @@
 .project-modal-dialog {
   position: relative;
   width: min(960px, 100%);
-  max-height: calc(100svh - 2 * clamp(20px, 4vw, 56px));
+  max-height: calc(100svh - 2 * var(--modal-gutter));
   overflow: hidden;
   border-radius: 2rem;
   opacity: 0;
@@ -50,7 +55,7 @@
 .project-modal-dialog:focus { outline: none; }
 
 .project-modal-card {
-  max-height: calc(100svh - 2 * clamp(20px, 4vw, 56px));
+  max-height: calc(100svh - 2 * var(--modal-gutter));
   display: flex; flex-direction: column;
   border-radius: 2rem;
   overflow: hidden;
@@ -62,10 +67,35 @@
   -webkit-backdrop-filter: none;
 }
 
+/* Slim bar above the scroll body. It only holds the close button until the
+   full title scrolls away, then fades in a compact title and a divider. */
+.project-modal-bar {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  padding: 14px 14px 10px var(--modal-pad);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s;
+}
+.project-modal-bar-title {
+  min-width: 0;
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 700; font-size: 1rem;
+  color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s, transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.project-modal-card.is-condensed .project-modal-bar { border-bottom-color: var(--outline); }
+.project-modal-card.is-condensed .project-modal-bar-title {
+  opacity: 1;
+  transform: none;
+}
+
 .project-modal-head {
   display: flex; justify-content: space-between; align-items: flex-start;
-  gap: 24px; flex-wrap: wrap;
-  padding: clamp(24px, 4vw, 48px) clamp(24px, 4vw, 48px) 0;
+  gap: 16px 24px; flex-wrap: wrap;
 }
 .project-modal-title { margin-top: 6px; margin-bottom: 12px; }
 .project-modal-role {
@@ -76,13 +106,15 @@
   letter-spacing: 0.08em; text-transform: uppercase;
 }
 .project-modal-role .material-symbols-outlined { font-size: 16px; color: var(--secondary); }
-.project-modal-head-actions {
-  display: flex; align-items: center; gap: 10px;
-}
 .project-modal-github {
   padding: 12px 22px; font-size: 0.9rem;
+  flex-shrink: 0;
 }
+.project-modal-github .material-symbols-outlined { font-size: 18px; }
+.project-modal-github .btn-icon { font-size: 16px; }
 .project-modal-close {
+  flex-shrink: 0;
+  margin-left: auto;
   width: 42px; height: 42px;
   border-radius: 50%;
   background: var(--bg-3);
@@ -105,8 +137,10 @@
 }
 
 .project-modal-body {
-  padding: clamp(20px, 3vw, 32px) clamp(24px, 4vw, 48px) clamp(24px, 4vw, 48px);
+  padding: 0 var(--modal-pad) var(--modal-pad);
   overflow-y: auto;
+  /* Keeps scroll chaining from moving the page behind the dialog. */
+  overscroll-behavior: contain;
   display: flex; flex-direction: column;
   gap: clamp(18px, 2.5vw, 28px);
 }
@@ -150,6 +184,7 @@
   color: var(--secondary);
   margin-bottom: 12px;
 }
+.project-modal-meta-label .material-symbols-outlined { font-size: 14px; }
 .project-modal-meta-pills { display: flex; flex-wrap: wrap; gap: 6px; }
 .project-modal-pill {
   background: var(--modal-bg);
@@ -215,7 +250,16 @@
 .project-modal-case-body:last-child { margin-bottom: 0; }
 
 @include bp.down(lg) {
+  .project-modal { --modal-gutter: 16px; }
   .project-modal-cols { grid-template-columns: 1fr; gap: 24px; }
   .project-modal-meta { grid-template-columns: 1fr; }
-  .project-modal { padding: 16px; }
+}
+
+@include bp.down(md) {
+  .project-modal { --modal-gutter: 10px; --modal-pad: 20px; }
+  .project-modal-dialog,
+  .project-modal-card { border-radius: var(--panel-radius); }
+  .project-modal-bar { padding: 10px 10px 8px var(--modal-pad); }
+  .project-modal-title { font-size: 1.6rem; }
+  .project-modal-description { font-size: 1rem; line-height: 1.7; }
 }
