@@ -11,8 +11,9 @@
 .nav {
   background: var(--nav-bg);
   border: 1px solid var(--nav-border);
+  /* Unprefixed only: the CSS build adds the Safari prefix itself, and writing
+     both collapses to the `-webkit-` form, which Chrome ignores. */
   backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border-radius: 20px;
   /* A fixed height keeps `--nav-offset` accurate for the hero and anchors. */
   height: var(--nav-height);
@@ -189,6 +190,8 @@
 
 @include bp.down(md) {
   .nav-wrap { width: calc(100% - 2 * var(--panel-inset)); }
+  /* A lighter blur is much cheaper to repaint while scrolling on phones. */
+  .nav { backdrop-filter: blur(12px); }
   .nav { padding: 0 8px 0 20px; border-radius: 18px; }
   .nav-logo { font-size: 1.05rem; }
   .nav-right { gap: 8px; }

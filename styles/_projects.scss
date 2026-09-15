@@ -41,7 +41,12 @@
   outline: none;
   box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
 }
-.project-card-button:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+@include bp.hover {
+  .project-card-button:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+}
+/* Touch devices get a light press instead of the hover lift. */
+.project-card-button:active,
+.project-card-wide:active { transform: scale(0.985); }
 
 .project-img-wrap {
   height: 260px; overflow: hidden; position: relative; flex-shrink: 0;
@@ -50,7 +55,9 @@
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
 }
-.project-card-button:hover .project-img-wrap img { transform: scale(1.06); }
+@include bp.hover {
+  .project-card-button:hover .project-img-wrap img { transform: scale(1.06); }
+}
 .img-tags {
   position: absolute; top: 14px; left: 14px; display: flex; gap: 6px;
 }
@@ -112,7 +119,9 @@
   outline: none;
   box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
 }
-.project-card-icon:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+@include bp.hover {
+  .project-card-icon:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+}
 .icon-chip {
   width: 60px; height: 60px;
   background: var(--secondary);
@@ -123,7 +132,9 @@
   transition: transform 0.3s, background 0.35s;
   rotate: 3deg;
 }
-.project-card-icon:hover .icon-chip { rotate: 12deg; }
+@include bp.hover {
+  .project-card-icon:hover .icon-chip { rotate: 12deg; }
+}
 .project-card-icon .h3 { margin-bottom: 12px; }
 .project-card-icon p {
   color: var(--text-muted);
@@ -174,7 +185,9 @@
   box-shadow: inset 0 0 0 3px var(--secondary);
   border-radius: var(--card-radius);
 }
-.project-card-wide:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+@include bp.hover {
+  .project-card-wide:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+}
 .project-card-wide .project-body { padding: 40px 40px 40px; display: flex; flex-direction: column; justify-content: center; }
 .project-card-wide .h3 { font-size: 1.6rem; margin-bottom: 14px; }
 .project-card-wide .project-img-wrap { height: auto; flex: 0 0 46%; }

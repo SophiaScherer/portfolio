@@ -36,10 +36,12 @@
   transition: transform 0.2s ease, background 0.35s, color 0.35s, border-color 0.35s;
   cursor: default;
 }
-.skills-cloud .tag:hover {
-  transform: translateY(-2px);
-  background: var(--secondary-soft);
-  color: var(--secondary);
+@include bp.hover {
+  .skills-cloud .tag:hover {
+    transform: translateY(-2px);
+    background: var(--secondary-soft);
+    color: var(--secondary);
+  }
 }
 
 .timeline { display: flex; flex-direction: column; gap: 0; margin-top: 28px; }

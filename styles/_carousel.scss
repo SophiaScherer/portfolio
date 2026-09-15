@@ -26,6 +26,12 @@
     flex: 0 0 85%;
     scroll-snap-align: start;
   }
+  /* Slides skip their entrance reveal, which would otherwise replay mid-swipe
+     as each one scrolls into view. */
+  .carousel-track > .reveal {
+    opacity: 1;
+    animation: none;
+  }
 
   .carousel-dots {
     display: flex; justify-content: center;

@@ -28,7 +28,6 @@
   position: absolute; inset: 0;
   background: rgba(20, 16, 14, 0.55);
   backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   opacity: 0;
   transition: opacity 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
   cursor: pointer;
@@ -64,7 +63,6 @@
   background: var(--modal-bg);
   border-color: var(--modal-border);
   backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 
 /* Slim bar above the scroll body. It only holds the close button until the
@@ -124,11 +122,13 @@
   display: inline-flex; align-items: center; justify-content: center;
   transition: background 0.25s, transform 0.25s, border-color 0.35s, color 0.25s;
 }
-.project-modal-close:hover {
-  background: var(--primary);
-  color: var(--on-primary);
-  border-color: var(--primary);
-  transform: rotate(90deg);
+@include bp.hover {
+  .project-modal-close:hover {
+    background: var(--primary);
+    color: var(--on-primary);
+    border-color: var(--primary);
+    transform: rotate(90deg);
+  }
 }
 .project-modal-close:active { transform: rotate(90deg) scale(0.92); }
 .project-modal-close:focus-visible {

@@ -47,7 +47,9 @@
   padding: 6px 0;
 }
 .contact-link { transition: opacity 0.25s, transform 0.25s; }
-.contact-link:hover { opacity: 0.85; transform: translateX(3px); }
+@include bp.hover {
+  .contact-link:hover { opacity: 0.85; transform: translateX(3px); }
+}
 .contact-link:focus-visible {
   outline: none;
   opacity: 0.85;
@@ -62,7 +64,9 @@
   transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94),
               background 0.35s;
 }
-.contact-link:hover .contact-link-icon { transform: rotate(-8deg) scale(1.06); }
+@include bp.hover {
+  .contact-link:hover .contact-link-icon { transform: rotate(-8deg) scale(1.06); }
+}
 .contact-link-icon .material-symbols-outlined { color: var(--secondary); font-size: 22px; transition: color 0.35s; }
 .contact-link-text {
   font-family: 'Epilogue', sans-serif;
@@ -157,11 +161,13 @@
   transition: opacity 0.35s;
   pointer-events: none;
 }
-.btn-send:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 32px var(--primary-glow);
+@include bp.hover {
+  .btn-send:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px var(--primary-glow);
+  }
+  .btn-send:hover:not(:disabled)::after { opacity: 1; }
 }
-.btn-send:hover:not(:disabled)::after { opacity: 1; }
 .btn-send:active:not(:disabled) { transform: translateY(0) scale(0.98); }
 .btn-send:focus-visible {
   outline: none;
@@ -173,7 +179,9 @@
   box-shadow: none;
 }
 .btn-send .btn-icon { font-size: 18px; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94); }
-.btn-send:hover:not(:disabled) .btn-icon { transform: translateX(3px); }
+@include bp.hover {
+  .btn-send:hover:not(:disabled) .btn-icon { transform: translateX(3px); }
+}
 
 @include bp.down(lg) {
   .contact-grid { grid-template-columns: 1fr; }
@@ -181,6 +189,8 @@
 
 @include bp.down(md) {
   .contact-card { border-radius: var(--panel-radius); padding: var(--card-pad); }
+  /* Smaller, softer glow keeps the blur cheap on phones. */
+  .contact-card::before { width: 200px; height: 200px; top: -60px; right: -60px; filter: blur(40px); }
   .contact-grid { gap: 32px; }
   .contact-links { margin-top: 24px; }
   /* 16px inputs stop iOS Safari from zooming the page on focus. */
