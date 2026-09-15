@@ -2,7 +2,14 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-export function useHamburger(closeOnSelector: string = ".mobile-menu a"): {
+/** Mirrors the `lg` SCSS breakpoint, above which the hamburger is hidden. */
+const DESKTOP_QUERY = "(min-width: 901px)";
+
+/**
+ * Open state for the mobile menu. Closes itself if the viewport grows past the
+ * hamburger breakpoint, so a hidden menu can't leave the page scroll-locked.
+ */
+export function useHamburger(): {
   open: boolean;
   toggle: () => void;
   close: () => void;
@@ -13,22 +20,14 @@ export function useHamburger(closeOnSelector: string = ".mobile-menu a"): {
   const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
-    const hamburger = document.getElementById("hamburger");
-    const mobileMenu = document.getElementById("mobileMenu");
-    if (!hamburger || !mobileMenu) return;
-
-    hamburger.classList.toggle("open", open);
-    mobileMenu.classList.toggle("open", open);
-    mobileMenu.setAttribute("aria-hidden", String(!open));
-    document.body.style.overflow = open ? "hidden" : "";
-  }, [open]);
-
-  useEffect(() => {
-    const links = document.querySelectorAll<HTMLAnchorElement>(closeOnSelector);
-    const handler = () => close();
-    links.forEach((l) => l.addEventListener("click", handler));
-    return () => links.forEach((l) => l.removeEventListener("click", handler));
-  }, [closeOnSelector, close]);
+    if (!open) return;
+    const query = window.matchMedia(DESKTOP_QUERY);
+    const onChange = (event: MediaQueryListEvent) => {
+      if (event.matches) close();
+    };
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, [open, close]);
 
   return { open, toggle, close };
 }

@@ -47,18 +47,24 @@ export function useModal<T extends HTMLElement = HTMLElement>({
     onCloseRef.current = onClose;
   }, [onClose]);
 
+  // Skips controls hidden by CSS (e.g. desktop nav links inside the mobile
+  // menu's trap), which can't take focus and would break the wrap-around.
   const getFocusable = useCallback(
     () =>
       Array.from(
         dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR) ??
           [],
+      ).filter(
+        (el) =>
+          typeof el.checkVisibility !== "function" ||
+          el.checkVisibility({ visibilityProperty: true }),
       ),
     [],
   );
 
   // Lock body scroll, restoring whatever was there before. The value is
-  // captured rather than reset to "" because `useHamburger` writes the same
-  // property — neither should clobber the other.
+  // captured rather than reset to "" so overlapping locks don't clobber
+  // each other.
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
@@ -76,8 +82,10 @@ export function useModal<T extends HTMLElement = HTMLElement>({
     triggerRef.current = active instanceof HTMLElement ? active : null;
     dialogRef.current?.focus();
 
+    // `preventScroll` stops the restore from fighting an in-progress anchor
+    // scroll, e.g. after picking a link in the mobile menu.
     return () => {
-      triggerRef.current?.focus();
+      triggerRef.current?.focus({ preventScroll: true });
       triggerRef.current = null;
     };
   }, [open]);

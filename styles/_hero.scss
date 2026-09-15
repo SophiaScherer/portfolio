@@ -3,7 +3,7 @@
 .hero {
   min-height: 100svh;
   display: flex; align-items: center;
-  padding-top: 100px;
+  padding-top: calc(var(--nav-offset) + 16px);
   position: relative; overflow: hidden;
 }
 .hero-grid {
@@ -91,7 +91,8 @@
 }
 
 @include bp.down(md) {
-  .hero { padding-top: 88px; }
+  /* Content-height hero on phones, so Projects appears without a full-screen scroll. */
+  .hero { min-height: auto; }
   .hero-body p { font-size: 1.05rem; line-height: 1.7; margin-bottom: 36px; }
   .hero-ctas { width: 100%; }
   .hero-ctas .btn-primary,
