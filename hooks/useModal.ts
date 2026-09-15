@@ -80,7 +80,9 @@ export function useModal<T extends HTMLElement = HTMLElement>({
 
     const active = document.activeElement;
     triggerRef.current = active instanceof HTMLElement ? active : null;
-    dialogRef.current?.focus();
+    // `preventScroll` keeps the page in place: a container with no box of its
+    // own (like the mobile menu's wrapper) would otherwise scroll to the top.
+    dialogRef.current?.focus({ preventScroll: true });
 
     // `preventScroll` stops the restore from fighting an in-progress anchor
     // scroll, e.g. after picking a link in the mobile menu.
