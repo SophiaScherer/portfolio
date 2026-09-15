@@ -1,5 +1,13 @@
 @use 'breakpoints' as bp;
 
+/* Font stacks built on the next/font variables set on <html> in
+   `app/layout.tsx`, which include size-matched fallbacks to limit layout shift. */
+:root {
+  --font-display:    var(--font-epilogue), sans-serif;
+  --font-body:       var(--font-jakarta), sans-serif;
+  --font-label:      var(--font-grotesk), sans-serif;
+}
+
 /* Layout tokens shared by every section, so spacing is tuned in one place. */
 :root {
   --gutter:          clamp(20px, 5vw, 80px);

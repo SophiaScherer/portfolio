@@ -15,7 +15,7 @@
 
 .hero-kicker {
   display: block;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.06em;
   color: var(--text-muted);
@@ -59,7 +59,7 @@
   flex-shrink: 0;
 }
 .hero-panel-label {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text); line-height: 1.5;
@@ -73,13 +73,13 @@
   display: flex; align-items: baseline; justify-content: space-between;
 }
 .hero-panel-gpa span {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--secondary);
 }
 .hero-panel-gpa strong {
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 800; font-size: 1.4rem;
   color: var(--text);
   transition: color 0.35s;

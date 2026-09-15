@@ -5,6 +5,7 @@ import "../styles/main.scss";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getResumeDownload } from "../lib/content";
+import { MATERIAL_SYMBOLS_HREF } from "../lib/icons";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from '@vercel/analytics/next';
 
@@ -58,6 +59,8 @@ export default async function RootLayout({
       className={`${epilogue.variable} ${jakarta.variable} ${grotesk.variable}`}
       suppressHydrationWarning
     >
+      {/* Text fonts are self-hosted by next/font above; only the icon font
+          still comes from Google. */}
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -65,10 +68,7 @@ export default async function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin=""
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,400;0,700;0,800;0,900;1,800;1,900&family=Plus+Jakarta+Sans:wght@400;500;600&family=Space+Grotesk:wght@600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-          rel="stylesheet"
-        />
+        <link href={MATERIAL_SYMBOLS_HREF} rel="stylesheet" />
       </head>
       <body>
         <div className="ambient" aria-hidden="true">

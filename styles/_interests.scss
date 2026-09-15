@@ -27,7 +27,7 @@
 }
 
 .interest-card-eyebrow {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.68rem; font-weight: 600;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--secondary);

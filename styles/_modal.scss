@@ -77,7 +77,7 @@
 }
 .project-modal-bar-title {
   min-width: 0;
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700; font-size: 1rem;
   color: var(--text);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -99,7 +99,7 @@
 .project-modal-role {
   display: inline-flex; align-items: center; gap: 8px;
   color: var(--text-muted);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.08em; text-transform: uppercase;
 }
@@ -178,7 +178,7 @@
 }
 .project-modal-meta-label {
   display: inline-flex; align-items: center; gap: 6px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--secondary);
@@ -190,7 +190,7 @@
   background: var(--modal-bg);
   border: 1px solid var(--modal-border);
   color: var(--text);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.78rem; font-weight: 600;
   letter-spacing: 0.04em;
   padding: 5px 12px; border-radius: 8px;
@@ -203,7 +203,7 @@
   gap: 32px;
 }
 .project-modal-h4 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.78rem; font-weight: 600;
   letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--secondary);

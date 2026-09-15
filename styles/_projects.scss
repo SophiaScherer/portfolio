@@ -64,7 +64,7 @@
 .img-tag {
   background: rgba(255,255,255,0.88);
   color: var(--secondary);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.7rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   padding: 4px 12px; border-radius: 8px;
@@ -78,7 +78,7 @@
   border: 1px dashed var(--outline);
 }
 .project-img-placeholder span {
-  font-family: 'Space Grotesk', monospace;
+  font-family: var(--font-label);
   font-size: 0.78rem; letter-spacing: 0.02em;
   color: var(--text-muted);
   background: var(--surface);
@@ -96,7 +96,7 @@
 .project-meta { display: flex; flex-wrap: wrap; gap: 10px; }
 .project-meta-item {
   color: var(--secondary);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.75rem; font-weight: 600;
   letter-spacing: 0.05em; text-transform: uppercase;
   display: flex; align-items: center; gap: 4px;
@@ -153,13 +153,13 @@
 }
 .perf-row:last-child { border-bottom: none; padding-bottom: 0; }
 .perf-label {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.78rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--secondary);
 }
 .perf-value {
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700; font-size: 0.95rem; color: var(--text);
   transition: color 0.35s;
 }
@@ -195,7 +195,7 @@
 .tech-pill {
   background: var(--glow-a);
   color: #7a1800;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   padding: 5px 13px; border-radius: 8px;

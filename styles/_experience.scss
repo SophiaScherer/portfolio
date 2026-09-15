@@ -24,7 +24,7 @@
 }
 .skills-group { display: flex; flex-direction: column; gap: 10px; }
 .skills-group-label {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--secondary);
@@ -78,8 +78,8 @@
   align-items: flex-start; gap: 12px;
   margin-bottom: 4px; flex-wrap: wrap;
 }
-.timeline-title { font-family: 'Epilogue', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--text); transition: color 0.35s; }
-.timeline-date { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--secondary); flex-shrink: 0; }
+.timeline-title { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--text); transition: color 0.35s; }
+.timeline-date { font-family: var(--font-label); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--secondary); flex-shrink: 0; }
 .timeline-org { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 6px; transition: color 0.35s; }
 .timeline-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; transition: color 0.35s; }
 
