@@ -50,9 +50,9 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
             <h2 className="h2 reveal reveal-delay-1">Personal Projects</h2>
           </div>
           <p className="reveal reveal-delay-2">
-            A selection of projects showcasing my work in data visualization,
-            systems programming, high-performance computing, and full-stack
-            development.
+            A selection of projects showcasing my work in desktop systems
+            programming, mobile development, on-device machine learning, and
+            real-time data visualization.
           </p>
         </div>
 
