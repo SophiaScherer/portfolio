@@ -12,6 +12,9 @@
  *
  * Fields that may be absent in the CMS are typed nullable so callers can hide
  * the corresponding UI rather than render an empty frame.
+ *
+ * Array order is display order: `<Projects>` maps this list straight onto the
+ * bento grid, so the newest project goes first.
  */
 
 export type Tech = string;
@@ -20,6 +23,21 @@ export type CaseStudy = {
   label: "Project Overview" | "Challenges & Solutions";
   body: string[];
 };
+
+/**
+ * Which bento card renders this project. The variant also picks the grid cell,
+ * so the three projects must use three different variants.
+ *   image — tall card with a cover image and a `cardMeta` row
+ *   icon  — icon chip card with a `perfRows` table, no image
+ *   wide  — full-width two-column card with tech pills and an image
+ */
+export type CardVariant = "image" | "icon" | "wide";
+
+/** One entry in the `image` card's meta row. `icon` is a Material Symbols name. */
+export type CardMeta = { icon: string; label: string };
+
+/** One row of the `icon` card's stat table. */
+export type PerfRow = { label: string; value: string };
 
 export type Project = {
   id: string;
@@ -37,9 +55,24 @@ export type Project = {
   keyFeatures: string[];
   caseStudy: CaseStudy;
 
+  /**
+   * Name of this project's image asset in the CMS. `<Projects>` swaps the
+   * matching URL into `imageUrl`; an unpublished name just misses the lookup
+   * and the card falls back to its placeholder.
+   */
+  cmsImageFileName: string | null;
   imageUrl: string | null;
   imageAlt: string;
   imageTags: string[];
+
+  /* Presentation. Each field below is read by one variant only. */
+  cardVariant: CardVariant;
+  /** Material Symbols name for the `icon` variant's chip. Null otherwise. */
+  cardIcon: string | null;
+  /** `image` variant only. Empty for the others. */
+  cardMeta: CardMeta[];
+  /** `icon` variant only. Empty for the others. */
+  perfRows: PerfRow[];
 };
 
 /* -------------------------------------------------------------------------- */
@@ -47,6 +80,99 @@ export type Project = {
 /* -------------------------------------------------------------------------- */
 
 export const PROJECTS: Project[] = [
+  {
+    id: "dash-detective",
+    title: "DashDetective",
+    shortDescription:
+      "A system-information console built with Avalonia UI on .NET 10, fully supported on Windows with Linux in progress. Nine tabs of live machine metrics — processes, performance, network, storage and hardware — read straight from the operating system.",
+    longDescription:
+      "A desktop system monitor that reads the local machine and renders it as nine tabs: Dashboard, File Explorer, Processes, Performance, Network, Storage, Hardware, Toolkit and Settings. Built on Avalonia UI with MVVM, it compiles to a single neutral .NET 10 target and picks its data source at runtime — performance counters, WMI and Win32 interop on Windows, the /proc and /sys pseudo-files on Linux, where readers are still landing one at a time. Every reader degrades on its own, so a source that goes missing shows a placeholder rather than taking the app down.",
+
+    role: "Sole Developer",
+    githubUrl: "https://github.com/SophiaScherer/DashDetective",
+
+    languages: ["C#", "XAML"],
+    technologies: ["Avalonia UI", ".NET 10", "MVVM", "Win32 P/Invoke", "xUnit"],
+
+    technicalDetails: [
+      "Hand-wrote every native binding across 22 interop files — PDH performance counters, iphlpapi connection tables, DXGI adapters and NVML/ADL sensors — with no redistributed native libraries and no administrator rights",
+      "Attributed GPU load to physical adapters by LUID, reaching DXGI through raw vtable function pointers because built-in COM is disabled at runtime, then intersecting the adapter set against the counters that actually report",
+      "Held the dependency graph to eight packages by writing the chart control, layout engine and metric fan-out in house; shared samplers are ref-counted, so two tabs watching CPU cause one poll",
+    ],
+    keyFeatures: [
+      "Nine live system tabs",
+      "Per-adapter multi-GPU metrics",
+      "Drag-to-reorder widget board",
+      "Measured accessibility palettes",
+    ],
+    caseStudy: {
+      label: "Challenges & Solutions",
+      body: [
+        "Challenge: reporting real hardware without shipping native dependencies or demanding administrator rights. Solution: hand-written P/Invoke against interfaces Windows already exposes — performance counters for GPU and disk, Toolhelp32 and window enumeration for process classification, a non-admin IOCTL for NVMe temperature — so the app reads the machine honestly from an ordinary user session.",
+        "Challenge: keeping one codebase honest across platforms without #if directives. Solution: a single neutral .NET 10 target with one runtime seam per data source, which also turns the platform-compatibility analyzer into a real build gate. Warnings are errors, CI runs the suite on Windows and Linux in both configurations, and CodeQL sweeps the interop weekly because the analyzer cannot see hand-written declarations.",
+      ],
+    },
+
+    cmsImageFileName: "dashDetective.png",
+    imageUrl: null,
+    imageAlt: "DashDetective system information console",
+    imageTags: ["C#", "Avalonia"],
+
+    cardVariant: "image",
+    cardIcon: null,
+    cardMeta: [
+      { icon: "terminal", label: "C#" },
+      { icon: "devices", label: "Cross-platform" },
+    ],
+    perfRows: [],
+  },
+  {
+    id: "unpawse",
+    title: "unPawse",
+    shortDescription:
+      "An Android screen-time manager with a cat-shaped escape hatch. A foreground service meters per-app usage and blocks whatever runs over budget; earning time back means photographing a real cat, verified on-device.",
+    longDescription:
+      "A Jetpack Compose screen-time app built around one loop: pick apps and daily limits, let a foreground service count the time actually spent in them, and block an app once its budget runs out. Getting back in requires photographing a cat, which an on-device ML Kit labeler verifies without anything leaving the phone. A daily cap and a cooldown keep the escape hatch from defeating the limits it is attached to.",
+
+    role: "Sole Developer",
+    githubUrl: "https://github.com/SophiaScherer/unPawse",
+
+    languages: ["Kotlin"],
+    technologies: ["Jetpack Compose", "ML Kit", "Room", "CameraX", "WorkManager"],
+
+    technicalDetails: [
+      "Detected the foreground app without an AccessibilityService by folding UsageStatsManager events into a stack — a single last-resumed slot sticks on the launcher forever, because swiping to Recents raises the launcher without ever pausing the app underneath",
+      "Hosted Compose inside a Service by implementing LifecycleOwner, ViewModelStoreOwner, SavedStateRegistryOwner and OnBackPressedDispatcherOwner on the overlay window, which normally inherits all four from an Activity",
+      "Kept accrual honest under doze and process death by clamping each tick and crediting elapsed time to whichever app was actually in front for it, with the policy math extracted to pure functions and covered by 657 unit tests",
+    ],
+    keyFeatures: [
+      "On-device cat verification",
+      "Per-app daily budgets",
+      "Schedules and focus sessions",
+      "Versioned ZIP export and import",
+    ],
+    caseStudy: {
+      label: "Project Overview",
+      body: [
+        "The app exists because a timer you can dismiss is not a limit. Enforcement runs in a foreground service that survives reboot and re-arms itself through a WorkManager backstop, and it draws over the offending app rather than asking politely. Reaching for the blunter tool was deliberate: an AccessibilityService would have been faster and quieter, but it is the wrong permission to ask for and Play review treats it that way.",
+        "The cat requirement is the design — it costs just enough effort to break the reflex, and it is verified on-device so no photo ever leaves the phone. A sixty-minute daily cap and a ten-minute cooldown close the photo-for-time loop that would otherwise reopen the limit. Achievements and streaks are derived from the photos themselves rather than stored, so deleting a run of pictures correctly takes the badge with it.",
+      ],
+    },
+
+    cmsImageFileName: "unPawse.png",
+    imageUrl: null,
+    imageAlt: "unPawse block screen",
+    imageTags: ["Kotlin", "Compose"],
+
+    cardVariant: "icon",
+    cardIcon: "pets",
+    cardMeta: [],
+    perfRows: [
+      { label: "Kotlin", value: "Jetpack Compose" },
+      { label: "ML Kit", value: "On-Device" },
+      { label: "Coverage", value: "657 Tests" },
+    ],
+  },
   {
     id: "vector-field",
     title: "2D Vector Field Visualization",
@@ -80,83 +206,15 @@ export const PROJECTS: Project[] = [
       ],
     },
 
+    cmsImageFileName: "vectorVisPicture.png",
     imageUrl: null,
     imageAlt: "2D Vector Field Visualization",
     imageTags: ["OpenGL", "GLSL"],
-  },
-  {
-    id: "parallel-computing",
-    title: "High-Performance Parallel Computing",
-    shortDescription:
-      "Benchmarked and optimized parallel algorithms using CUDA and OpenMP. Measured performance and analyzed speedup across Monte Carlo simulations.",
-    longDescription:
-      "A focused study of parallel algorithm performance across CUDA and OpenMP runtimes. Implemented Monte Carlo simulations and other embarrassingly-parallel workloads, then measured real-world speedup, memory bandwidth, and thread occupancy to characterize where each paradigm excels.",
 
-    role: "Researcher & Implementer",
-    githubUrl: "https://github.com/SophiaScherer/parallel-computing-benchmarks",
-
-    languages: ["C", "C++", "CUDA"],
-    technologies: ["CUDA", "OpenMP", "NVIDIA Nsight", "gprof"],
-
-    technicalDetails: [
-      "Wrote CUDA kernels with shared memory tiling and occupancy tuning for Monte Carlo price simulation",
-      "Built OpenMP counterparts using #pragma parallel for with proper reduction clauses",
-      "Profiled each implementation with NVIDIA Nsight and gprof to identify memory-bound vs compute-bound bottlenecks",
-    ],
-    keyFeatures: [
-      "CUDA + OpenMP benchmark suite",
-      "Memory-bound bottleneck analysis",
-      "Speedup / efficiency reporting",
-      "Reproducible test harness",
-    ],
-    caseStudy: {
-      label: "Challenges & Solutions",
-      body: [
-        "Challenge: achieving consistent double-digit speedup on memory-bound kernels. Solution: coalesced memory access patterns and shared-memory tiling reduced global memory pressure and lifted the CUDA kernel from 4× to 10× speedup over a sequential baseline.",
-        "Challenge: ensuring statistical correctness as thread counts scaled. Solution: used per-thread RNG streams with a leapfrog generator so results remained reproducible regardless of block configuration.",
-      ],
-    },
-
-    imageUrl: null,
-    imageAlt: "",
-    imageTags: ["CUDA", "OpenMP"],
-  },
-  {
-    id: "exercise-tracker",
-    title: "Full-Stack Exercise Tracker",
-    shortDescription:
-      "A comprehensive fitness companion built with React and MongoDB. Developed a RESTful API for persistent workout tracking and real-time data management.",
-    longDescription:
-      "A full-stack fitness tracking application that lets users log workouts, monitor progress over time, and visualize training volume. The backend exposes a RESTful API for persistent storage while the React frontend delivers an immediate, responsive UI for everyday use.",
-
-    role: "Full-Stack Developer",
-    githubUrl: "https://github.com/SophiaScherer/exercise-tracker",
-
-    languages: ["JavaScript", "TypeScript"],
-    technologies: ["React", "Node.js", "Express", "MongoDB", "REST API"],
-
-    technicalDetails: [
-      "Designed a normalized MongoDB schema for users, exercises, and sessions with proper indexing on common query paths",
-      "Implemented Express middleware for request validation and centralized error handling",
-      "Built a React frontend with optimistic updates so the UI feels immediate even on slow networks",
-    ],
-    keyFeatures: [
-      "Workout session logging",
-      "Progress charts over time",
-      "RESTful CRUD API",
-      "Persistent user accounts",
-    ],
-    caseStudy: {
-      label: "Project Overview",
-      body: [
-        "The app was designed to remove friction from logging sets and reps during a workout. Sessions can be created in a few taps and later revisited to chart progression on a per-exercise basis.",
-        "On the server side, every resource is exposed through a clean REST surface with consistent error envelopes. The frontend uses React state with optimistic mutations so the UI updates immediately while the request is in flight — and rolls back cleanly if the server rejects it.",
-      ],
-    },
-
-    imageUrl: null,
-    imageAlt: "Exercise Tracker Interface",
-    imageTags: ["React", "Node.js"],
+    cardVariant: "wide",
+    cardIcon: null,
+    cardMeta: [],
+    perfRows: [],
   },
 ];
 

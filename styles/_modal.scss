@@ -153,15 +153,87 @@
   text-wrap: pretty;
 }
 
+/* The header image is a full-bleed crop on the card, but the modal has room
+   to show the whole screenshot — a phone screenshot cropped to a landscape
+   box the way the card is would show almost nothing. `contain` inside a
+   filled backdrop shows the entire image at whatever aspect it actually is,
+   landscape or portrait. It doubles as the button that opens the lightbox. */
 .project-modal-img-wrap {
+  display: block;
+  width: 100%;
+  height: 420px;
+  /* `.project-modal-body` is a column flex container squeezed by its own
+     ancestor's max-height, and a flex item's automatic minimum size drops to
+     0 once it has `overflow: hidden` (its content-based minimum no longer
+     applies) — this was the one child with no floor, so all the squeeze
+     collapsed it to nothing while its siblings held their size. */
+  flex-shrink: 0;
   border-radius: 1.25rem;
   overflow: hidden;
   border: 1px solid var(--surface-border);
-  max-height: 320px;
+  background: var(--bg-3);
+  padding: 0;
+  appearance: none; -webkit-appearance: none;
+  cursor: pointer;
+  transition: border-color 0.35s, transform 0.25s;
+}
+@include bp.hover {
+  .project-modal-img-wrap:hover { transform: translateY(-2px); border-color: var(--secondary); }
+}
+.project-modal-img-wrap:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
 }
 .project-modal-img-wrap img {
-  width: 100%; height: 100%; max-height: 320px; object-fit: cover;
   display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.project-modal-gallery {
+  border-top: 1px solid var(--outline);
+  padding-top: clamp(18px, 2.5vw, 28px);
+}
+.project-modal-gallery-track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scroll-snap-type: x proximity;
+}
+/* Height-fixed rather than a fixed square: each thumb keeps its own aspect
+   ratio, so a landscape screenshot and a portrait phone shot both read as
+   actual previews instead of being cropped to the same square. */
+.project-modal-gallery-thumb {
+  flex: 0 0 auto;
+  display: block;
+  height: 180px;
+  min-width: 84px;
+  max-width: 260px;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  background: var(--bg-3);
+  padding: 0;
+  appearance: none; -webkit-appearance: none;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: border-color 0.35s, transform 0.25s;
+}
+.project-modal-gallery-thumb img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 260px;
+  object-fit: cover;
+}
+@include bp.hover {
+  .project-modal-gallery-thumb:hover { transform: translateY(-2px); border-color: var(--secondary); }
+}
+.project-modal-gallery-thumb:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
 }
 
 .project-modal-meta {
@@ -262,4 +334,7 @@
   .project-modal-bar { padding: 10px 10px 8px var(--modal-pad); }
   .project-modal-title { font-size: 1.6rem; }
   .project-modal-description { font-size: 1rem; line-height: 1.7; }
+  .project-modal-img-wrap { height: 260px; }
+  .project-modal-gallery-thumb { height: 130px; min-width: 64px; max-width: 200px; }
+  .project-modal-gallery-thumb img { max-width: 200px; }
 }
