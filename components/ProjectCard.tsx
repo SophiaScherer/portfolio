@@ -49,12 +49,20 @@ export default function ProjectCard({
     return (
       <button {...trigger} className="card project-card-icon project-card-button">
         <div>
-          {project.cardIcon && (
-            <div className="icon-chip">
-              <span className="material-symbols-outlined">
-                {project.cardIcon}
-              </span>
+          {/* An image is the stronger identity — the generic icon only
+              stands in for a project that doesn't have one yet. */}
+          {project.imageUrl ? (
+            <div className="project-card-icon-img-wrap">
+              <img src={project.imageUrl} alt={project.imageAlt} />
             </div>
+          ) : (
+            project.cardIcon && (
+              <div className="icon-chip">
+                <span className="material-symbols-outlined">
+                  {project.cardIcon}
+                </span>
+              </div>
+            )
           )}
           <h3 className="h3">{project.title}</h3>
           <p>{project.shortDescription}</p>

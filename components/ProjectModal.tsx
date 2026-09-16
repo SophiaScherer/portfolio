@@ -62,13 +62,12 @@ export default function ProjectModal({
   }, [project]);
   const shown = project ?? lastProject.current;
 
-  // The lightbox's sequence is the header image (if any) followed by the
-  // gallery, so opening the header and arrowing forward flows straight into
-  // the gallery images.
+  // The header image is also the gallery's first thumbnail — without it,
+  // reaching it again after scrolling down to the gallery would mean
+  // scrolling all the way back up.
   const allImages: LightboxImage[] = shown?.imageUrl
     ? [{ url: shown.imageUrl, alt: shown.imageAlt || shown.title }, ...galleryImages]
     : galleryImages;
-  const galleryOffset = shown?.imageUrl ? 1 : 0;
 
   if (!mounted) return null;
 
@@ -156,10 +155,6 @@ export default function ProjectModal({
                   )}
                 </div>
 
-                <p className="project-modal-description">
-                  {shown.longDescription}
-                </p>
-
                 {shown.imageUrl && (
                   <button
                     type="button"
@@ -171,24 +166,9 @@ export default function ProjectModal({
                   </button>
                 )}
 
-                {galleryImages.length > 0 && (
-                  <div className="project-modal-gallery">
-                    <h4 className="project-modal-h4">Gallery</h4>
-                    <div className="project-modal-gallery-track">
-                      {galleryImages.map((img, i) => (
-                        <button
-                          key={img.url}
-                          type="button"
-                          className="project-modal-gallery-thumb"
-                          onClick={() => setLightboxIndex(galleryOffset + i)}
-                          aria-label={`View image ${galleryOffset + i + 1} of ${allImages.length}`}
-                        >
-                          <img src={img.url} alt={img.alt} />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <p className="project-modal-description">
+                  {shown.longDescription}
+                </p>
 
                 <div className="project-modal-meta">
                   <MetaBlock
@@ -238,6 +218,25 @@ export default function ProjectModal({
                     </p>
                   ))}
                 </div>
+
+                {allImages.length > 0 && (
+                  <div className="project-modal-gallery">
+                    <h4 className="project-modal-h4">Gallery</h4>
+                    <div className="project-modal-gallery-track">
+                      {allImages.map((img, i) => (
+                        <button
+                          key={img.url}
+                          type="button"
+                          className="project-modal-gallery-thumb"
+                          onClick={() => setLightboxIndex(i)}
+                          aria-label={`View image ${i + 1} of ${allImages.length}`}
+                        >
+                          <img src={img.url} alt={img.alt} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}

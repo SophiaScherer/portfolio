@@ -184,17 +184,27 @@
   object-fit: contain;
 }
 
+.project-modal-gallery {
+  border-top: 1px solid var(--outline);
+  padding-top: clamp(18px, 2.5vw, 28px);
+}
 .project-modal-gallery-track {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
   padding-bottom: 4px;
   scroll-snap-type: x proximity;
 }
+/* Height-fixed rather than a fixed square: each thumb keeps its own aspect
+   ratio, so a landscape screenshot and a portrait phone shot both read as
+   actual previews instead of being cropped to the same square. */
 .project-modal-gallery-thumb {
   flex: 0 0 auto;
-  width: 96px; height: 96px;
-  border-radius: 0.85rem;
+  display: block;
+  height: 180px;
+  min-width: 84px;
+  max-width: 260px;
+  border-radius: 1rem;
   overflow: hidden;
   border: 1px solid var(--surface-border);
   background: var(--bg-3);
@@ -204,7 +214,13 @@
   scroll-snap-align: start;
   transition: border-color 0.35s, transform 0.25s;
 }
-.project-modal-gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.project-modal-gallery-thumb img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 260px;
+  object-fit: cover;
+}
 @include bp.hover {
   .project-modal-gallery-thumb:hover { transform: translateY(-2px); border-color: var(--secondary); }
 }
@@ -312,5 +328,6 @@
   .project-modal-title { font-size: 1.6rem; }
   .project-modal-description { font-size: 1rem; line-height: 1.7; }
   .project-modal-img-wrap img { max-height: 260px; }
-  .project-modal-gallery-thumb { width: 72px; height: 72px; }
+  .project-modal-gallery-thumb { height: 130px; min-width: 64px; max-width: 200px; }
+  .project-modal-gallery-thumb img { max-width: 200px; }
 }
