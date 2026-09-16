@@ -7,6 +7,8 @@ export const MATERIAL_ICONS = [
   "arrow_forward",
   "arrow_outward",
   "check_circle",
+  "chevron_left",
+  "chevron_right",
   "close",
   "code",
   "code_blocks",

@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useReveal } from "../hooks/useReveal";
+import type { GalleryImage } from "../lib/content";
 import { getProjectById, type Project } from "../lib/projects";
 import ProjectCard, { BENTO_CLASS } from "./ProjectCard";
 import ProjectModal from "./ProjectModal";
@@ -10,12 +11,19 @@ type ProjectsProps = {
   projects: Project[];
   /** Published CMS images keyed by file name — see `getProjectImageMap()`. */
   projectImages: Record<string, string>;
+  /** Gallery images keyed by project id — see `getProjectGalleryMap()`. */
+  projectGalleries: Record<string, GalleryImage[]>;
 };
 
 /** `_animations.scss` only defines `.reveal-delay-1` through `-4`. */
 const MAX_REVEAL_DELAY = 4;
+const NO_GALLERY: GalleryImage[] = [];
 
-export default function Projects({ projects, projectImages }: ProjectsProps) {
+export default function Projects({
+  projects,
+  projectImages,
+  projectGalleries,
+}: ProjectsProps) {
   const sectionRef = useReveal<HTMLElement>();
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -78,6 +86,9 @@ export default function Projects({ projects, projectImages }: ProjectsProps) {
         project={expanded}
         open={expanded !== null}
         onClose={close}
+        galleryImages={
+          expandedId ? (projectGalleries[expandedId] ?? NO_GALLERY) : NO_GALLERY
+        }
       />
     </section>
   );

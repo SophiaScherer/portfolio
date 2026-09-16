@@ -18,6 +18,15 @@ const FOCUSABLE_SELECTOR = [
 type Options = {
   open: boolean;
   onClose: () => void;
+  /**
+   * Suspends this instance's Escape/Tab handling without touching focus
+   * capture/restore or scroll lock, which stay tied to `open`. For a modal
+   * that can have another modal (e.g. a lightbox) open on top of it: gating
+   * `open` itself for that duration would tear down and rebuild the
+   * focus-restore effect around the nested modal's own open/close, capturing
+   * the wrong element as the thing to refocus once everything closes.
+   */
+  suspendKeyboard?: boolean;
 };
 
 /**
@@ -36,6 +45,7 @@ type Options = {
 export function useModal<T extends HTMLElement = HTMLElement>({
   open,
   onClose,
+  suspendKeyboard = false,
 }: Options): RefObject<T> {
   const dialogRef = useRef<T>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -92,9 +102,11 @@ export function useModal<T extends HTMLElement = HTMLElement>({
     };
   }, [open]);
 
-  // Escape to dismiss, and keep Tab inside the dialog.
+  // Escape to dismiss, and keep Tab inside the dialog. Suspended (without
+  // touching the effects above) while something is layered on top of this
+  // dialog and should own the keyboard instead.
   useEffect(() => {
-    if (!open) return;
+    if (!open || suspendKeyboard) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -136,7 +148,7 @@ export function useModal<T extends HTMLElement = HTMLElement>({
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open, getFocusable]);
+  }, [open, suspendKeyboard, getFocusable]);
 
   return dialogRef;
 }

@@ -60,6 +60,12 @@
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
 }
+/* The `image` card variant's screenshots are landscape and top-heavy (title
+   bar, live stats); a center crop tends to land on an arbitrary slice of the
+   middle instead. Scoped to this variant (`.project-card-button`, not
+   `.project-card-wide`) since the wide card's image is a continuous texture
+   with no "top" to prefer. */
+.project-card-button .project-img-wrap img { object-position: top; }
 @include bp.hover {
   .project-card-button:hover .project-img-wrap img { transform: scale(1.06); }
 }

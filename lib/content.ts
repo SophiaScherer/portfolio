@@ -40,6 +40,11 @@ export type PortfolioContent = {
   images: HygraphAsset[];
 };
 
+export type GalleryImage = {
+  url: string;
+  alt: string;
+};
+
 /* -------------------------------------------------------------------------- */
 /* Single shared GraphQL query                                                */
 /* -------------------------------------------------------------------------- */
@@ -151,4 +156,55 @@ export const getProjectImageMap = async (): Promise<Record<string, string>> => {
     byFileName[image.fileName] = image.url;
   }
   return byFileName;
+};
+
+/**
+ * A gallery asset's name declares which project it belongs to and its order:
+ * `<project-id>-gallery-<n>.<ext>`, e.g. `dash-detective-gallery-1.png`. No
+ * per-project field is needed — uploading a new numbered asset is enough to
+ * add it to that project's gallery.
+ */
+const GALLERY_FILENAME = /^(.+)-gallery-(\d+)\.[a-z0-9]+$/i;
+
+/**
+ * Gallery images keyed by project id, each list already sorted by its `<n>`.
+ * A project with no gallery-named assets simply gets no entry — callers treat
+ * a missing key the same as an empty list.
+ */
+export const getProjectGalleryMap = async (): Promise<
+  Record<string, GalleryImage[]>
+> => {
+  const content = await getPortfolioContent();
+  // Keyed by index per project so two assets at the same position collide
+  // explicitly instead of both silently appearing — same intent as the
+  // duplicate check in `getProjectImageMap` above.
+  const withIndex: Record<string, Map<number, GalleryImage>> = {};
+
+  for (const asset of content?.images ?? []) {
+    if (!asset.url) continue;
+    const match = GALLERY_FILENAME.exec(asset.fileName ?? "");
+    if (!match) continue;
+    // Project ids are lowercase kebab-case; lowercasing here means an
+    // inconsistently-cased upload still finds its project instead of
+    // silently missing the lookup in `Projects.tsx`.
+    const projectId = match[1].toLowerCase();
+    const index = Number(match[2]);
+
+    const byIndex = (withIndex[projectId] ??= new Map());
+    if (byIndex.has(index)) {
+      console.warn(
+        `[content] Duplicate gallery index ${index} for "${projectId}" (asset "${asset.fileName}") — keeping the first.`,
+      );
+      continue;
+    }
+    byIndex.set(index, { url: asset.url, alt: asset.fileName });
+  }
+
+  const byProjectId: Record<string, GalleryImage[]> = {};
+  for (const [projectId, byIndex] of Object.entries(withIndex)) {
+    byProjectId[projectId] = [...byIndex.entries()]
+      .sort(([a], [b]) => a - b)
+      .map(([, image]) => image);
+  }
+  return byProjectId;
 };
