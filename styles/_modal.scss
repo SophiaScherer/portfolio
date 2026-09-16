@@ -161,6 +161,13 @@
 .project-modal-img-wrap {
   display: block;
   width: 100%;
+  height: 420px;
+  /* `.project-modal-body` is a column flex container squeezed by its own
+     ancestor's max-height, and a flex item's automatic minimum size drops to
+     0 once it has `overflow: hidden` (its content-based minimum no longer
+     applies) — this was the one child with no floor, so all the squeeze
+     collapsed it to nothing while its siblings held their size. */
+  flex-shrink: 0;
   border-radius: 1.25rem;
   overflow: hidden;
   border: 1px solid var(--surface-border);
@@ -180,7 +187,7 @@
 .project-modal-img-wrap img {
   display: block;
   width: 100%;
-  max-height: 420px;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -327,7 +334,7 @@
   .project-modal-bar { padding: 10px 10px 8px var(--modal-pad); }
   .project-modal-title { font-size: 1.6rem; }
   .project-modal-description { font-size: 1rem; line-height: 1.7; }
-  .project-modal-img-wrap img { max-height: 260px; }
+  .project-modal-img-wrap { height: 260px; }
   .project-modal-gallery-thumb { height: 130px; min-width: 64px; max-width: 200px; }
   .project-modal-gallery-thumb img { max-width: 200px; }
 }
