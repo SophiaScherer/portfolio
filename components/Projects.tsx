@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { useReveal } from "../hooks/useReveal";
 import { getProjectById, type Project } from "../lib/projects";
+import ProjectCard, { BENTO_CLASS } from "./ProjectCard";
 import ProjectModal from "./ProjectModal";
 
 type ProjectsProps = {
@@ -12,6 +13,9 @@ type ProjectsProps = {
 
 /** Project whose card image is supplied by the CMS rather than the repo. */
 const HERO_IMAGE_PROJECT_ID = "vector-field";
+
+/** `_animations.scss` only defines `.reveal-delay-1` through `-4`. */
+const MAX_REVEAL_DELAY = 4;
 
 export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
   const sectionRef = useReveal<HTMLElement>();
@@ -23,14 +27,14 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
       : p,
   );
 
-  const vectorField = getProjectById(resolved, "vector-field");
-  const parallelComputing = getProjectById(resolved, "parallel-computing");
-  const exerciseTracker = getProjectById(resolved, "exercise-tracker");
+  warnOnDuplicateVariants(resolved);
 
   const expanded = expandedId ? getProjectById(resolved, expandedId) : null;
 
-  const toggle = (id: string) =>
-    setExpandedId((prev) => (prev === id ? null : id));
+  const toggle = useCallback(
+    (id: string) => setExpandedId((prev) => (prev === id ? null : id)),
+    [],
+  );
   const close = useCallback(() => setExpandedId(null), []);
 
   return (
@@ -53,129 +57,18 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
         </div>
 
         <div className="bento">
-          {/* ---- Card 1: Vector Field ---- */}
-          {vectorField && (
-            <div className="bento-1 reveal">
-              <button
-                type="button"
-                className="card project-card project-card-button"
-                onClick={() => toggle(vectorField.id)}
-                aria-expanded={expandedId === vectorField.id}
-                aria-controls="project-modal"
-                aria-label={`Open case study: ${vectorField.title}`}
-              >
-                {vectorField.imageUrl && (
-                  <div className="project-img-wrap">
-                    <img src={vectorField.imageUrl} alt={vectorField.imageAlt} />
-                    <div className="img-tags">
-                      {vectorField.imageTags.map((t) => (
-                        <span key={t} className="img-tag">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                <div className="project-body">
-                  <h3 className="h3">{vectorField.title}</h3>
-                  <p>{vectorField.shortDescription}</p>
-                  <div className="project-meta">
-                    <span className="project-meta-item">
-                      <span className="material-symbols-outlined" aria-hidden="true">
-                        terminal
-                      </span>{" "}
-                      C++
-                    </span>
-                    <span className="project-meta-item">
-                      <span className="material-symbols-outlined" aria-hidden="true">
-                        query_stats
-                      </span>{" "}
-                      Real-time
-                    </span>
-                  </div>
-                </div>
-              </button>
+          {resolved.map((project, i) => (
+            <div
+              key={project.id}
+              className={cellClass(project.cardVariant, i)}
+            >
+              <ProjectCard
+                project={project}
+                expanded={expandedId === project.id}
+                onToggle={toggle}
+              />
             </div>
-          )}
-
-          {/* ---- Card 2: Parallel Computing ---- */}
-          {parallelComputing && (
-            <div className="bento-2 reveal reveal-delay-1">
-              <button
-                type="button"
-                className="card project-card-icon project-card-button"
-                onClick={() => toggle(parallelComputing.id)}
-                aria-expanded={expandedId === parallelComputing.id}
-                aria-controls="project-modal"
-                aria-label={`Open case study: ${parallelComputing.title}`}
-              >
-                <div>
-                  <div className="icon-chip">
-                    <span className="material-symbols-outlined">memory</span>
-                  </div>
-                  <h3 className="h3">{parallelComputing.title}</h3>
-                  <p>{parallelComputing.shortDescription}</p>
-                </div>
-                <div className="perf-table">
-                  <div className="perf-row">
-                    <span className="perf-label">CUDA</span>
-                    <span className="perf-value">10× Speedup</span>
-                  </div>
-                  <div className="perf-row">
-                    <span className="perf-label">OpenMP</span>
-                    <span className="perf-value">Multi-threaded</span>
-                  </div>
-                  <div className="perf-row">
-                    <span className="perf-label">Monte Carlo</span>
-                    <span className="perf-value">Optimized</span>
-                  </div>
-                </div>
-              </button>
-            </div>
-          )}
-
-          {/* ---- Card 3: Exercise Tracker ---- */}
-          {exerciseTracker && (
-            <div className="bento-3 reveal reveal-delay-2">
-              <div className="card project-card project-card-wide">
-                <div className="project-body">
-                  <h3 className="h3">{exerciseTracker.title}</h3>
-                  <p>{exerciseTracker.shortDescription}</p>
-                  <div className="tech-pills">
-                    {exerciseTracker.technologies.slice(0, 4).map((t) => (
-                      <span key={t} className="tech-pill">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="project-img-wrap">
-                  {exerciseTracker.imageUrl ? (
-                    <img
-                      src={exerciseTracker.imageUrl}
-                      alt={exerciseTracker.imageAlt}
-                    />
-                  ) : (
-                    <div className="project-img-placeholder">
-                      <span>app screenshot / GIF</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* The whole wide card opens the modal when clicked. An overlay
-                    keeps its two-column layout intact — the card can't itself
-                    be a button without restructuring it. */}
-                <button
-                  type="button"
-                  className="project-card-wide-overlay"
-                  onClick={() => toggle(exerciseTracker.id)}
-                  aria-expanded={expandedId === exerciseTracker.id}
-                  aria-controls="project-modal"
-                  aria-label={`Open case study: ${exerciseTracker.title}`}
-                />
-              </div>
-            </div>
-          )}
+          ))}
         </div>
       </div>
 
@@ -187,4 +80,29 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
       />
     </section>
   );
+}
+
+/**
+ * The bento is one fixed 12-column row and each variant owns a different span,
+ * so two projects sharing a variant overflow it. Nothing in the type system
+ * enforces distinctness, so say so loudly in development.
+ */
+function warnOnDuplicateVariants(projects: Project[]) {
+  if (process.env.NODE_ENV === "production") return;
+  const seen = new Set<string>();
+  for (const p of projects) {
+    if (seen.has(p.cardVariant)) {
+      console.warn(
+        `[Projects] Duplicate cardVariant "${p.cardVariant}" on "${p.id}" — the bento row will not add up to 12 columns.`,
+      );
+    }
+    seen.add(p.cardVariant);
+  }
+}
+
+/** Grid cell plus the staggered reveal for this card's position. */
+function cellClass(variant: Project["cardVariant"], index: number) {
+  const delay =
+    index > 0 ? ` reveal-delay-${Math.min(index, MAX_REVEAL_DELAY)}` : "";
+  return `${BENTO_CLASS[variant]} reveal${delay}`;
 }

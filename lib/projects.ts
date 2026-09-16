@@ -12,6 +12,9 @@
  *
  * Fields that may be absent in the CMS are typed nullable so callers can hide
  * the corresponding UI rather than render an empty frame.
+ *
+ * Array order is display order: `<Projects>` maps this list straight onto the
+ * bento grid, so the newest project goes first.
  */
 
 export type Tech = string;
@@ -20,6 +23,21 @@ export type CaseStudy = {
   label: "Project Overview" | "Challenges & Solutions";
   body: string[];
 };
+
+/**
+ * Which bento card renders this project. The variant also picks the grid cell,
+ * so the three projects must use three different variants.
+ *   image — tall card with a cover image and a `cardMeta` row
+ *   icon  — icon chip card with a `perfRows` table, no image
+ *   wide  — full-width two-column card with tech pills and an image
+ */
+export type CardVariant = "image" | "icon" | "wide";
+
+/** One entry in the `image` card's meta row. `icon` is a Material Symbols name. */
+export type CardMeta = { icon: string; label: string };
+
+/** One row of the `icon` card's stat table. */
+export type PerfRow = { label: string; value: string };
 
 export type Project = {
   id: string;
@@ -40,6 +58,15 @@ export type Project = {
   imageUrl: string | null;
   imageAlt: string;
   imageTags: string[];
+
+  /* Presentation. Each field below is read by one variant only. */
+  cardVariant: CardVariant;
+  /** Material Symbols name for the `icon` variant's chip. Null otherwise. */
+  cardIcon: string | null;
+  /** `image` variant only. Empty for the others. */
+  cardMeta: CardMeta[];
+  /** `icon` variant only. Empty for the others. */
+  perfRows: PerfRow[];
 };
 
 /* -------------------------------------------------------------------------- */
@@ -83,6 +110,14 @@ export const PROJECTS: Project[] = [
     imageUrl: null,
     imageAlt: "2D Vector Field Visualization",
     imageTags: ["OpenGL", "GLSL"],
+
+    cardVariant: "image",
+    cardIcon: null,
+    cardMeta: [
+      { icon: "terminal", label: "C++" },
+      { icon: "query_stats", label: "Real-time" },
+    ],
+    perfRows: [],
   },
   {
     id: "parallel-computing",
@@ -120,6 +155,15 @@ export const PROJECTS: Project[] = [
     imageUrl: null,
     imageAlt: "",
     imageTags: ["CUDA", "OpenMP"],
+
+    cardVariant: "icon",
+    cardIcon: "memory",
+    cardMeta: [],
+    perfRows: [
+      { label: "CUDA", value: "10× Speedup" },
+      { label: "OpenMP", value: "Multi-threaded" },
+      { label: "Monte Carlo", value: "Optimized" },
+    ],
   },
   {
     id: "exercise-tracker",
@@ -157,6 +201,11 @@ export const PROJECTS: Project[] = [
     imageUrl: null,
     imageAlt: "Exercise Tracker Interface",
     imageTags: ["React", "Node.js"],
+
+    cardVariant: "wide",
+    cardIcon: null,
+    cardMeta: [],
+    perfRows: [],
   },
 ];
 
