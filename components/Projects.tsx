@@ -8,24 +8,25 @@ import ProjectModal from "./ProjectModal";
 
 type ProjectsProps = {
   projects: Project[];
-  heroImageUrl: string | null;
+  /** Published CMS images keyed by file name — see `getProjectImageMap()`. */
+  projectImages: Record<string, string>;
 };
-
-/** Project whose card image is supplied by the CMS rather than the repo. */
-const HERO_IMAGE_PROJECT_ID = "vector-field";
 
 /** `_animations.scss` only defines `.reveal-delay-1` through `-4`. */
 const MAX_REVEAL_DELAY = 4;
 
-export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
+export default function Projects({ projects, projectImages }: ProjectsProps) {
   const sectionRef = useReveal<HTMLElement>();
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const resolved = projects.map((p) =>
-    p.id === HERO_IMAGE_PROJECT_ID && heroImageUrl
-      ? { ...p, imageUrl: heroImageUrl }
-      : p,
-  );
+  // A project claims its CMS asset by name. An unpublished name misses the
+  // lookup and the card keeps its own `imageUrl` (usually null → placeholder).
+  const resolved = projects.map((p) => {
+    const url = p.cmsImageFileName
+      ? projectImages[p.cmsImageFileName]
+      : undefined;
+    return url ? { ...p, imageUrl: url } : p;
+  });
 
   warnOnDuplicateVariants(resolved);
 

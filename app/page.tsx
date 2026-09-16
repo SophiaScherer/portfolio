@@ -3,16 +3,16 @@ import Projects from "../components/Projects";
 import Experience from "../components/Experience";
 import Interests from "../components/Interests";
 import Contact from "../components/Contact";
-import { getHeroImageUrl } from "../lib/content";
+import { getProjectImageMap } from "../lib/content";
 import { PROJECTS } from "../lib/projects";
 
 export default async function Home() {
-  const heroImageUrl = await getHeroImageUrl();
+  const projectImages = await getProjectImageMap();
 
   return (
     <main>
       <Hero />
-      <Projects projects={PROJECTS} heroImageUrl={heroImageUrl} />
+      <Projects projects={PROJECTS} projectImages={projectImages} />
       <Experience />
       <Interests />
       <Contact />

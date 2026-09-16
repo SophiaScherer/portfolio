@@ -18,6 +18,11 @@
 .bento-2 { grid-column: span 5; }
 .bento-3 { grid-column: span 12; }
 
+/* Grid stretches the cell to the tallest card in the row, but the card inside
+   is a plain block and stops at its own content — leaving the section
+   background showing under the shorter one. */
+.bento > * > .card { height: 100%; }
+
 .project-card {
   border-radius: var(--card-radius); overflow: hidden;
   display: flex; flex-direction: column;

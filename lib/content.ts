@@ -128,11 +128,27 @@ export const getResumeDownload = async (): Promise<ResumeDownload | null> => {
 };
 
 /**
- * Resolve the hero image URL used in the first project card. Returns `null`
- * when no image has been published in the CMS — callers are responsible for
- * hiding the image.
+ * Published images keyed by file name, for projects to claim by name via
+ * `Project.cmsImageFileName`. Keying on the name rather than list position
+ * means uploading or reordering assets in the CMS needs no code change, and a
+ * project whose asset is absent simply misses the lookup and renders its
+ * placeholder.
+ *
+ * Returns an empty map when the CMS is unreachable or has published nothing.
  */
-export const getHeroImageUrl = async (): Promise<string | null> => {
+export const getProjectImageMap = async (): Promise<Record<string, string>> => {
   const content = await getPortfolioContent();
-  return content?.images[0]?.url ?? null;
+  const byFileName: Record<string, string> = {};
+  for (const image of content?.images ?? []) {
+    if (!image.fileName || !image.url) continue;
+    // Two assets sharing a name would otherwise silently swap a card's image.
+    if (byFileName[image.fileName]) {
+      console.warn(
+        `[content] Duplicate asset fileName "${image.fileName}" — keeping the first.`,
+      );
+      continue;
+    }
+    byFileName[image.fileName] = image.url;
+  }
+  return byFileName;
 };

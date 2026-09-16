@@ -18,6 +18,15 @@ export const BENTO_CLASS: Record<CardVariant, string> = {
   wide: "bento-3",
 };
 
+/** Stands in for a card image that hasn't been published to the CMS yet. */
+function ImagePlaceholder() {
+  return (
+    <div className="project-img-placeholder">
+      <span>app screenshot / GIF</span>
+    </div>
+  );
+}
+
 /**
  * One project card. The variant picks the layout; every variant opens the same
  * case-study modal, so the button wiring is shared.
@@ -84,9 +93,7 @@ export default function ProjectCard({
           {project.imageUrl ? (
             <img src={project.imageUrl} alt={project.imageAlt} />
           ) : (
-            <div className="project-img-placeholder">
-              <span>app screenshot / GIF</span>
-            </div>
+            <ImagePlaceholder />
           )}
         </div>
 
@@ -100,18 +107,24 @@ export default function ProjectCard({
 
   return (
     <button {...trigger} className="card project-card project-card-button">
-      {project.imageUrl && (
-        <div className="project-img-wrap">
-          <img src={project.imageUrl} alt={project.imageAlt} />
-          <div className="img-tags">
-            {project.imageTags.map((t) => (
-              <span key={t} className="img-tag">
-                {t}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
+      <div className="project-img-wrap">
+        {project.imageUrl ? (
+          <>
+            <img src={project.imageUrl} alt={project.imageAlt} />
+            {project.imageTags.length > 0 && (
+              <div className="img-tags">
+                {project.imageTags.map((t) => (
+                  <span key={t} className="img-tag">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <ImagePlaceholder />
+        )}
+      </div>
       <div className="project-body">
         <h3 className="h3">{project.title}</h3>
         <p>{project.shortDescription}</p>

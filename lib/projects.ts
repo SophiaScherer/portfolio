@@ -55,6 +55,12 @@ export type Project = {
   keyFeatures: string[];
   caseStudy: CaseStudy;
 
+  /**
+   * Name of this project's image asset in the CMS. `<Projects>` swaps the
+   * matching URL into `imageUrl`; an unpublished name just misses the lookup
+   * and the card falls back to its placeholder.
+   */
+  cmsImageFileName: string | null;
   imageUrl: string | null;
   imageAlt: string;
   imageTags: string[];
@@ -107,6 +113,7 @@ export const PROJECTS: Project[] = [
       ],
     },
 
+    cmsImageFileName: "dashDetective.png",
     imageUrl: null,
     imageAlt: "DashDetective system information console",
     imageTags: ["C#", "Avalonia"],
@@ -152,6 +159,7 @@ export const PROJECTS: Project[] = [
       ],
     },
 
+    cmsImageFileName: "unPawse.png",
     imageUrl: null,
     imageAlt: "unPawse block screen",
     imageTags: ["Kotlin", "Compose"],
@@ -198,6 +206,7 @@ export const PROJECTS: Project[] = [
       ],
     },
 
+    cmsImageFileName: "vectorVisPicture.png",
     imageUrl: null,
     imageAlt: "2D Vector Field Visualization",
     imageTags: ["OpenGL", "GLSL"],
