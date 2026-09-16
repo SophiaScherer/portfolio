@@ -35,7 +35,7 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
 
   return (
     <section
-      className="projects-section section-pad"
+      className="panel-section section-pad"
       id="projects"
       ref={sectionRef}
     >
@@ -81,21 +81,13 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
                   <p>{vectorField.shortDescription}</p>
                   <div className="project-meta">
                     <span className="project-meta-item">
-                      <span
-                        className="material-symbols-outlined"
-                        style={{ fontSize: "14px" }}
-                        aria-hidden="true"
-                      >
+                      <span className="material-symbols-outlined" aria-hidden="true">
                         terminal
                       </span>{" "}
                       C++
                     </span>
                     <span className="project-meta-item">
-                      <span
-                        className="material-symbols-outlined"
-                        style={{ fontSize: "14px" }}
-                        aria-hidden="true"
-                      >
+                      <span className="material-symbols-outlined" aria-hidden="true">
                         query_stats
                       </span>{" "}
                       Real-time
@@ -121,18 +113,8 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
                   <div className="icon-chip">
                     <span className="material-symbols-outlined">memory</span>
                   </div>
-                  <h3 className="h3" style={{ marginBottom: "12px" }}>
-                    {parallelComputing.title}
-                  </h3>
-                  <p
-                    style={{
-                      color: "var(--text-muted)",
-                      fontSize: "0.9rem",
-                      lineHeight: 1.65,
-                    }}
-                  >
-                    {parallelComputing.shortDescription}
-                  </p>
+                  <h3 className="h3">{parallelComputing.title}</h3>
+                  <p>{parallelComputing.shortDescription}</p>
                 </div>
                 <div className="perf-table">
                   <div className="perf-row">
@@ -157,12 +139,7 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
             <div className="bento-3 reveal reveal-delay-2">
               <div className="card project-card project-card-wide">
                 <div className="project-body">
-                  <h3
-                    className="h3"
-                    style={{ fontSize: "1.6rem", marginBottom: "14px" }}
-                  >
-                    {exerciseTracker.title}
-                  </h3>
+                  <h3 className="h3">{exerciseTracker.title}</h3>
                   <p>{exerciseTracker.shortDescription}</p>
                   <div className="tech-pills">
                     {exerciseTracker.technologies.slice(0, 4).map((t) => (
@@ -172,7 +149,7 @@ export default function Projects({ projects, heroImageUrl }: ProjectsProps) {
                     ))}
                   </div>
                 </div>
-                <div className="project-img-wrap" style={{ flex: "0 0 46%" }}>
+                <div className="project-img-wrap">
                   {exerciseTracker.imageUrl ? (
                     <img
                       src={exerciseTracker.imageUrl}

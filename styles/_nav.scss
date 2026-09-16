@@ -1,26 +1,36 @@
+@use 'breakpoints' as bp;
+
+/* Wraps the bar and mobile menu as one focus-trap region; it has no box of its
+   own, so its programmatic focus needs no ring. */
+.site-header:focus { outline: none; }
+
 .nav-wrap {
-  position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+  position: fixed; top: var(--nav-top); left: 50%; transform: translateX(-50%);
   width: min(95%, 1200px); z-index: 100;
 }
 .nav {
   background: var(--nav-bg);
   border: 1px solid var(--nav-border);
+  /* Unprefixed only: the CSS build adds the Safari prefix itself, and writing
+     both collapses to the `-webkit-` form, which Chrome ignores. */
   backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border-radius: 20px;
-  padding: 14px 28px;
+  /* A fixed height keeps `--nav-offset` accurate for the hero and anchors. */
+  height: var(--nav-height);
+  padding: 0 28px;
   display: flex; align-items: center; justify-content: space-between;
   box-shadow: var(--nav-shadow);
   transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
 }
 
 .nav-logo {
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 900; font-style: italic;
   font-size: 1.2rem; letter-spacing: -0.02em;
   color: var(--primary);
   text-decoration: none;
   text-transform: uppercase;
+  white-space: nowrap;
   transition: opacity 0.2s;
 }
 .nav-logo:hover { opacity: 0.8; }
@@ -30,7 +40,7 @@
   list-style: none;
 }
 .nav-links a {
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700; font-size: 0.875rem;
   color: var(--text-muted);
   text-decoration: none;
@@ -43,7 +53,8 @@
   background: var(--primary);
   transition: width 0.25s;
 }
-.nav-links a:hover { color: var(--primary); }
+.nav-links a:hover,
+.nav-links a[aria-current] { color: var(--primary); }
 .nav-links a:hover::after { width: 100%; }
 
 .nav-right { display: flex; align-items: center; gap: 12px; }
@@ -77,9 +88,16 @@
   color: var(--switch-icon-d);
 }
 
+/* 44px square meets the minimum touch-target size. */
 .hamburger {
-  display: none; flex-direction: column; gap: 5px;
-  background: none; border: none; cursor: pointer; padding: 4px;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px;
+  width: 44px; height: 44px;
+  background: none; border: none; border-radius: 12px; cursor: pointer; padding: 0;
+}
+.hamburger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--secondary);
 }
 .hamburger span {
   display: block; width: 22px; height: 2px;
@@ -90,25 +108,91 @@
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* -------------------------------------------------------------------------- */
+/* Mobile menu                                                                */
+/* -------------------------------------------------------------------------- */
+
+/* Stays mounted and toggles visibility (not display) so the open/close
+   transition can play. Content starts below the nav bar. */
 .mobile-menu {
-  display: none;
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: var(--bg);
+  position: fixed; inset: 0;
   z-index: 99;
-  flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 36px;
+  display: flex; flex-direction: column;
+  padding: calc(var(--nav-offset) + 8px) var(--gutter) calc(28px + env(safe-area-inset-bottom));
+  background: var(--bg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
 }
-.mobile-menu.open { display: flex; opacity: 1; }
-/* Scoped away from `.btn-primary`: this rule outranks it on specificity
-   (0-1-1 vs 0-1-0), which would otherwise render the mobile resume button
-   at 2.2rem in `--text` instead of its own button styling. */
-.mobile-menu a:not(.btn-primary) {
-  font-family: 'Epilogue', sans-serif;
-  font-weight: 800; font-size: 2.2rem;
+.mobile-menu.open {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.mobile-menu-links { list-style: none; }
+/* Links rise in one after another, staggered by their `--i` index. */
+.mobile-menu-links li {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.mobile-menu.open .mobile-menu-links li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--i) * 40ms + 60ms);
+}
+
+.mobile-menu-link {
+  display: flex; align-items: baseline; gap: 16px;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--outline);
+  font-family: var(--font-display);
+  font-weight: 800; font-size: clamp(1.75rem, 8vw, 2.2rem);
+  line-height: 1.2;
   color: var(--text); text-decoration: none;
   transition: color 0.2s;
 }
-.mobile-menu a:not(.btn-primary):hover { color: var(--primary); }
+.mobile-menu-link:hover,
+.mobile-menu-link[aria-current] { color: var(--primary); }
+.mobile-menu-link-index {
+  font-family: var(--font-label);
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--secondary);
+  min-width: 2ch;
+}
+
+.mobile-menu-footer {
+  margin-top: auto;
+  padding-top: 32px;
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between;
+  gap: 16px 24px;
+}
+.mobile-menu-socials { display: flex; gap: 24px; }
+.mobile-menu-socials a {
+  font-family: var(--font-label);
+  font-size: 0.85rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-muted); text-decoration: none;
+  padding-block: 10px;
+  transition: color 0.2s;
+}
+.mobile-menu-socials a:hover { color: var(--primary); }
+
+@include bp.down(lg) {
+  .nav-links, .nav-resume { display: none; }
+  .hamburger { display: flex; }
+}
+
+@include bp.down(md) {
+  .nav-wrap { width: calc(100% - 2 * var(--panel-inset)); }
+  /* A lighter blur is much cheaper to repaint while scrolling on phones. */
+  .nav { backdrop-filter: blur(12px); }
+  .nav { padding: 0 8px 0 20px; border-radius: 18px; }
+  .nav-logo { font-size: 1.05rem; }
+  .nav-right { gap: 8px; }
+}

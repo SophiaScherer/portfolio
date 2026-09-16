@@ -1,37 +1,26 @@
-"use client";
-
-import { useReveal } from "../hooks/useReveal";
-
+/* Server component: the hero's entrance plays from CSS on load
+   (`.reveal-onload`), so it needs no client-side reveal hook. */
 export default function Hero() {
-  const sectionRef = useReveal<HTMLElement>();
-
   return (
-    <section
-      className="hero section-pad"
-      id="about"
-      ref={sectionRef}
-    >
+    <section className="hero section-pad" id="about">
       <div className="hero-dots" aria-hidden="true" />
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <div className="hero-grid">
           <div className="hero-body">
-            <span className="hero-kicker reveal reveal-delay-1">
+            <span className="hero-kicker reveal-onload">
               Sophia Scherer · CS @ Oregon State
             </span>
-            <h1
-              className="h1 reveal reveal-delay-1"
-              style={{ marginBottom: "24px" }}
-            >
+            <h1 className="h1 reveal-onload reveal-delay-1">
               Building high-performance software
             </h1>
-            <p className="reveal reveal-delay-2">
+            <p className="reveal-onload reveal-delay-2">
               Honors <strong>Computer Science</strong> student at Oregon State
               University specializing in systems programming, data
               visualization, and high-performance computing. I enjoy solving
               complex technical problems and building software that is
               efficient, reliable, and easy to use.
             </p>
-            <div className="hero-ctas reveal reveal-delay-3">
+            <div className="hero-ctas reveal-onload reveal-delay-3">
               <a href="#projects" className="btn-primary">
                 Projects
                 <span
@@ -46,7 +35,6 @@ export default function Hero() {
                 <span
                   className="material-symbols-outlined btn-icon"
                   aria-hidden="true"
-                  style={{ fontSize: "18px" }}
                 >
                   mail
                 </span>
@@ -54,7 +42,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="hero-panel reveal reveal-delay-2">
+          <div className="hero-panel reveal-onload reveal-delay-4">
             <div className="hero-panel-top">
               <span className="material-symbols-outlined" aria-hidden="true">
                 code_blocks

@@ -1,3 +1,5 @@
+import { SOCIAL_LINKS } from "../lib/links";
+
 export default function Footer() {
   return (
     <footer>
@@ -9,8 +11,11 @@ export default function Footer() {
           </span>
         </a>
         <div className="footer-links">
-          <a href="https://github.com/SophiaScherer">GitHub</a>
-          <a href="https://www.linkedin.com/in/sophia-scherer/">LinkedIn</a>
+          {SOCIAL_LINKS.map(({ label, href }) => (
+            <a key={label} href={href}>
+              {label}
+            </a>
+          ))}
         </div>
       </div>
     </footer>

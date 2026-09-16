@@ -31,9 +31,11 @@ export function useReveal<T extends Element = HTMLElement>(
           }
         });
       },
+      // Fires as soon as an element's top edge is slightly inside the screen,
+      // so tall blocks (e.g. the timeline) don't wait for a share of their height.
       {
-        threshold: options?.threshold ?? 0.12,
-        rootMargin: options?.rootMargin ?? "0px 0px -40px 0px",
+        threshold: options?.threshold ?? 0,
+        rootMargin: options?.rootMargin ?? "0px 0px -8% 0px",
       }
     );
 

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useModal } from "../hooks/useModal";
+import { useInView } from "../hooks/useInView";
 import type { Project } from "../lib/projects";
 
 type ProjectModalProps = {
@@ -17,6 +18,16 @@ export default function ProjectModal({
   onClose,
 }: ProjectModalProps) {
   const dialogRef = useModal<HTMLDivElement>({ open, onClose });
+
+  // The scroll body is the observer root for the title, so the slim bar
+  // condenses once the full title scrolls out of view.
+  const [body, setBody] = useState<HTMLDivElement | null>(null);
+  const [titleRef, titleInView] = useInView<HTMLHeadingElement>(body);
+
+  // The dialog stays mounted between opens, so start each case study at the top.
+  useEffect(() => {
+    if (open && body) body.scrollTop = 0;
+  }, [open, body]);
 
   // Portals need a DOM node to target, which doesn't exist while rendering on
   // the server.
@@ -56,21 +67,45 @@ export default function ProjectModal({
         ref={dialogRef}
       >
         {shown && (
-          <div className="card project-modal-card">
-            <div className="project-modal-head">
-              <div>
-                <span className="label-cap">Case Study</span>
-                <h3 className="h2 project-modal-title" id="project-modal-title">
-                  {shown.title}
-                </h3>
-                <p className="project-modal-role">
-                  <span className="material-symbols-outlined" aria-hidden="true">
-                    person
-                  </span>
-                  {shown.role}
-                </p>
-              </div>
-              <div className="project-modal-head-actions">
+          <div
+            className={`card project-modal-card${titleInView ? "" : " is-condensed"}`}
+          >
+            <div className="project-modal-bar">
+              {/* Visual repeat of the title for the condensed state; the
+                  dialog is already labelled by the full heading. */}
+              <span className="project-modal-bar-title" aria-hidden="true">
+                {shown.title}
+              </span>
+              <button
+                type="button"
+                className="project-modal-close"
+                onClick={onClose}
+                aria-label="Close case study"
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  close
+                </span>
+              </button>
+            </div>
+
+            <div className="project-modal-body" ref={setBody}>
+              <div className="project-modal-head">
+                <div>
+                  <span className="label-cap">Case Study</span>
+                  <h3
+                    className="h2 project-modal-title"
+                    id="project-modal-title"
+                    ref={titleRef}
+                  >
+                    {shown.title}
+                  </h3>
+                  <p className="project-modal-role">
+                    <span className="material-symbols-outlined" aria-hidden="true">
+                      person
+                    </span>
+                    {shown.role}
+                  </p>
+                </div>
                 {shown.githubUrl && (
                   <a
                     href={shown.githubUrl}
@@ -78,37 +113,20 @@ export default function ProjectModal({
                     rel="noreferrer noopener"
                     className="btn-primary project-modal-github"
                   >
-                    <span
-                      className="material-symbols-outlined"
-                      aria-hidden="true"
-                      style={{ fontSize: "18px" }}
-                    >
+                    <span className="material-symbols-outlined" aria-hidden="true">
                       code
                     </span>
                     GitHub
                     <span
                       className="material-symbols-outlined btn-icon"
                       aria-hidden="true"
-                      style={{ fontSize: "16px" }}
                     >
                       arrow_outward
                     </span>
                   </a>
                 )}
-                <button
-                  type="button"
-                  className="project-modal-close"
-                  onClick={onClose}
-                  aria-label="Close case study"
-                >
-                  <span className="material-symbols-outlined" aria-hidden="true">
-                    close
-                  </span>
-                </button>
               </div>
-            </div>
 
-            <div className="project-modal-body">
               <p className="project-modal-description">
                 {shown.longDescription}
               </p>
@@ -188,11 +206,7 @@ function MetaBlock({
   return (
     <div className="project-modal-meta-block">
       <span className="project-modal-meta-label">
-        <span
-          className="material-symbols-outlined"
-          aria-hidden="true"
-          style={{ fontSize: "14px" }}
-        >
+        <span className="material-symbols-outlined" aria-hidden="true">
           {icon}
         </span>
         {label}

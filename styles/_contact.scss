@@ -1,3 +1,8 @@
+@use 'breakpoints' as bp;
+
+/* Last section before the footer, so it needs less bottom padding. */
+.contact-section { padding-bottom: min(48px, var(--section-pad-y)); }
+
 .contact-card {
   border-radius: 3rem;
   padding: clamp(32px, 5vw, 72px);
@@ -17,9 +22,17 @@
   gap: clamp(40px, 5vw, 72px);
   align-items: center; position: relative; z-index: 1;
 }
+.contact-title { margin-bottom: 6px; }
+.contact-intro {
+  color: var(--text-muted);
+  margin-top: 16px;
+  font-size: 1rem; line-height: 1.7;
+  max-width: 380px;
+  transition: color 0.35s;
+}
 .contact-kicker {
   display: block;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.85rem; font-weight: 500;
   color: var(--secondary);
   transition: color 0.35s;
@@ -34,7 +47,9 @@
   padding: 6px 0;
 }
 .contact-link { transition: opacity 0.25s, transform 0.25s; }
-.contact-link:hover { opacity: 0.85; transform: translateX(3px); }
+@include bp.hover {
+  .contact-link:hover { opacity: 0.85; transform: translateX(3px); }
+}
 .contact-link:focus-visible {
   outline: none;
   opacity: 0.85;
@@ -49,10 +64,12 @@
   transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94),
               background 0.35s;
 }
-.contact-link:hover .contact-link-icon { transform: rotate(-8deg) scale(1.06); }
+@include bp.hover {
+  .contact-link:hover .contact-link-icon { transform: rotate(-8deg) scale(1.06); }
+}
 .contact-link-icon .material-symbols-outlined { color: var(--secondary); font-size: 22px; transition: color 0.35s; }
 .contact-link-text {
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700; font-size: 1.05rem; color: var(--text);
   transition: color 0.35s;
 }
@@ -60,7 +77,7 @@
 .contact-form { display: flex; flex-direction: column; gap: 20px; }
 .form-group { display: flex; flex-direction: column; gap: 8px; }
 .form-group label {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--secondary);
@@ -71,7 +88,7 @@
   background: var(--contact-form-bg);
   border: 1.5px solid var(--outline);
   color: var(--text);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.95rem;
   padding: 14px 18px; border-radius: 14px;
   outline: none;
@@ -96,14 +113,14 @@
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
 .form-error {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--primary);
   display: block;
 }
 .form-status {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.04em;
   padding: 14px 18px; border-radius: 14px;
@@ -126,7 +143,7 @@
   background: var(--primary);
   color: var(--on-primary);
   border: none; cursor: pointer;
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700; font-size: 1rem;
   padding: 15px 28px; border-radius: 14px;
   transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
@@ -144,11 +161,13 @@
   transition: opacity 0.35s;
   pointer-events: none;
 }
-.btn-send:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 32px var(--primary-glow);
+@include bp.hover {
+  .btn-send:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px var(--primary-glow);
+  }
+  .btn-send:hover:not(:disabled)::after { opacity: 1; }
 }
-.btn-send:hover:not(:disabled)::after { opacity: 1; }
 .btn-send:active:not(:disabled) { transform: translateY(0) scale(0.98); }
 .btn-send:focus-visible {
   outline: none;
@@ -160,4 +179,21 @@
   box-shadow: none;
 }
 .btn-send .btn-icon { font-size: 18px; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94); }
-.btn-send:hover:not(:disabled) .btn-icon { transform: translateX(3px); }
+@include bp.hover {
+  .btn-send:hover:not(:disabled) .btn-icon { transform: translateX(3px); }
+}
+
+@include bp.down(lg) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+
+@include bp.down(md) {
+  .contact-card { border-radius: var(--panel-radius); padding: var(--card-pad); }
+  /* Smaller, softer glow keeps the blur cheap on phones. */
+  .contact-card::before { width: 200px; height: 200px; top: -60px; right: -60px; filter: blur(40px); }
+  .contact-grid { gap: 32px; }
+  .contact-links { margin-top: 24px; }
+  /* 16px inputs stop iOS Safari from zooming the page on focus. */
+  .form-group input,
+  .form-group textarea { font-size: 1rem; }
+}

@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 /**
  * Shared button primitives.
  *
@@ -9,7 +11,7 @@
 .btn-primary {
   background: var(--primary);
   color: var(--on-primary);
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700; font-size: 1rem;
   padding: 15px 32px; border-radius: 14px;
   text-decoration: none; border: none; cursor: pointer;
@@ -28,11 +30,13 @@
   transition: opacity 0.35s;
   pointer-events: none;
 }
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 32px var(--primary-glow);
+@include bp.hover {
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px var(--primary-glow);
+  }
+  .btn-primary:hover::after { opacity: 1; }
 }
-.btn-primary:hover::after { opacity: 1; }
 .btn-primary:active { transform: translateY(0) scale(0.98); }
 .btn-primary:focus-visible {
   outline: none;
@@ -42,25 +46,30 @@
   font-size: 18px;
   transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
 }
-.btn-primary:hover .btn-icon { transform: translateX(3px); }
+@include bp.hover {
+  .btn-primary:hover .btn-icon { transform: translateX(3px); }
+}
 
 .btn-outline {
   border: 2px solid var(--secondary);
   color: var(--secondary);
   background: transparent;
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700; font-size: 1rem;
   padding: 14px 30px; border-radius: 14px;
   text-decoration: none; cursor: pointer;
   display: inline-flex; align-items: center; gap: 10px;
   transition: background 0.25s, color 0.25s, border-color 0.35s, transform 0.25s;
 }
-.btn-outline:hover {
-  background: var(--secondary-soft);
-  transform: translateY(-2px);
+@include bp.hover {
+  .btn-outline:hover {
+    background: var(--secondary-soft);
+    transform: translateY(-2px);
+  }
 }
 .btn-outline:active { transform: translateY(0) scale(0.98); }
 .btn-outline:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
 }
+.btn-outline .btn-icon { font-size: 18px; }

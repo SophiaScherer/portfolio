@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 .ambient {
   position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
 }
@@ -12,6 +14,12 @@
   background: var(--glow-a);
 }
 [data-theme="dark"] .ambient-blob { opacity: 0.1; }
+
+/* The fixed 120px-blur glow is costly to composite on phones and barely
+   visible at that size, so it is dropped there. */
+@include bp.down(md) {
+  .ambient { display: none; }
+}
 
 .hero-dots {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;

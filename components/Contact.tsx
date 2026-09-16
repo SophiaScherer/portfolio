@@ -89,32 +89,22 @@ export default function Contact() {
   };
 
   return (
-    <section className="section-pad" id="contact" style={{ paddingBottom: "48px" }}>
+    <section className="section-pad contact-section" id="contact">
       <div className="container">
         <div className="card contact-card">
           <div className="contact-grid">
             <div>
-              <h2 className="h2" style={{ marginBottom: "6px" }}>
-                Get in touch
-              </h2>
+              <h2 className="h2 contact-title">Get in touch</h2>
               <span className="contact-kicker">
                 Open to internship &amp; research opportunities
               </span>
-              <p
-                style={{
-                  color: "var(--text-muted)",
-                  marginTop: "16px",
-                  fontSize: "1rem",
-                  lineHeight: 1.7,
-                  maxWidth: "380px",
-                }}
-              >
+              <p className="contact-intro">
                 I'm currently seeking internship and research opportunities in software engineering,
                 data visualization, and high-performance computing. If you're interested in collaborating
                 on a project or discussing opportunities, I'd be glad to connect.
               </p>
               <div className="contact-links">
-                <div className="contact-link" style={{ cursor: "default" }}>
+                <div className="contact-link">
                   <div className="contact-link-icon">
                     <span className="material-symbols-outlined">location_on</span>
                   </div>

@@ -1,7 +1,9 @@
+@use 'breakpoints' as bp;
+
 .hero {
   min-height: 100svh;
   display: flex; align-items: center;
-  padding-top: 100px;
+  padding-top: calc(var(--nav-offset) + 16px);
   position: relative; overflow: hidden;
 }
 .hero-grid {
@@ -13,7 +15,7 @@
 
 .hero-kicker {
   display: block;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.06em;
   color: var(--text-muted);
@@ -22,7 +24,7 @@
 }
 
 .hero-body h1 {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   text-wrap: balance;
 }
 .hero-body p {
@@ -57,7 +59,7 @@
   flex-shrink: 0;
 }
 .hero-panel-label {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text); line-height: 1.5;
@@ -71,14 +73,31 @@
   display: flex; align-items: baseline; justify-content: space-between;
 }
 .hero-panel-gpa span {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--secondary);
 }
 .hero-panel-gpa strong {
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 800; font-size: 1.4rem;
   color: var(--text);
   transition: color 0.35s;
+}
+
+@include bp.down(lg) {
+  .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+  .hero-panel { margin-inline: auto; }
+}
+
+@include bp.down(md) {
+  /* Content-height hero on phones, so Projects appears without a full-screen scroll. */
+  .hero { min-height: auto; }
+  .hero-body p { font-size: 1.05rem; line-height: 1.7; margin-bottom: 36px; }
+  .hero-ctas { width: 100%; }
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-outline {
+    flex: 1 1 auto; justify-content: center;
+    padding: 14px 22px; font-size: 0.95rem;
+  }
 }

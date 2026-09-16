@@ -1,9 +1,5 @@
-.projects-section {
-  background: var(--bg-2);
-  border-radius: 3rem;
-  margin: 100px clamp(32px, 6vw, 96px);
-  transition: background 0.35s;
-}
+@use 'breakpoints' as bp;
+
 .projects-header {
   display: flex; justify-content: space-between; align-items: flex-end;
   flex-wrap: wrap; gap: 16px; margin-bottom: 48px;
@@ -23,7 +19,7 @@
 .bento-3 { grid-column: span 12; }
 
 .project-card {
-  border-radius: 2rem; overflow: hidden;
+  border-radius: var(--card-radius); overflow: hidden;
   display: flex; flex-direction: column;
   position: relative;
   cursor: pointer;
@@ -45,7 +41,12 @@
   outline: none;
   box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
 }
-.project-card-button:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+@include bp.hover {
+  .project-card-button:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+}
+/* Touch devices get a light press instead of the hover lift. */
+.project-card-button:active,
+.project-card-wide:active { transform: scale(0.985); }
 
 .project-img-wrap {
   height: 260px; overflow: hidden; position: relative; flex-shrink: 0;
@@ -54,14 +55,16 @@
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
 }
-.project-card-button:hover .project-img-wrap img { transform: scale(1.06); }
+@include bp.hover {
+  .project-card-button:hover .project-img-wrap img { transform: scale(1.06); }
+}
 .img-tags {
   position: absolute; top: 14px; left: 14px; display: flex; gap: 6px;
 }
 .img-tag {
   background: rgba(255,255,255,0.88);
   color: var(--secondary);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.7rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   padding: 4px 12px; border-radius: 8px;
@@ -75,7 +78,7 @@
   border: 1px dashed var(--outline);
 }
 .project-img-placeholder span {
-  font-family: 'Space Grotesk', monospace;
+  font-family: var(--font-label);
   font-size: 0.78rem; letter-spacing: 0.02em;
   color: var(--text-muted);
   background: var(--surface);
@@ -87,21 +90,22 @@
   color: var(--secondary);
 }
 
-.project-body { padding: 28px 28px 28px; flex: 1; }
+.project-body { padding: var(--card-pad); flex: 1; }
 .project-body .h3 { margin-bottom: 10px; }
 .project-body p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 18px; line-height: 1.65; }
 .project-meta { display: flex; flex-wrap: wrap; gap: 10px; }
 .project-meta-item {
   color: var(--secondary);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.75rem; font-weight: 600;
   letter-spacing: 0.05em; text-transform: uppercase;
   display: flex; align-items: center; gap: 4px;
 }
+.project-meta-item .material-symbols-outlined { font-size: 14px; }
 
 .project-card-icon {
   cursor: pointer;
-  border-radius: 2rem; padding: 32px;
+  border-radius: var(--card-radius); padding: var(--card-pad);
   display: flex; flex-direction: column; justify-content: space-between;
   min-height: 360px;
   text-align: left;
@@ -115,7 +119,9 @@
   outline: none;
   box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
 }
-.project-card-icon:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+@include bp.hover {
+  .project-card-icon:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+}
 .icon-chip {
   width: 60px; height: 60px;
   background: var(--secondary);
@@ -126,7 +132,15 @@
   transition: transform 0.3s, background 0.35s;
   rotate: 3deg;
 }
-.project-card-icon:hover .icon-chip { rotate: 12deg; }
+@include bp.hover {
+  .project-card-icon:hover .icon-chip { rotate: 12deg; }
+}
+.project-card-icon .h3 { margin-bottom: 12px; }
+.project-card-icon p {
+  color: var(--text-muted);
+  font-size: 0.9rem; line-height: 1.65;
+  transition: color 0.35s;
+}
 .icon-chip .material-symbols-outlined {
   font-size: 28px; color: #fff;
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -139,13 +153,13 @@
 }
 .perf-row:last-child { border-bottom: none; padding-bottom: 0; }
 .perf-label {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.78rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--secondary);
 }
 .perf-value {
-  font-family: 'Epilogue', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700; font-size: 0.95rem; color: var(--text);
   transition: color 0.35s;
 }
@@ -153,7 +167,7 @@
 .project-card-wide {
   cursor: pointer;
   flex-direction: row;
-  border-radius: 2rem; overflow: hidden;
+  border-radius: var(--card-radius); overflow: hidden;
   position: relative;
 }
 
@@ -169,16 +183,19 @@
 .project-card-wide-overlay:focus-visible {
   outline: none;
   box-shadow: inset 0 0 0 3px var(--secondary);
-  border-radius: 2rem;
+  border-radius: var(--card-radius);
 }
-.project-card-wide:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+@include bp.hover {
+  .project-card-wide:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+}
 .project-card-wide .project-body { padding: 40px 40px 40px; display: flex; flex-direction: column; justify-content: center; }
+.project-card-wide .h3 { font-size: 1.6rem; margin-bottom: 14px; }
 .project-card-wide .project-img-wrap { height: auto; flex: 0 0 46%; }
 .tech-pills { display: flex; flex-wrap: wrap; gap: 8px; }
 .tech-pill {
   background: var(--glow-a);
   color: #7a1800;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-label);
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   padding: 5px 13px; border-radius: 8px;
@@ -187,4 +204,23 @@
 [data-theme="dark"] .tech-pill {
   background: rgba(255,138,112,0.15);
   color: var(--primary);
+}
+
+@include bp.down(lg) {
+  .bento-1, .bento-2, .bento-3 { grid-column: span 12; }
+  .project-card-wide { flex-direction: column; }
+  .project-card-wide .project-img-wrap { height: 240px; flex: none; }
+}
+
+@include bp.down(md) {
+  .projects-header { margin-bottom: 28px; }
+  .bento { gap: 16px; }
+  .project-img-wrap,
+  .project-card-wide .project-img-wrap { height: 200px; }
+  .project-img-placeholder { min-height: 0; }
+  .project-body p { margin-bottom: 14px; }
+  .project-card-icon { min-height: auto; }
+  .icon-chip { width: 52px; height: 52px; margin-bottom: 18px; }
+  .project-card-wide .project-body { padding: var(--card-pad); }
+  .project-card-wide .h3 { font-size: 1.35rem; }
 }

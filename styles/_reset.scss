@@ -1,10 +1,11 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+/* Scroll padding keeps anchor targets from landing under the fixed nav. */
+html { scroll-behavior: smooth; scroll-padding-top: var(--nav-offset); font-size: 16px; }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-body);
   line-height: 1.6;
   transition: background 0.35s, color 0.35s;
   overflow-x: hidden;

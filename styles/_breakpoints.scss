@@ -1,0 +1,34 @@
+/* Shared breakpoints, so each partial keeps its responsive rules beside the
+   base styles they override. */
+
+@use 'sass:map';
+
+$breakpoints: (
+  sm: 400px,
+  md: 600px,
+  lg: 900px,
+);
+
+/* Applies styles at or below the named breakpoint. */
+@mixin down($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Unknown breakpoint `#{$name}`. Expected one of: #{map.keys($breakpoints)}.";
+  }
+  @media (max-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}
+
+/* Hover styles only for devices with a real pointer, so a tap on a touch
+   screen doesn't leave them stuck on. */
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
