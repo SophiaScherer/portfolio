@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { useReveal } from "../hooks/useReveal";
 import type { GalleryImage } from "../lib/content";
 import { getProjectById, type Project } from "../lib/projects";
-import ProjectCard, { BENTO_CLASS } from "./ProjectCard";
+import ProjectCard from "./ProjectCard";
 import ProjectModal from "./ProjectModal";
 
 type ProjectsProps = {
@@ -36,8 +36,6 @@ export default function Projects({
     return url ? { ...p, imageUrl: url } : p;
   });
 
-  warnOnDuplicateVariants(resolved);
-
   const expanded = expandedId ? getProjectById(resolved, expandedId) : null;
 
   const toggle = useCallback(
@@ -65,12 +63,9 @@ export default function Projects({
           </p>
         </div>
 
-        <div className="bento">
+        <div className="projects-grid">
           {resolved.map((project, i) => (
-            <div
-              key={project.id}
-              className={cellClass(project.cardVariant, i)}
-            >
+            <div key={project.id} className={cellClass(i)}>
               <ProjectCard
                 project={project}
                 expanded={expandedId === project.id}
@@ -94,27 +89,9 @@ export default function Projects({
   );
 }
 
-/**
- * The bento is one fixed 12-column row and each variant owns a different span,
- * so two projects sharing a variant overflow it. Nothing in the type system
- * enforces distinctness, so say so loudly in development.
- */
-function warnOnDuplicateVariants(projects: Project[]) {
-  if (process.env.NODE_ENV === "production") return;
-  const seen = new Set<string>();
-  for (const p of projects) {
-    if (seen.has(p.cardVariant)) {
-      console.warn(
-        `[Projects] Duplicate cardVariant "${p.cardVariant}" on "${p.id}" — the bento row will not add up to 12 columns.`,
-      );
-    }
-    seen.add(p.cardVariant);
-  }
-}
-
-/** Grid cell plus the staggered reveal for this card's position. */
-function cellClass(variant: Project["cardVariant"], index: number) {
+/** Staggered reveal for this card's position in the grid. */
+function cellClass(index: number) {
   const delay =
     index > 0 ? ` reveal-delay-${Math.min(index, MAX_REVEAL_DELAY)}` : "";
-  return `${BENTO_CLASS[variant]} reveal${delay}`;
+  return `reveal${delay}`;
 }

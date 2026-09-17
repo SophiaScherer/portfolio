@@ -9,68 +9,73 @@
   transition: color 0.35s;
 }
 
-.bento {
+/* Every project renders the same card, so the grid is uniform too. */
+.projects-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
-.bento-1 { grid-column: span 7; }
-.bento-2 { grid-column: span 5; }
-.bento-3 { grid-column: span 12; }
 
 /* Grid stretches the cell to the tallest card in the row, but the card inside
    is a plain block and stops at its own content — leaving the section
    background showing under the shorter one. */
-.bento > * > .card { height: 100%; }
+.projects-grid > * > .card { height: 100%; }
 
+/* Also resets a <button> back to a block container, so the whole card can be
+   the click target without inheriting button chrome. */
 .project-card {
-  border-radius: var(--card-radius); overflow: hidden;
-  display: flex; flex-direction: column;
-  position: relative;
-  cursor: pointer;
-}
-
-/* Resets a <button> back to a block container so a card can be the click
-   target without inheriting button chrome. */
-.project-card-button {
+  border-radius: var(--card-radius);
+  padding: var(--card-pad);
+  /* `space-between` floats the spec table to the card's bottom edge, so the
+     rows line up across cards with descriptions of different lengths. */
+  display: flex; flex-direction: column; justify-content: space-between;
   text-align: left;
   cursor: pointer;
   font: inherit; color: inherit;
   width: 100%;
   appearance: none; -webkit-appearance: none;
-  padding: 0; border: 1px solid var(--surface-border);
+  border: 1px solid var(--surface-border);
   background: var(--surface);
   transition: background 0.35s, border-color 0.35s, box-shadow 0.35s, transform 0.25s;
 }
-.project-card-button:focus-visible {
+.project-card:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
 }
 @include bp.hover {
-  .project-card-button:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+  .project-card:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
 }
 /* Touch devices get a light press instead of the hover lift. */
-.project-card-button:active,
-.project-card-wide:active { transform: scale(0.985); }
+.project-card:active { transform: scale(0.985); }
 
+/* Inset rather than bleeding to the card's edges, matching the case-study
+   modal's header image. */
 .project-img-wrap {
-  height: 260px; overflow: hidden; position: relative; flex-shrink: 0;
+  height: 190px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--surface-border);
+  background: var(--bg-3);
+  flex-shrink: 0;
+  transition: border-color 0.35s;
 }
+/* Screenshots are landscape and top-heavy (title bars, live stats); a center
+   crop tends to land on an arbitrary slice of the middle instead. */
 .project-img-wrap img {
-  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
   transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
 }
-/* The `image` card variant's screenshots are landscape and top-heavy (title
-   bar, live stats); a center crop tends to land on an arbitrary slice of the
-   middle instead. Scoped to this variant (`.project-card-button`, not
-   `.project-card-wide`) since the wide card's image is a continuous texture
-   with no "top" to prefer. */
-.project-card-button .project-img-wrap img { object-position: top; }
 @include bp.hover {
-  .project-card-button:hover .project-img-wrap img { transform: scale(1.06); }
+  .project-card:hover .project-img-wrap img { transform: scale(1.06); }
+  .project-card:hover .project-img-wrap { border-color: var(--secondary); }
 }
+
 .img-tags {
-  position: absolute; top: 14px; left: 14px; display: flex; gap: 6px;
+  position: absolute; top: 12px; left: 12px; display: flex; gap: 6px;
 }
 .img-tag {
   background: rgba(255,255,255,0.88);
@@ -80,13 +85,17 @@
   letter-spacing: 0.06em; text-transform: uppercase;
   padding: 4px 12px; border-radius: 8px;
 }
+[data-theme="dark"] .img-tag {
+  background: rgba(30,28,34,0.82);
+  color: var(--secondary);
+}
+
 .project-img-placeholder {
-  width: 100%; height: 100%; min-height: 240px;
+  width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
   background: repeating-linear-gradient(
     45deg, var(--bg-3), var(--bg-3) 10px, var(--bg-2) 10px, var(--bg-2) 20px
   );
-  border: 1px dashed var(--outline);
 }
 .project-img-placeholder span {
   font-family: var(--font-label);
@@ -96,161 +105,42 @@
   padding: 8px 14px; border-radius: 8px;
   border: 1px solid var(--surface-border);
 }
-[data-theme="dark"] .img-tag {
-  background: rgba(30,28,34,0.82);
-  color: var(--secondary);
-}
 
-.project-body { padding: var(--card-pad); flex: 1; }
-.project-body .h3 { margin-bottom: 10px; }
-.project-body p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 18px; line-height: 1.65; }
-.project-meta { display: flex; flex-wrap: wrap; gap: 10px; }
-.project-meta-item {
-  color: var(--secondary);
-  font-family: var(--font-label);
-  font-size: 0.75rem; font-weight: 600;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  display: flex; align-items: center; gap: 4px;
-}
-.project-meta-item .material-symbols-outlined { font-size: 14px; }
-
-.project-card-icon {
-  cursor: pointer;
-  border-radius: var(--card-radius); padding: var(--card-pad);
-  display: flex; flex-direction: column; justify-content: space-between;
-  min-height: 360px;
-  text-align: left;
-  font: inherit; color: inherit;
-  width: 100%; appearance: none; -webkit-appearance: none;
-  border: 1px solid var(--surface-border);
-  background: var(--surface);
-  transition: background 0.35s, border-color 0.35s, box-shadow 0.35s, transform 0.25s;
-}
-.project-card-icon:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
-}
-@include bp.hover {
-  .project-card-icon:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
-}
-.icon-chip {
-  width: 60px; height: 60px;
-  background: var(--secondary);
-  border-radius: 16px; display: flex;
-  align-items: center; justify-content: center;
-  margin-bottom: 24px;
-  flex-shrink: 0;
-  transition: transform 0.3s, background 0.35s;
-  rotate: 3deg;
-}
-@include bp.hover {
-  .project-card-icon:hover .icon-chip { rotate: 12deg; }
-}
-.project-card-icon .h3 { margin-bottom: 12px; }
-.project-card-icon p {
+.project-card .h3 { margin-bottom: 10px; }
+.project-card p {
   color: var(--text-muted);
-  font-size: 0.9rem; line-height: 1.65;
+  font-size: 0.95rem; line-height: 1.65;
   transition: color 0.35s;
 }
-.icon-chip .material-symbols-outlined {
-  font-size: 28px; color: #fff;
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-/* Takes the icon-chip's spot when the project has a screenshot, so the card
-   leads with its own image rather than a generic icon. Height-fixed with a
-   top crop, same reasoning as the image variant's card thumbnail. */
-.project-card-icon-img-wrap {
-  height: 150px;
-  margin-bottom: 24px;
-  border-radius: 1rem;
-  overflow: hidden;
-  border: 1px solid var(--surface-border);
-}
-.project-card-icon-img-wrap img {
-  width: 100%; height: 100%; object-fit: cover; object-position: top;
-  display: block;
-  transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
-}
-@include bp.hover {
-  .project-card-icon:hover .project-card-icon-img-wrap img { transform: scale(1.06); }
-}
 
-.perf-table { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-.perf-row {
+.project-specs { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+.project-spec-row {
   display: flex; justify-content: space-between; align-items: center;
+  gap: 12px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--outline);
 }
-.perf-row:last-child { border-bottom: none; padding-bottom: 0; }
-.perf-label {
+.project-spec-row:last-child { border-bottom: none; padding-bottom: 0; }
+.project-spec-label {
   font-family: var(--font-label);
   font-size: 0.78rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--secondary);
 }
-.perf-value {
+.project-spec-value {
   font-family: var(--font-display);
   font-weight: 700; font-size: 0.95rem; color: var(--text);
+  text-align: right;
   transition: color 0.35s;
 }
 
-.project-card-wide {
-  cursor: pointer;
-  flex-direction: row;
-  border-radius: var(--card-radius); overflow: hidden;
-  position: relative;
-}
-
-/* Invisible click target that turns the entire wide card into a button without
-   changing its visual layout. */
-.project-card-wide-overlay {
-  position: absolute; inset: 0;
-  background: transparent; border: 0; padding: 0; margin: 0;
-  cursor: pointer; z-index: 2;
-  font: inherit; color: inherit;
-  appearance: none; -webkit-appearance: none;
-}
-.project-card-wide-overlay:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 3px var(--secondary);
-  border-radius: var(--card-radius);
-}
-@include bp.hover {
-  .project-card-wide:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
-}
-.project-card-wide .project-body { padding: 40px 40px 40px; display: flex; flex-direction: column; justify-content: center; }
-.project-card-wide .h3 { font-size: 1.6rem; margin-bottom: 14px; }
-.project-card-wide .project-img-wrap { height: auto; flex: 0 0 46%; }
-.tech-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.tech-pill {
-  background: var(--glow-a);
-  color: #7a1800;
-  font-family: var(--font-label);
-  font-size: 0.72rem; font-weight: 600;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 5px 13px; border-radius: 8px;
-  transition: background 0.35s, color 0.35s;
-}
-[data-theme="dark"] .tech-pill {
-  background: rgba(255,138,112,0.15);
-  color: var(--primary);
-}
-
 @include bp.down(lg) {
-  .bento-1, .bento-2, .bento-3 { grid-column: span 12; }
-  .project-card-wide { flex-direction: column; }
-  .project-card-wide .project-img-wrap { height: 240px; flex: none; }
+  .projects-grid { grid-template-columns: 1fr; }
 }
 
 @include bp.down(md) {
   .projects-header { margin-bottom: 28px; }
-  .bento { gap: 16px; }
-  .project-img-wrap,
-  .project-card-wide .project-img-wrap { height: 200px; }
-  .project-img-placeholder { min-height: 0; }
-  .project-body p { margin-bottom: 14px; }
-  .project-card-icon { min-height: auto; }
-  .icon-chip { width: 52px; height: 52px; margin-bottom: 18px; }
-  .project-card-wide .project-body { padding: var(--card-pad); }
-  .project-card-wide .h3 { font-size: 1.35rem; }
+  .projects-grid { gap: 16px; }
+  .project-img-wrap { height: 200px; margin-bottom: 18px; }
+  .project-specs { margin-top: 18px; }
 }
