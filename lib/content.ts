@@ -61,7 +61,8 @@ const PORTFOLIO_QUERY = /* GraphQL */ `
         width
         height
       }
-      images {
+      # Hygraph returns only the first 10 related items unless "first" is set.
+      images(first: 100) {
         url
         fileName
         mimeType
