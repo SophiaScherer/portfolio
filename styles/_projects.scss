@@ -9,10 +9,13 @@
   transition: color 0.35s;
 }
 
-/* Every project renders the same card, so the grid is uniform too. */
+/* Every project renders the same card, so the grid is uniform too.
+   `minmax(0, …)` overrides each track's automatic min-content floor — without
+   it a card wider than its share refuses to shrink, which both unbalances the
+   tracks and pushes the last card past the container just above `lg`. */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
 
@@ -21,32 +24,47 @@
    background showing under the shorter one. */
 .projects-grid > * > .card { height: 100%; }
 
-/* Also resets a <button> back to a block container, so the whole card can be
-   the click target without inheriting button chrome. */
 .project-card {
   border-radius: var(--card-radius);
   padding: var(--card-pad);
   /* `space-between` floats the spec table to the card's bottom edge, so the
      rows line up across cards with descriptions of different lengths. */
   display: flex; flex-direction: column; justify-content: space-between;
-  text-align: left;
+  /* Containing block for the trigger's stretched hit area. */
+  position: relative;
   cursor: pointer;
-  font: inherit; color: inherit;
-  width: 100%;
-  appearance: none; -webkit-appearance: none;
   border: 1px solid var(--surface-border);
   background: var(--surface);
   transition: background 0.35s, border-color 0.35s, box-shadow 0.35s, transform 0.25s;
-}
-.project-card:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
 }
 @include bp.hover {
   .project-card:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
 }
 /* Touch devices get a light press instead of the hover lift. */
 .project-card:active { transform: scale(0.985); }
+
+/* Resets the title's <button> back to plain text. */
+.project-card-trigger {
+  appearance: none; -webkit-appearance: none;
+  background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; color: inherit; text-align: left;
+  cursor: pointer;
+}
+/* Stretches the click target over the whole card. Later in the DOM than
+   `.project-img-wrap`, so it layers above the image without needing a
+   z-index. */
+.project-card-trigger::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: var(--card-radius);
+}
+/* The ring lives on the stretched overlay rather than the card, so the card's
+   own hover shadow can't overwrite it when the pointer rests on a card that
+   also holds keyboard focus. */
+.project-card-trigger:focus-visible { outline: none; }
+.project-card-trigger:focus-visible::after {
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
+}
 
 /* Inset rather than bleeding to the card's edges, matching the case-study
    modal's header image. */
@@ -74,8 +92,12 @@
   .project-card:hover .project-img-wrap { border-color: var(--secondary); }
 }
 
+/* Bounded on both sides and wrapping: the image is inset by the card's
+   padding now, so an extra or long authored tag would otherwise be clipped by
+   the wrapper's `overflow: hidden` with no visual cue. */
 .img-tags {
-  position: absolute; top: 12px; left: 12px; display: flex; gap: 6px;
+  position: absolute; top: 12px; left: 12px; right: 12px;
+  display: flex; flex-wrap: wrap; gap: 6px;
 }
 .img-tag {
   background: rgba(255,255,255,0.88);
@@ -141,6 +163,8 @@
 @include bp.down(md) {
   .projects-header { margin-bottom: 28px; }
   .projects-grid { gap: 16px; }
+  /* Taller than the base: one card per row means a much wider frame, and a
+     190px-tall band across it reads as a letterbox. */
   .project-img-wrap { height: 200px; margin-bottom: 18px; }
   .project-specs { margin-top: 18px; }
 }
