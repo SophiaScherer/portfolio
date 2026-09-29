@@ -5,5 +5,4 @@ node_modules
 tsconfig.tsbuildinfo
 next-env.d.ts
 coverage
-playwright-report
-test-results
+.claude/worktrees/

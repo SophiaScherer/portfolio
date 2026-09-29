@@ -1,20 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { getProjectGalleryMap, getProjectImageMap, getResumeDownload } from "./content";
 
-const request = vi.fn();
-vi.mock("./hygraph", () => ({ request: (...args: unknown[]) => request(...args) }));
-
-const { getProjectGalleryMap, getProjectImageMap, getResumeDownload } = await import("./content");
+const { request } = vi.hoisted(() => ({ request: vi.fn() }));
+vi.mock("./hygraph", () => ({ request }));
 
 const asset = (fileName: string, url = `https://cdn.test/${fileName}`) => ({
   url,
   fileName,
-  mimeType: "image/png",
   width: 100,
   height: 100,
 });
 
-const respondWith = (images: ReturnType<typeof asset>[], resumeFile: ReturnType<typeof asset> | null = null) =>
-  request.mockResolvedValue({ portfolios: [{ id: "1", title: "t", resumeFile, images }] });
+type Asset = ReturnType<typeof asset>;
+
+const respondWith = (images: Asset[], resumeFile: Asset | null = null) =>
+  request.mockResolvedValue({ portfolios: [{ resumeFile, images }] });
 
 beforeEach(() => {
   request.mockReset();

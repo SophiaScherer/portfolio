@@ -7,7 +7,7 @@ export default defineConfig([
   ...nextTs,
   {
     rules: {
-      // Images are resized by Hygraph's CDN, not `next/image`.
+      // Images are served straight from Hygraph's CDN rather than `next/image`.
       "@next/next/no-img-element": "off",
       // Existing violations; raised back to errors once fixed.
       "react-hooks/refs": "warn",
@@ -15,5 +15,5 @@ export default defineConfig([
       "react-hooks/immutability": "warn",
     },
   },
-  globalIgnores([".next/**", "next-env.d.ts", "coverage/**", "playwright-report/**", "test-results/**"]),
+  globalIgnores([".next/**", ".claude/**", "next-env.d.ts", "coverage/**"]),
 ]);
