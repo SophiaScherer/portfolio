@@ -12,6 +12,8 @@
   padding: clamp(16px, 4vw, 48px);
   visibility: hidden;
   pointer-events: none;
+  /* Horizontal swipes go to the gallery navigation instead of the browser. */
+  touch-action: pan-y pinch-zoom;
 }
 .lightbox.is-open {
   visibility: visible;

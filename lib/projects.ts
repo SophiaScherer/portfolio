@@ -233,3 +233,34 @@ export const getProjectById = (
   projects: Project[],
   id: string,
 ): Project | null => projects.find((p) => p.id === id) ?? null;
+
+/**
+ * Swaps in each project's CMS image, claimed by file name. An unpublished name
+ * misses the lookup and the project keeps its own `imageUrl`.
+ */
+export const withCmsImages = (
+  projects: Project[],
+  imagesByFileName: Record<string, string>,
+): Project[] =>
+  projects.map((p) => {
+    const url = p.cmsImageFileName ? imagesByFileName[p.cmsImageFileName] : undefined;
+    return url ? { ...p, imageUrl: url } : p;
+  });
+
+/**
+ * The bento is one fixed 12-column row and each variant owns a different span,
+ * so two projects sharing a variant overflow it. Nothing in the type system
+ * enforces distinctness, so say so loudly in development.
+ */
+export const warnOnDuplicateVariants = (projects: Project[]): void => {
+  if (process.env.NODE_ENV === "production") return;
+  const seen = new Set<CardVariant>();
+  for (const p of projects) {
+    if (seen.has(p.cardVariant)) {
+      console.warn(
+        `[Projects] Duplicate cardVariant "${p.cardVariant}" on "${p.id}" — the bento row will not add up to 12 columns.`,
+      );
+    }
+    seen.add(p.cardVariant);
+  }
+};

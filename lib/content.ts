@@ -24,7 +24,6 @@ import { request } from "./hygraph";
 export type HygraphAsset = {
   url: string;
   fileName: string;
-  mimeType: string | null;
   width: number | null;
   height: number | null;
 };
@@ -35,14 +34,15 @@ export type ResumeDownload = {
 };
 
 export type PortfolioContent = {
-  title: string;
-  resumeFile: HygraphAsset | null;
+  resumeFile: ResumeDownload | null;
   images: HygraphAsset[];
 };
 
+/** Alt text is left to the caller, which knows the project's title. */
 export type GalleryImage = {
   url: string;
-  alt: string;
+  width: number | null;
+  height: number | null;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -52,20 +52,14 @@ export type GalleryImage = {
 const PORTFOLIO_QUERY = /* GraphQL */ `
   query Portfolio {
     portfolios(first: 1) {
-      id
-      title
       resumeFile {
         url
         fileName
-        mimeType
-        width
-        height
       }
       # Hygraph returns only the first 10 related items unless "first" is set.
       images(first: 100) {
         url
         fileName
-        mimeType
         width
         height
       }
@@ -74,12 +68,7 @@ const PORTFOLIO_QUERY = /* GraphQL */ `
 `;
 
 type PortfolioQueryResponse = {
-  portfolios: Array<{
-    id: string;
-    title: string;
-    resumeFile: HygraphAsset | null;
-    images: HygraphAsset[];
-  }>;
+  portfolios: PortfolioContent[];
 };
 
 /* -------------------------------------------------------------------------- */
@@ -113,7 +102,6 @@ export const getPortfolioContent = async (): Promise<PortfolioContent | null> =>
   const entry = data.portfolios?.[0];
   if (!entry) return null;
   return {
-    title: entry.title,
     resumeFile: entry.resumeFile,
     images: entry.images,
   };
@@ -198,7 +186,7 @@ export const getProjectGalleryMap = async (): Promise<
       );
       continue;
     }
-    byIndex.set(index, { url: asset.url, alt: asset.fileName });
+    byIndex.set(index, { url: asset.url, width: asset.width, height: asset.height });
   }
 
   const byProjectId: Record<string, GalleryImage[]> = {};
