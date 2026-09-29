@@ -99,9 +99,9 @@ export default function Contact() {
                 Open to internship &amp; research opportunities
               </span>
               <p className="contact-intro">
-                I'm currently seeking internship and research opportunities in software engineering,
-                data visualization, and high-performance computing. If you're interested in collaborating
-                on a project or discussing opportunities, I'd be glad to connect.
+                I&apos;m currently seeking internship and research opportunities in software engineering,
+                data visualization, and high-performance computing. If you&apos;re interested in collaborating
+                on a project or discussing opportunities, I&apos;d be glad to connect.
               </p>
               <div className="contact-links">
                 <div className="contact-link">
