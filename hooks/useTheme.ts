@@ -25,17 +25,21 @@ function applyTheme(theme: Theme): void {
   listeners.forEach((listener) => listener());
 }
 
+// Follow the OS setting live until the visitor picks a theme themselves.
+function onSystemChange(event: MediaQueryListEvent) {
+  if (!readStored()) applyTheme(event.matches ? "dark" : "light");
+}
+
+let systemQuery: MediaQueryList | null = null;
+
 function subscribe(listener: () => void) {
+  // One shared query object, so the listener is removed from the same one it was added to.
+  const query = (systemQuery ??= window.matchMedia(DARK_QUERY));
+  if (listeners.size === 0) query.addEventListener("change", onSystemChange);
   listeners.add(listener);
-  // Follow the OS setting live until the visitor picks a theme themselves.
-  const query = window.matchMedia(DARK_QUERY);
-  const onSystemChange = () => {
-    if (!readStored()) applyTheme(query.matches ? "dark" : "light");
-  };
-  query.addEventListener("change", onSystemChange);
   return () => {
     listeners.delete(listener);
-    query.removeEventListener("change", onSystemChange);
+    if (listeners.size === 0) query.removeEventListener("change", onSystemChange);
   };
 }
 

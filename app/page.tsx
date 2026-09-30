@@ -31,7 +31,9 @@ export default async function Home() {
     <main id="main" tabIndex={-1}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON_JSON_LD) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(PERSON_JSON_LD).replace(/</g, "\\u003c"),
+        }}
       />
       <Hero />
       <Projects projects={projects} projectGalleries={projectGalleries} />

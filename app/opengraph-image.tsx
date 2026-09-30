@@ -24,7 +24,7 @@ export default function OpenGraphImage() {
         <div style={{ fontSize: 30, color: "#aa314d", letterSpacing: 4, textTransform: "uppercase" }}>
           {`${SITE_NAME} · CS @ Oregon State`}
         </div>
-        <div style={{ fontSize: 88, fontWeight: 800, fontStyle: "italic", lineHeight: 1.05, marginTop: 24 }}>
+        <div style={{ fontSize: 88, lineHeight: 1.05, marginTop: 24 }}>
           Building high-performance software
         </div>
         <div style={{ fontSize: 28, color: "#5c4039", marginTop: 32 }}>

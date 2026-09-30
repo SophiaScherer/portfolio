@@ -16,8 +16,6 @@ export default function AppleIcon() {
           background: "#9a2c46",
           color: "#f9f4e8",
           fontSize: 120,
-          fontStyle: "italic",
-          fontWeight: 700,
         }}
       >
         S

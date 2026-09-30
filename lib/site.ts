@@ -1,6 +1,7 @@
 /** Site-wide identity used by metadata, the sitemap, and the social preview image. */
 
-export const SITE_URL = "https://sophiasch.com";
+/** The www host; the bare domain redirects here. */
+export const SITE_URL = "https://www.sophiasch.com";
 export const SITE_NAME = "Sophia Scherer";
 export const SITE_TITLE = "Sophia Scherer | Portfolio";
 export const SITE_DESCRIPTION =

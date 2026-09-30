@@ -24,9 +24,9 @@
 
 /* Reveals use an animation rather than a transition, so their delay never
    leaks into an element's own hover transitions. `backwards` fill only holds
-   the start frame during the delay, leaving transforms free afterwards. */
-/* Hidden only once the head script marks the page as scripted, so content
-   still shows without JS. */
+   the start frame during the delay, leaving transforms free afterwards.
+   Content is hidden only once the head script marks the page as scripted, so
+   it still shows without JS. */
 [data-js] .reveal { opacity: 0; }
 .reveal.visible,
 .reveal-onload {

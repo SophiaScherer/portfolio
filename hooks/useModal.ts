@@ -72,15 +72,20 @@ export function useModal<T extends HTMLElement = HTMLElement>({
     [],
   );
 
-  // Lock body scroll, restoring whatever was there before. The value is
+  // Lock body scroll, restoring whatever was there before. The values are
   // captured rather than reset to "" so overlapping locks don't clobber
-  // each other.
+  // each other. Padding stands in for the hidden scrollbar, so the page
+  // behind the dialog doesn't shift sideways.
   useEffect(() => {
     if (!open) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const { body } = document;
+    const previous = { overflow: body.style.overflow, paddingRight: body.style.paddingRight };
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+    body.style.overflow = "hidden";
+    if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
     return () => {
-      document.body.style.overflow = previous;
+      body.style.overflow = previous.overflow;
+      body.style.paddingRight = previous.paddingRight;
     };
   }, [open]);
 

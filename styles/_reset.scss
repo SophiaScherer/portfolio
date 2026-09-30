@@ -1,16 +1,11 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 /* Scroll padding keeps anchor targets from landing under the fixed nav. The
-   stable gutter stops the page shifting when a dialog locks scrolling. The
    root font size is left to the browser, so visitors' text settings apply. */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: var(--nav-offset);
-  scrollbar-gutter: stable;
-}
+html { scroll-behavior: smooth; scroll-padding-top: var(--nav-offset); }
 
 /* Set for one frame by `useTheme`, so switching themes doesn't animate the
-   colors of every element at once. */
-[data-theme-switching] *,
+   colors of every element at once. The toggle's own knob still slides. */
+[data-theme-switching] *:not(.theme-toggle-knob),
 [data-theme-switching] *::before,
 [data-theme-switching] *::after { transition: none !important; }
 
