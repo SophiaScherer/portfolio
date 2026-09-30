@@ -5,10 +5,10 @@ import { useEffect } from "react";
 
 export default function Error({
   error,
-  reset,
+  retry,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
+  retry: () => void;
 }) {
   useEffect(() => {
     console.error(error);
@@ -21,7 +21,7 @@ export default function Error({
         <h1 className="h2">Something went wrong</h1>
         <p>This page hit an unexpected error. Trying again usually fixes it.</p>
         <div className="status-page-actions">
-          <button type="button" className="btn-primary" onClick={reset}>
+          <button type="button" className="btn-primary" onClick={retry}>
             Try again
           </button>
           <Link href="/" className="btn-outline">

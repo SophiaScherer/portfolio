@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 /* A thin band just above the middle of the viewport. A section is active while
    it crosses the band, which also works for sections taller than the screen. */
@@ -8,7 +9,10 @@ const ACTIVE_BAND = "-40% 0px -59% 0px";
 
 /** Returns the id of the section currently in view, or null before any match. */
 export function useNavActive(sectionIds: readonly string[]): string | null {
-  const [activeId, setActiveId] = useState<string | null>(null);
+  // The navbar outlives client navigations, so sections are looked up again on
+  // every route, and a match only counts on the route it was found on.
+  const pathname = usePathname();
+  const [active, setActive] = useState<{ pathname: string; id: string } | null>(null);
 
   useEffect(() => {
     const sections = sectionIds
@@ -19,7 +23,7 @@ export function useNavActive(sectionIds: readonly string[]): string | null {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveId(entry.target.id);
+          if (entry.isIntersecting) setActive({ pathname, id: entry.target.id });
         });
       },
       { rootMargin: ACTIVE_BAND }
@@ -27,7 +31,7 @@ export function useNavActive(sectionIds: readonly string[]): string | null {
 
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
-  }, [sectionIds]);
+  }, [sectionIds, pathname]);
 
-  return activeId;
+  return active?.pathname === pathname ? active.id : null;
 }
