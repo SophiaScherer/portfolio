@@ -11,7 +11,8 @@ describe("resizedImage", () => {
   });
 
   it("leaves other URLs untouched", () => {
-    expect(resizedImage("https://example.com/a.png", 800)).toBe("https://example.com/a.png");
+    const other = "https://example.com/a.png";
+    expect(resizedImage(other, 800)).toBe(other);
     const transformed = resizedImage(ASSET, 400);
     expect(resizedImage(transformed, 800)).toBe(transformed);
   });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, type PointerEvent } from "react";
 import { createPortal } from "react-dom";
 import { useIsClient } from "../hooks/useIsClient";
 import { useModal } from "../hooks/useModal";
@@ -45,20 +45,25 @@ export default function Lightbox({
   const swiped = useRef(false);
 
   const canNavigate = open && images.length > 1;
-  const step = (delta: number) => onNavigate(wrap((index ?? 0) + delta, images.length));
+  const step = useCallback(
+    (delta: number) => onNavigate(wrap((index ?? 0) + delta, images.length)),
+    [index, images.length, onNavigate],
+  );
 
   useEffect(() => {
     if (!canNavigate) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowRight") onNavigate(wrap((index ?? 0) + 1, images.length));
-      else if (event.key === "ArrowLeft") onNavigate(wrap((index ?? 0) - 1, images.length));
+      if (event.key === "ArrowRight") step(1);
+      else if (event.key === "ArrowLeft") step(-1);
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [canNavigate, index, images.length, onNavigate]);
+  }, [canNavigate, step]);
 
   const onPointerDown = (event: PointerEvent) => {
-    if (event.pointerType !== "mouse") swipeStart.current = { x: event.clientX, y: event.clientY };
+    if (event.pointerType !== "mouse") {
+      swipeStart.current = { x: event.clientX, y: event.clientY };
+    }
   };
   const onPointerUp = (event: PointerEvent) => {
     const start = swipeStart.current;
@@ -89,7 +94,9 @@ export default function Lightbox({
       aria-hidden={!open}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
-      onPointerCancel={() => (swipeStart.current = null)}
+      onPointerCancel={() => {
+        swipeStart.current = null;
+      }}
     >
       <div className="lightbox-backdrop" onClick={onBackdropClick} aria-hidden="true" />
 
@@ -141,7 +148,7 @@ export default function Lightbox({
           <img
             src={resizedImage(shown.url, 1600)}
             srcSet={imageSrcSet(shown.url, [800, 1600, 2400])}
-            sizes="100vw"
+            sizes="min(100vw, 1600px)"
             alt={shown.alt}
             className="lightbox-img"
           />

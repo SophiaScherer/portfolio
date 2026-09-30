@@ -66,14 +66,16 @@ export default function ProjectModal({
   // The header image is also the gallery's first thumbnail — without it,
   // reaching it again after scrolling down to the gallery would mean
   // scrolling all the way back up.
+  const header: LightboxImage[] = shown?.imageUrl
+    ? [{ url: shown.imageUrl, alt: shown.imageAlt || shown.title }]
+    : [];
+  // Numbered by position so the alt text matches the lightbox's "n / total".
   const allImages: LightboxImage[] = shown
     ? [
-        ...(shown.imageUrl
-          ? [{ url: shown.imageUrl, alt: shown.imageAlt || shown.title, width: null, height: null }]
-          : []),
+        ...header,
         ...gallery.map((image, i) => ({
           ...image,
-          alt: `${shown.title} screenshot ${i + 1}`,
+          alt: `${shown.title} screenshot ${header.length + i + 1}`,
         })),
       ]
     : [];
