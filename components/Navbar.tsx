@@ -2,6 +2,7 @@
 
 import type { CSSProperties, MouseEvent } from "react";
 import { flushSync } from "react-dom";
+import SectionLink from "./SectionLink";
 import ThemeToggle from "./ThemeToggle";
 import { useNavActive } from "../hooks/useNavActive";
 import { useHamburger } from "../hooks/useHamburger";
@@ -31,11 +32,16 @@ export default function Navbar({ resume }: NavbarProps) {
   // Menu links close the menu synchronously before scrolling: a smooth scroll
   // started while the scroll lock is still on gets cancelled when it releases.
   // The menu's history entry becomes the section's, so Back leaves both.
-  // Off the home page there's no section to scroll to, so go home instead.
+  // Off the home page there's no section to scroll to, so the menu's entry
+  // is replaced by the home page instead.
   const goToSection = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
-    const section = document.getElementById(id);
-    if (!section) return;
     event.preventDefault();
+    const section = document.getElementById(id);
+    if (!section) {
+      dismiss();
+      window.location.replace(sectionHref(id));
+      return;
+    }
     flushSync(dismiss);
     section.scrollIntoView();
     window.history.replaceState(null, "", `#${id}`);
@@ -49,15 +55,15 @@ export default function Navbar({ resume }: NavbarProps) {
     <header className="site-header" ref={headerRef} tabIndex={-1}>
       <div className="nav-wrap">
         <nav className="nav" aria-label="Primary">
-          <a href={sectionHref("about")} className="nav-logo">
+          <SectionLink id="about" className="nav-logo">
             Sophia Scherer
-          </a>
+          </SectionLink>
           <ul className="nav-links">
             {NAV_LINKS.map(({ id, label }) => (
               <li key={id}>
-                <a href={sectionHref(id)} {...activeProps(id)}>
+                <SectionLink id={id} {...activeProps(id)}>
                   {label}
-                </a>
+                </SectionLink>
               </li>
             ))}
           </ul>
@@ -89,8 +95,8 @@ export default function Navbar({ resume }: NavbarProps) {
           <ol className="mobile-menu-links">
             {NAV_LINKS.map(({ id, label }, i) => (
               <li key={id} style={{ "--i": i } as CSSProperties}>
-                <a
-                  href={sectionHref(id)}
+                <SectionLink
+                  id={id}
                   className="mobile-menu-link"
                   onClick={(event) => goToSection(event, id)}
                   {...activeProps(id)}
@@ -99,7 +105,7 @@ export default function Navbar({ resume }: NavbarProps) {
                     {toIndexLabel(i)}
                   </span>
                   {label}
-                </a>
+                </SectionLink>
               </li>
             ))}
           </ol>
@@ -144,7 +150,7 @@ function ResumeLink({
     >
       Resume
       <span className="visually-hidden">
-        {/.pdf$/i.test(resume.fileName) ? " (PDF, opens in a new tab)" : " (opens in a new tab)"}
+        {/\.pdf$/i.test(resume.fileName) ? " (PDF, opens in a new tab)" : " (opens in a new tab)"}
       </span>
     </a>
   );
