@@ -33,8 +33,8 @@
 }
 .text-muted { color: var(--text-muted); }
 
-/* Hidden visually but kept in the accessibility tree and layout-free. Also
-   hides the contact honeypot, which some bots detect under display: none. */
+/* Hidden visually without leaving the layout or the accessibility tree. The
+   contact honeypot uses it too, since some bots detect display: none. */
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;
