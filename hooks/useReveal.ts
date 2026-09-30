@@ -10,7 +10,7 @@ type Options = {
 
 export function useReveal<T extends Element = HTMLElement>(
   options?: Options
-): RefObject<T> {
+): RefObject<T | null> {
   const ref = useRef<T>(null);
 
   useEffect(() => {

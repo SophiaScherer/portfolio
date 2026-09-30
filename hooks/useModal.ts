@@ -46,7 +46,7 @@ export function useModal<T extends HTMLElement = HTMLElement>({
   open,
   onClose,
   suspendKeyboard = false,
-}: Options): RefObject<T> {
+}: Options): RefObject<T | null> {
   const dialogRef = useRef<T>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
 

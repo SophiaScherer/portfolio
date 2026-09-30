@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from "react"
  * fire, so the index simply stays at 0.
  */
 export function useCarouselIndex<T extends HTMLElement = HTMLElement>(): {
-  trackRef: RefObject<T>;
+  trackRef: RefObject<T | null>;
   activeIndex: number;
   scrollToIndex: (index: number) => void;
 } {
