@@ -1,0 +1,13 @@
+/* 404 and error pages: a single centered message below the fixed nav. */
+.status-page {
+  min-height: 70svh;
+  display: flex; align-items: center;
+  padding-top: calc(var(--nav-offset) + 32px);
+}
+.status-page .h2 { margin-bottom: 16px; }
+.status-page p {
+  color: var(--text-muted);
+  max-width: 520px;
+  margin-bottom: 32px;
+}
+.status-page-actions { display: flex; flex-wrap: wrap; gap: 14px; }
