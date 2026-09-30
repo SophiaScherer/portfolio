@@ -15,7 +15,7 @@
 
 import "server-only";
 
-import { request } from "./hygraph";
+import { HygraphConfigError, request } from "./hygraph";
 
 /* -------------------------------------------------------------------------- */
 /* Types                                                                      */
@@ -75,16 +75,22 @@ type PortfolioQueryResponse = {
 /* Selectors                                                                  */
 /* -------------------------------------------------------------------------- */
 
+/** True on the production server, where a failed render keeps the cached page. */
+const isRegenerating = () =>
+  process.env.NODE_ENV === "production" &&
+  process.env.NEXT_PHASE !== "phase-production-build";
+
 /**
  * Fetch the singleton Portfolio entry. Returns `null` if no entry exists.
  * Memoized per-request via the underlying `request()` cache.
  *
- * Never throws. These selectors are awaited directly in the root layout and in
- * `app/page.tsx`, so an unhandled rejection here would fail the entire render —
- * the page would 500 rather than merely lose its CMS-backed assets, and no
- * client component would hydrate. A CMS outage should cost the resume link and
- * one image, not the whole site, so failures are logged and reported as `null`.
- * Every caller below already treats `null` as "not published yet".
+ * Missing credentials, and failures during `next build` or in development,
+ * are logged and reported as `null` — every caller treats that as "not
+ * published yet" — so the site still renders without CMS content.
+ *
+ * A failure while the production server regenerates the page rethrows
+ * instead. ISR then keeps serving the last good page, rather than caching one
+ * with no resume link and placeholder images until the next regeneration.
  */
 export const getPortfolioContent = async (): Promise<PortfolioContent | null> => {
   let data: PortfolioQueryResponse;
@@ -92,6 +98,7 @@ export const getPortfolioContent = async (): Promise<PortfolioContent | null> =>
   try {
     data = await request<PortfolioQueryResponse>(PORTFOLIO_QUERY);
   } catch (error) {
+    if (!(error instanceof HygraphConfigError) && isRegenerating()) throw error;
     console.error(
       "[content] Hygraph request failed; rendering without CMS content.",
       error

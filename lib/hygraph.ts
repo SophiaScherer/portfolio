@@ -18,6 +18,12 @@ import { cache } from "react";
 
 type HygraphConfig = { endpoint: string; token: string };
 
+/** Missing credentials: a permanent setup gap rather than an outage. */
+export class HygraphConfigError extends Error {}
+
+/** Longest a CMS request may hold up a render or ISR regeneration. */
+const REQUEST_TIMEOUT_MS = 8_000;
+
 /**
  * Read and validate the Hygraph credentials.
  *
@@ -31,13 +37,13 @@ function resolveConfig(): HygraphConfig {
   const token = process.env.HYGRAPH_TOKEN;
 
   if (!endpoint) {
-    throw new Error(
+    throw new HygraphConfigError(
       "HYGRAPH_ENDPOINT is not set. Configure it in .env.local before using the Hygraph client."
     );
   }
 
   if (!token) {
-    throw new Error(
+    throw new HygraphConfigError(
       "HYGRAPH_TOKEN is not set. Configure it in .env.local before using the Hygraph client."
     );
   }
@@ -75,6 +81,7 @@ async function requestUncached<T>(
     },
     body: JSON.stringify({ query, variables }),
     next: { revalidate, tags },
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
 
   if (!res.ok) {
