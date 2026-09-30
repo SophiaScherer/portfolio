@@ -1,8 +1,12 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getProjectGalleryMap, getProjectImageMap, getResumeDownload } from "./content";
+import { HygraphConfigError } from "./hygraph";
 
 const { request } = vi.hoisted(() => ({ request: vi.fn() }));
-vi.mock("./hygraph", () => ({ request }));
+vi.mock("./hygraph", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("./hygraph")>()),
+  request,
+}));
 
 const asset = (fileName: string, url = `https://cdn.test/${fileName}`) => ({
   url,
@@ -20,6 +24,10 @@ beforeEach(() => {
   request.mockReset();
   vi.spyOn(console, "warn").mockImplementation(() => {});
   vi.spyOn(console, "error").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  vi.unstubAllEnvs();
 });
 
 describe("getProjectImageMap", () => {
@@ -62,5 +70,28 @@ describe("getResumeDownload", () => {
   it("returns the resume url and file name", async () => {
     respondWith([], asset("resume.pdf", "r"));
     expect(await getResumeDownload()).toEqual({ url: "r", fileName: "resume.pdf" });
+  });
+});
+
+describe("CMS failures on the production server", () => {
+  beforeEach(() => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PHASE", "");
+  });
+
+  it("rethrow, so ISR keeps the last good page", async () => {
+    request.mockRejectedValue(new Error("down"));
+    await expect(getProjectImageMap()).rejects.toThrow("down");
+  });
+
+  it("degrade during next build", async () => {
+    vi.stubEnv("NEXT_PHASE", "phase-production-build");
+    request.mockRejectedValue(new Error("down"));
+    expect(await getProjectImageMap()).toEqual({});
+  });
+
+  it("degrade when credentials are missing", async () => {
+    request.mockRejectedValue(new HygraphConfigError("HYGRAPH_TOKEN is not set."));
+    expect(await getResumeDownload()).toBeNull();
   });
 });
