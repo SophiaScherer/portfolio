@@ -2,8 +2,8 @@
 
 import { useCallback } from "react";
 import { setLocationHash, useLocationHash } from "../hooks/useLocationHash";
-import { useReveal } from "../hooks/useReveal";
 import type { GalleryImage } from "../lib/content";
+import { revealDelayClass } from "../lib/format";
 import { currentOverlay, historyBack } from "../lib/history";
 import { getProjectById, type Project } from "../lib/projects";
 import ProjectCard, { BENTO_CLASS } from "./ProjectCard";
@@ -16,9 +16,6 @@ type ProjectsProps = {
   projectGalleries: Record<string, GalleryImage[]>;
 };
 
-/** `_animations.scss` only defines `.reveal-delay-1` through `-4`. */
-const MAX_REVEAL_DELAY = 4;
-
 /** Each open case study has its own URL, e.g. `/#project-unpawse`. */
 const HASH_PREFIX = "#project-";
 const OVERLAY = "project";
@@ -27,7 +24,6 @@ export default function Projects({
   projects,
   projectGalleries,
 }: ProjectsProps) {
-  const sectionRef = useReveal<HTMLElement>();
   const hash = useLocationHash();
 
   const expanded = hash.startsWith(HASH_PREFIX)
@@ -50,7 +46,6 @@ export default function Projects({
     <section
       className="panel-section section-pad"
       id="projects"
-      ref={sectionRef}
     >
       <div className="container">
         <div className="projects-header">
@@ -93,7 +88,5 @@ export default function Projects({
 
 /** Grid cell plus the staggered reveal for this card's position. */
 function cellClass(variant: Project["cardVariant"], index: number) {
-  const delay =
-    index > 0 ? ` reveal-delay-${Math.min(index, MAX_REVEAL_DELAY)}` : "";
-  return `${BENTO_CLASS[variant]} reveal${delay}`;
+  return `${BENTO_CLASS[variant]} reveal ${revealDelayClass(index)}`.trim();
 }

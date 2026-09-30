@@ -9,6 +9,8 @@ import {
   type ContactErrors,
   type ContactInput,
 } from "../lib/contact";
+import { EXTERNAL_LINK_PROPS, SOCIAL_LINKS } from "../lib/links";
+import { PROFILE } from "../lib/profile";
 
 type FieldName = keyof ContactInput;
 type FieldElement = HTMLInputElement | HTMLTextAreaElement;
@@ -212,14 +214,24 @@ export default function Contact() {
                 data visualization, and high-performance computing. If you&apos;re interested in collaborating
                 on a project or discussing opportunities, I&apos;d be glad to connect.
               </p>
-              <div className="contact-links">
-                <div className="contact-link">
-                  <div className="contact-link-icon">
-                    <span className="material-symbols-outlined" aria-hidden="true">location_on</span>
+              <ul className="contact-links">
+                <li className="contact-link">
+                  <div className="contact-link-icon" aria-hidden="true">
+                    <span className="material-symbols-outlined">location_on</span>
                   </div>
-                  <span className="contact-link-text">Woodinville, WA</span>
-                </div>
-              </div>
+                  <span className="contact-link-text">{PROFILE.location}</span>
+                </li>
+                {SOCIAL_LINKS.map(({ label, href, icon }) => (
+                  <li key={label}>
+                    <a href={href} className="contact-link" {...EXTERNAL_LINK_PROPS}>
+                      <div className="contact-link-icon" aria-hidden="true">
+                        <span className="material-symbols-outlined">{icon}</span>
+                      </div>
+                      <span className="contact-link-text">{label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* `post` keeps a submit that lands before hydration from putting the
