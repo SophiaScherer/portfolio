@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { useModal } from "../hooks/useModal";
 import { useInView } from "../hooks/useInView";
 import { useIsClient } from "../hooks/useIsClient";
+import { useOverlayHistory } from "../hooks/useOverlayHistory";
 import type { GalleryImage } from "../lib/content";
 import { imageSrcSet, resizedImage } from "../lib/images";
 import type { Project } from "../lib/projects";
@@ -37,6 +38,10 @@ export default function ProjectModal({
     setWasOpen(open);
     if (!open) setLightboxIndex(null);
   }
+
+  const closeLightbox = useOverlayHistory("lightbox", lightboxIndex !== null, () =>
+    setLightboxIndex(null),
+  );
 
   // The lightbox layers on top of this dialog and runs its own useModal
   // instance. Both listen on `document`, so leaving this one's Escape/Tab
@@ -269,7 +274,7 @@ export default function ProjectModal({
       <Lightbox
         images={allImages}
         index={lightboxIndex}
-        onClose={() => setLightboxIndex(null)}
+        onClose={closeLightbox}
         onNavigate={setLightboxIndex}
       />
     </>

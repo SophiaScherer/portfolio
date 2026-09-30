@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
+import { setLocationHash, useLocationHash } from "../hooks/useLocationHash";
 import { useReveal } from "../hooks/useReveal";
 import type { GalleryImage } from "../lib/content";
 import { getProjectById, type Project } from "../lib/projects";
@@ -17,20 +18,35 @@ type ProjectsProps = {
 /** `_animations.scss` only defines `.reveal-delay-1` through `-4`. */
 const MAX_REVEAL_DELAY = 4;
 
+/** Each open case study has its own URL, e.g. `/#project-unpawse`. */
+const HASH_PREFIX = "#project-";
+const OPENED_FROM_PAGE = { overlay: "project" };
+
 export default function Projects({
   projects,
   projectGalleries,
 }: ProjectsProps) {
   const sectionRef = useReveal<HTMLElement>();
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const hash = useLocationHash();
 
-  const expanded = expandedId ? getProjectById(projects, expandedId) : null;
+  const expanded = hash.startsWith(HASH_PREFIX)
+    ? getProjectById(projects, hash.slice(HASH_PREFIX.length))
+    : null;
+  const expandedId = expanded?.id ?? null;
 
-  const toggle = useCallback(
-    (id: string) => setExpandedId((prev) => (prev === id ? null : id)),
-    [],
-  );
-  const close = useCallback(() => setExpandedId(null), []);
+  const open = useCallback((id: string) => {
+    setLocationHash(`${HASH_PREFIX}${id}`, { push: true, state: OPENED_FROM_PAGE });
+  }, []);
+
+  // Opened from a card: step back off the entry it pushed. Arrived through a
+  // shared link: there's no entry to pop, so just drop the hash.
+  const close = useCallback(() => {
+    if ((window.history.state as typeof OPENED_FROM_PAGE | null)?.overlay === "project") {
+      window.history.back();
+    } else {
+      setLocationHash("");
+    }
+  }, []);
 
   return (
     <section
@@ -60,7 +76,7 @@ export default function Projects({
               <ProjectCard
                 project={project}
                 expanded={expandedId === project.id}
-                onToggle={toggle}
+                onOpen={open}
               />
             </div>
           ))}

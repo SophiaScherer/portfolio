@@ -17,7 +17,7 @@ type NavbarProps = {
 
 export default function Navbar({ resume }: NavbarProps) {
   const activeId = useNavActive(NAV_SECTION_IDS);
-  const { open, toggle, close } = useHamburger();
+  const { open, toggle, close, dismiss } = useHamburger();
 
   // The trap wraps both the bar and the menu, so the hamburger (which closes
   // the menu) stays reachable by keyboard while the menu is open.
@@ -25,11 +25,12 @@ export default function Navbar({ resume }: NavbarProps) {
 
   // Menu links close the menu synchronously before scrolling: a smooth scroll
   // started while the scroll lock is still on gets cancelled when it releases.
+  // The menu's history entry becomes the section's, so Back leaves both.
   const goToSection = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
     event.preventDefault();
-    flushSync(close);
+    flushSync(dismiss);
     document.getElementById(id)?.scrollIntoView();
-    history.pushState(null, "", `#${id}`);
+    history.replaceState(null, "", `#${id}`);
   };
 
   // Styled through `[aria-current]`, so one attribute drives both a11y and CSS.

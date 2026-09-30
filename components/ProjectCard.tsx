@@ -6,7 +6,7 @@ import type { CardVariant, Project } from "../lib/projects";
 type ProjectCardProps = {
   project: Project;
   expanded: boolean;
-  onToggle: (id: string) => void;
+  onOpen: (id: string) => void;
 };
 
 /**
@@ -52,13 +52,13 @@ function CardImage({ project }: { project: Project }) {
 export default function ProjectCard({
   project,
   expanded,
-  onToggle,
+  onOpen,
 }: ProjectCardProps) {
   const trigger = (
     <button
       type="button"
       className="project-card-trigger"
-      onClick={() => onToggle(project.id)}
+      onClick={() => onOpen(project.id)}
       aria-expanded={expanded}
       aria-controls="project-modal"
       aria-haspopup="dialog"
