@@ -39,6 +39,7 @@
 .contact-links {
   display: flex; flex-direction: column;
   gap: 16px; margin-top: 36px;
+  list-style: none;
 }
 .contact-link {
   display: flex; align-items: center; gap: 16px;

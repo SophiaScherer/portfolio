@@ -1,17 +1,15 @@
 "use client";
 
-import { useReveal } from "../hooks/useReveal";
 import { useCarouselIndex } from "../hooks/useCarouselIndex";
 import { INTERESTS } from "../lib/interests";
-import { toIndexLabel } from "../lib/format";
+import { revealDelayClass, toIndexLabel } from "../lib/format";
 
 export default function Interests() {
-  const sectionRef = useReveal<HTMLElement>();
   const { trackRef, activeIndex, scrollToIndex } =
     useCarouselIndex<HTMLDivElement>();
 
   return (
-    <section className="section-pad" id="interests" ref={sectionRef}>
+    <section className="section-pad" id="interests">
       <div className="container">
         <span className="label-cap reveal">Beyond the Code</span>
         <h2 className="h2 reveal reveal-delay-1">Interests</h2>
@@ -21,10 +19,10 @@ export default function Interests() {
           {INTERESTS.map((interest, i) => (
             <div
               key={interest.id}
-              className={`card interest-card reveal reveal-delay-${i + 1}`}
+              className={`card interest-card reveal ${revealDelayClass(i + 1)}`}
             >
               <span className="interest-card-eyebrow">{toIndexLabel(i)}</span>
-              <div className="interest-icon">
+              <div className="interest-icon" aria-hidden="true">
                 <span className="material-symbols-outlined">{interest.icon}</span>
               </div>
               <h3 className="h3">{interest.title}</h3>

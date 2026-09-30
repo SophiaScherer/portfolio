@@ -14,6 +14,7 @@ const ICONS = [
   "code",
   "code_blocks",
   "dark_mode",
+  "description",
   "devices",
   "handshake",
   "insights",
@@ -26,6 +27,7 @@ const ICONS = [
   "pets",
   "settings",
   "terminal",
+  "work",
 ];
 
 const OUTPUT = new URL("../app/fonts/material-symbols-outlined.woff2", import.meta.url);
