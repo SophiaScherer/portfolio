@@ -59,10 +59,12 @@ export default function ProjectModal({
   const [body, setBody] = useState<HTMLDivElement | null>(null);
   const [titleRef, titleInView] = useInView<HTMLHeadingElement>(body);
 
-  // The dialog stays mounted between opens, so start each case study at the top.
+  // The dialog stays mounted between opens (and a URL change can swap the
+  // project while open), so start each case study at the top.
+  const shownId = shown?.id;
   useEffect(() => {
     if (open) body?.scrollTo(0, 0);
-  }, [open, body]);
+  }, [open, body, shownId]);
 
   const isClient = useIsClient();
   if (!isClient) return null;

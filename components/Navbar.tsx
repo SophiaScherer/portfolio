@@ -30,7 +30,7 @@ export default function Navbar({ resume }: NavbarProps) {
     event.preventDefault();
     flushSync(dismiss);
     document.getElementById(id)?.scrollIntoView();
-    history.replaceState(null, "", `#${id}`);
+    window.history.replaceState(null, "", `#${id}`);
   };
 
   // Styled through `[aria-current]`, so one attribute drives both a11y and CSS.

@@ -25,7 +25,10 @@ export function useLocationHash(): string {
   );
 }
 
-/** Replaces the hash (`""` clears it) and notifies `useLocationHash` readers. */
+/**
+ * Sets the hash (`""` clears it) in the current history entry, or in a new one
+ * with `push`, and notifies `useLocationHash` readers.
+ */
 export function setLocationHash(
   hash: string,
   { push = false, state = null }: { push?: boolean; state?: unknown } = {},

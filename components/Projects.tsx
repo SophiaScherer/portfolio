@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { setLocationHash, useLocationHash } from "../hooks/useLocationHash";
 import { useReveal } from "../hooks/useReveal";
 import type { GalleryImage } from "../lib/content";
+import { currentOverlay, historyBack } from "../lib/history";
 import { getProjectById, type Project } from "../lib/projects";
 import ProjectCard, { BENTO_CLASS } from "./ProjectCard";
 import ProjectModal from "./ProjectModal";
@@ -20,7 +21,7 @@ const MAX_REVEAL_DELAY = 4;
 
 /** Each open case study has its own URL, e.g. `/#project-unpawse`. */
 const HASH_PREFIX = "#project-";
-const OPENED_FROM_PAGE = { overlay: "project" };
+const OVERLAY = "project";
 
 export default function Projects({
   projects,
@@ -35,17 +36,14 @@ export default function Projects({
   const expandedId = expanded?.id ?? null;
 
   const open = useCallback((id: string) => {
-    setLocationHash(`${HASH_PREFIX}${id}`, { push: true, state: OPENED_FROM_PAGE });
+    setLocationHash(`${HASH_PREFIX}${id}`, { push: true, state: { overlay: OVERLAY } });
   }, []);
 
   // Opened from a card: step back off the entry it pushed. Arrived through a
   // shared link: there's no entry to pop, so just drop the hash.
   const close = useCallback(() => {
-    if ((window.history.state as typeof OPENED_FROM_PAGE | null)?.overlay === "project") {
-      window.history.back();
-    } else {
-      setLocationHash("");
-    }
+    if (currentOverlay() === OVERLAY) historyBack();
+    else setLocationHash("");
   }, []);
 
   return (

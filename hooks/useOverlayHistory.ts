@@ -1,10 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-
-type OverlayState = { overlay?: string } | null;
-
-const currentOverlay = () => (window.history.state as OverlayState)?.overlay;
+import { currentOverlay, historyBack } from "../lib/history";
 
 /**
  * Gives an overlay its own history entry while it's open, so the browser's
@@ -35,7 +32,7 @@ export function useOverlayHistory(
   }, [key, open]);
 
   return useCallback(() => {
-    if (currentOverlay() === key) window.history.back();
+    if (currentOverlay() === key) historyBack();
     else onCloseRef.current();
   }, [key]);
 }
