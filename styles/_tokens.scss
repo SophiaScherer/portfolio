@@ -20,6 +20,7 @@
   --nav-top:         16px;
   --nav-height:      80px;
   --nav-offset:      calc(var(--nav-top) + var(--nav-height) + 16px);
+  --ease-out:        cubic-bezier(0.25,0.46,0.45,0.94);
 }
 
 @include bp.down(md) {
@@ -47,6 +48,8 @@
   --text:            #1b1c17;
   --text-muted:      #5c4039;
   --outline:         rgba(144,111,104,0.25);
+  /* Borders and indicators that must reach 3:1 against surfaces (WCAG 1.4.11). */
+  --outline-strong:  #937e78;
   --tag-bg:          #fff;
   --tag-text:        #aa314d;
   --nav-bg:          rgba(255,255,255,0.78);
@@ -60,6 +63,10 @@
   --hero-dot:        rgba(170,49,77,0.08);
   --timeline-line:   rgba(170,49,77,0.18);
   --timeline-dot:    #aa314d;
+  /* Fading dots, pre-mixed with the section background so the line can't show through. */
+  --timeline-dot-1:  #c66a7e;
+  --timeline-dot-2:  #d999a7;
+  --timeline-dot-3:  #e9c8d0;
   --switch-track:    #e0ddd6;
   --switch-knob:     #fff;
   --switch-icon-l:   #f59e0b;
@@ -82,6 +89,7 @@
   --text:            #f0ede5;
   --text-muted:      #c4a9a1;
   --outline:         rgba(255,200,190,0.15);
+  --outline-strong:  #8b7873;
   --tag-bg:          rgba(255,178,188,0.1);
   --tag-text:        #ffb2bc;
   --nav-bg:          rgba(28,26,32,0.85);
@@ -95,6 +103,9 @@
   --hero-dot:        rgba(255,178,188,0.07);
   --timeline-line:   rgba(255,178,188,0.15);
   --timeline-dot:    #ffb2bc;
+  --timeline-dot-1:  #cc8290;
+  --timeline-dot-2:  #8a6671;
+  --timeline-dot-3:  #574550;
   --switch-track:    #3a383f;
   --switch-knob:     #18181a;
   --switch-icon-l:   #f59e0b;
