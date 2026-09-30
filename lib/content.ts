@@ -75,8 +75,12 @@ type PortfolioQueryResponse = {
 /* Selectors                                                                  */
 /* -------------------------------------------------------------------------- */
 
-/** True on the production server, where a failed render keeps the cached page. */
-const isRegenerating = () =>
+/**
+ * True on the production server, where a failed render of a prerendered page
+ * keeps the cached copy. A future dynamic route has no such copy, so a CMS
+ * outage would fail its render.
+ */
+const isProductionServer = () =>
   process.env.NODE_ENV === "production" &&
   process.env.NEXT_PHASE !== "phase-production-build";
 
@@ -98,7 +102,7 @@ export const getPortfolioContent = async (): Promise<PortfolioContent | null> =>
   try {
     data = await request<PortfolioQueryResponse>(PORTFOLIO_QUERY);
   } catch (error) {
-    if (!(error instanceof HygraphConfigError) && isRegenerating()) throw error;
+    if (!(error instanceof HygraphConfigError) && isProductionServer()) throw error;
     console.error(
       "[content] Hygraph request failed; rendering without CMS content.",
       error
