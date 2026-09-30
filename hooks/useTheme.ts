@@ -1,46 +1,61 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
+import { DARK_QUERY, THEME_STORAGE_KEY, type Theme } from "../lib/theme";
 
-type Theme = "light" | "dark";
+const listeners = new Set<() => void>();
 
-const STORAGE_KEY = "portfolio-theme";
-
-function readInitialTheme(): Theme {
-  if (typeof window === "undefined") return "light";
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-  if (stored === "light" || stored === "dark") return stored;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+function readStored(): Theme | null {
+  try {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return stored === "light" || stored === "dark" ? stored : null;
+  } catch {
+    return null;
+  }
 }
 
 function applyTheme(theme: Theme): void {
   const root = document.documentElement;
-  root.setAttribute("data-theme", theme);
-  const icon = document.getElementById("themeIcon");
-  if (icon) icon.textContent = theme === "dark" ? "dark_mode" : "light_mode";
+  // Skip every element's color transition for the switch itself.
+  root.dataset.themeSwitching = "";
+  root.dataset.theme = theme;
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => delete root.dataset.themeSwitching),
+  );
+  listeners.forEach((listener) => listener());
 }
 
-export function useTheme(): { theme: Theme; toggle: () => void } {
-  const [theme, setTheme] = useState<Theme>("light");
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  // Follow the OS setting live until the visitor picks a theme themselves.
+  const query = window.matchMedia(DARK_QUERY);
+  const onSystemChange = () => {
+    if (!readStored()) applyTheme(query.matches ? "dark" : "light");
+  };
+  query.addEventListener("change", onSystemChange);
+  return () => {
+    listeners.delete(listener);
+    query.removeEventListener("change", onSystemChange);
+  };
+}
 
-  useEffect(() => {
-    const initial = readInitialTheme();
-    setTheme(initial);
-    applyTheme(initial);
-  }, []);
+/** The theme set on <html> by `THEME_INIT_SCRIPT`, kept in sync with toggles and the OS. */
+export function useTheme(): { theme: Theme; toggle: () => void } {
+  const theme = useSyncExternalStore<Theme>(
+    subscribe,
+    () => (document.documentElement.dataset.theme === "dark" ? "dark" : "light"),
+    () => "light",
+  );
 
   const toggle = useCallback(() => {
-    setTheme((prev) => {
-      const next: Theme = prev === "dark" ? "light" : "dark";
-      applyTheme(next);
-      if (typeof window !== "undefined") {
-        window.localStorage.setItem(STORAGE_KEY, next);
-      }
-      return next;
-    });
-  }, []);
+    const next: Theme = theme === "dark" ? "light" : "dark";
+    applyTheme(next);
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      // Storage is blocked; the choice just won't persist.
+    }
+  }, [theme]);
 
   return { theme, toggle };
 }
