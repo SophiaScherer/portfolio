@@ -1,4 +1,5 @@
 @use 'breakpoints' as bp;
+@use 'mixins' as m;
 
 /* Mobile swipe carousel. A `.carousel-track` keeps its normal layout on larger
    screens and becomes a horizontal scroll-snap row at `md` and below, with the
@@ -38,15 +39,15 @@
   }
   /* 32px tap target around a small visual dot. */
   .carousel-dot {
+    @include m.button-reset;
     width: 32px; height: 32px;
     display: grid; place-items: center;
-    background: none; border: none; padding: 0; cursor: pointer;
   }
   .carousel-dot::before {
     content: '';
     width: 8px; height: 8px; border-radius: 999px;
-    background: var(--outline);
-    transition: width 0.25s cubic-bezier(0.25,0.46,0.45,0.94), background 0.25s;
+    background: var(--outline-strong);
+    transition: width 0.25s var(--ease-out), background 0.25s;
   }
   .carousel-dot[aria-current]::before {
     width: 22px;
