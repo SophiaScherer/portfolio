@@ -21,6 +21,7 @@ const UNTOUCHED: Record<FieldName, boolean> = { name: false, email: false, messa
 const ALL_TOUCHED: Record<FieldName, boolean> = { name: true, email: true, message: true };
 const FIX_FIELDS = "Please fix the highlighted fields.";
 const GENERIC_ERROR = "Something went wrong. Please try again.";
+const SUCCESS_MESSAGE = "Message sent! Thanks for reaching out.";
 
 async function readResponse(res: Response): Promise<ContactResponse | null> {
   if (!res.headers.get("content-type")?.includes("json")) return null;
@@ -221,7 +222,15 @@ export default function Contact() {
               </div>
             </div>
 
-            <form className="contact-form" onSubmit={handleSubmit} noValidate aria-busy={sending}>
+            {/* `post` keeps a submit that lands before hydration from putting the
+                message in the URL. */}
+            <form
+              className="contact-form"
+              method="post"
+              onSubmit={handleSubmit}
+              noValidate
+              aria-busy={sending}
+            >
               <Field {...fieldProps("name")} label="Full Name" placeholder="Your name" autoComplete="name" />
               <Field
                 {...fieldProps("email")}
@@ -233,7 +242,7 @@ export default function Contact() {
               <Field {...fieldProps("message")} label="Message" placeholder="Your message..." multiline />
 
               {/* Honeypot: hidden from people, but naive bots fill it in. */}
-              <div className="contact-hp" aria-hidden="true">
+              <div className="visually-hidden" aria-hidden="true">
                 <label htmlFor={HONEYPOT_FIELD}>Leave this field empty</label>
                 <input
                   id={HONEYPOT_FIELD}
@@ -245,9 +254,14 @@ export default function Contact() {
                 />
               </div>
 
+              {/* Always rendered: screen readers often skip a live region that
+                  appears already holding its text. */}
+              <p className="visually-hidden" role="status">
+                {status.kind === "success" ? SUCCESS_MESSAGE : ""}
+              </p>
               {status.kind === "success" && (
-                <div className="form-status success" role="status">
-                  Message sent! Thanks for reaching out.
+                <div className="form-status success" aria-hidden="true">
+                  {SUCCESS_MESSAGE}
                 </div>
               )}
               {status.kind === "error" && (
@@ -256,7 +270,8 @@ export default function Contact() {
                 </div>
               )}
 
-              <button className="btn-send" type="submit" disabled={sending}>
+              {/* `aria-disabled` rather than `disabled`, which would drop focus. */}
+              <button className="btn-send" type="submit" aria-disabled={sending}>
                 {sending ? "Sending…" : "Send Message"}
               </button>
             </form>

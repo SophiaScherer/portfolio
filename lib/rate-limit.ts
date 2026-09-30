@@ -5,15 +5,26 @@ type RateLimitOptions = {
   maxKeys?: number;
 };
 
+export type RateLimiter = {
+  /** Records a hit and returns true, or returns false when the key is at its limit. */
+  take: (key: string, now?: number) => boolean;
+  /** Removes the key's latest hit, for when the action it guarded failed. */
+  refund: (key: string) => void;
+};
+
 /**
- * Sliding-window limiter. Returns true when the call is allowed.
+ * Sliding-window limiter.
  * Best effort only: serverless instances don't share memory, so each one counts separately.
  */
-export function createRateLimiter({ limit, windowMs, maxKeys = 10_000 }: RateLimitOptions) {
+export function createRateLimiter({
+  limit,
+  windowMs,
+  maxKeys = 10_000,
+}: RateLimitOptions): RateLimiter {
   const hits = new Map<string, number[]>();
   let lastSweep = 0;
 
-  return (key: string, now = Date.now()): boolean => {
+  const take = (key: string, now = Date.now()): boolean => {
     const cutoff = now - windowMs;
 
     if (now - lastSweep >= windowMs) {
@@ -40,4 +51,12 @@ export function createRateLimiter({ limit, windowMs, maxKeys = 10_000 }: RateLim
     }
     return true;
   };
+
+  const refund = (key: string): void => {
+    const times = hits.get(key);
+    times?.pop();
+    if (times?.length === 0) hits.delete(key);
+  };
+
+  return { take, refund };
 }

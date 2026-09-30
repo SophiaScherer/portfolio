@@ -97,6 +97,33 @@ describe("POST /api/contact", () => {
     expect((await post(valid, { "x-forwarded-for": "198.51.100.7, 203.0.113.1" })).status).toBe(200);
   });
 
+  it("stops reading a streamed body once it passes the cap", async () => {
+    let pulled = 0;
+    const stream = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        pulled++;
+        controller.enqueue(new Uint8Array(8_000));
+        if (pulled === 100) controller.close();
+      },
+    });
+    const res = await POST(
+      new Request("http://localhost/api/contact", {
+        method: "POST",
+        body: stream,
+        duplex: "half",
+      } as RequestInit)
+    );
+    expect(res.status).toBe(413);
+    expect(pulled).toBeLessThan(10);
+  });
+
+  it("refunds the quota when sending fails", async () => {
+    sendMail.mockRejectedValue(new Error("smtp down"));
+    for (let i = 0; i < 5; i++) expect((await post(valid)).status).toBe(500);
+    sendMail.mockResolvedValue({});
+    expect((await post(valid)).status).toBe(200);
+  });
+
   it("doesn't count rejected submissions toward the limit", async () => {
     for (let i = 0; i < 6; i++) await post({ ...valid, email: "not-an-email" });
     expect((await post(valid)).status).toBe(200);

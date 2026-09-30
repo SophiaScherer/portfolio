@@ -2,7 +2,10 @@
 
 export const CONTACT_LIMITS = { name: 100, email: 254, message: 5000 } as const;
 
-/** Submissions faster than this after the form mounts are treated as bots. */
+/**
+ * Submissions faster than this after the form mounts are treated as bots.
+ * The client reports the time, so this only stops bots that fill in the page.
+ */
 export const MIN_FILL_MS = 2000;
 
 /**
