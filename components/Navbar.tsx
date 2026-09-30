@@ -6,13 +6,18 @@ import ThemeToggle from "./ThemeToggle";
 import { useNavActive } from "../hooks/useNavActive";
 import { useHamburger } from "../hooks/useHamburger";
 import { useModal } from "../hooks/useModal";
-import { NAV_LINKS, NAV_SECTION_IDS, SOCIAL_LINKS } from "../lib/links";
+import type { ResumeDownload } from "../lib/content";
+import {
+  EXTERNAL_LINK_PROPS,
+  NAV_LINKS,
+  NAV_SECTION_IDS,
+  SOCIAL_LINKS,
+  sectionHref,
+} from "../lib/links";
 import { toIndexLabel } from "../lib/format";
 
-type Resume = { url: string; fileName: string };
-
 type NavbarProps = {
-  resume: Resume | null;
+  resume: ResumeDownload | null;
 };
 
 export default function Navbar({ resume }: NavbarProps) {
@@ -26,10 +31,13 @@ export default function Navbar({ resume }: NavbarProps) {
   // Menu links close the menu synchronously before scrolling: a smooth scroll
   // started while the scroll lock is still on gets cancelled when it releases.
   // The menu's history entry becomes the section's, so Back leaves both.
+  // Off the home page there's no section to scroll to, so go home instead.
   const goToSection = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+    const section = document.getElementById(id);
+    if (!section) return;
     event.preventDefault();
     flushSync(dismiss);
-    document.getElementById(id)?.scrollIntoView();
+    section.scrollIntoView();
     window.history.replaceState(null, "", `#${id}`);
   };
 
@@ -41,13 +49,13 @@ export default function Navbar({ resume }: NavbarProps) {
     <header className="site-header" ref={headerRef} tabIndex={-1}>
       <div className="nav-wrap">
         <nav className="nav" aria-label="Primary">
-          <a href="#about" className="nav-logo">
+          <a href={sectionHref("about")} className="nav-logo">
             Sophia Scherer
           </a>
           <ul className="nav-links">
             {NAV_LINKS.map(({ id, label }) => (
               <li key={id}>
-                <a href={`#${id}`} {...activeProps(id)}>
+                <a href={sectionHref(id)} {...activeProps(id)}>
                   {label}
                 </a>
               </li>
@@ -82,7 +90,7 @@ export default function Navbar({ resume }: NavbarProps) {
             {NAV_LINKS.map(({ id, label }, i) => (
               <li key={id} style={{ "--i": i } as CSSProperties}>
                 <a
-                  href={`#${id}`}
+                  href={sectionHref(id)}
                   className="mobile-menu-link"
                   onClick={(event) => goToSection(event, id)}
                   {...activeProps(id)}
@@ -107,7 +115,7 @@ export default function Navbar({ resume }: NavbarProps) {
           )}
           <div className="mobile-menu-socials">
             {SOCIAL_LINKS.map(({ label, href }) => (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer">
+              <a key={label} href={href} {...EXTERNAL_LINK_PROPS}>
                 {label}
               </a>
             ))}
@@ -123,20 +131,21 @@ function ResumeLink({
   className,
   onClick,
 }: {
-  resume: Resume;
+  resume: ResumeDownload;
   className: string;
   onClick?: () => void;
 }) {
   return (
     <a
       href={resume.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      download={resume.fileName}
+      {...EXTERNAL_LINK_PROPS}
       className={`btn-primary ${className}`}
       onClick={onClick}
     >
       Resume
+      <span className="visually-hidden">
+        {/.pdf$/i.test(resume.fileName) ? " (PDF, opens in a new tab)" : " (opens in a new tab)"}
+      </span>
     </a>
   );
 }

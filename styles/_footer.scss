@@ -28,6 +28,8 @@ footer {
   font-size: 0.78rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--text-muted); text-decoration: none;
+  /* Taller tap target without changing the visual rhythm. */
+  padding-block: 12px;
   transition: color 0.2s;
 }
 .footer-links a:hover { color: var(--primary); }
