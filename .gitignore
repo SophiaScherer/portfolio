@@ -6,3 +6,5 @@ tsconfig.tsbuildinfo
 next-env.d.ts
 coverage
 .claude/worktrees/
+playwright-report
+test-results
