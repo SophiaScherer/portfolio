@@ -214,7 +214,7 @@ export default function Contact() {
                 data visualization, and high-performance computing. If you&apos;re interested in collaborating
                 on a project or discussing opportunities, I&apos;d be glad to connect.
               </p>
-              <ul className="contact-links">
+              <ul className="contact-links" role="list">
                 <li className="contact-link">
                   <div className="contact-link-icon" aria-hidden="true">
                     <span className="material-symbols-outlined">location_on</span>
