@@ -111,7 +111,7 @@ export default function ProjectCard({
         <div className="project-body">
           <h3 className="h3">{project.title}</h3>
           <p>{project.shortDescription}</p>
-          <ul className="tech-pills">
+          <ul className="tech-pills" role="list">
             {project.technologies.slice(0, 4).map((t) => (
               <li key={t} className="tech-pill">
                 {t}
@@ -132,7 +132,7 @@ export default function ProjectCard({
       <div className="project-img-wrap">
         <CardImage project={project} />
         {project.imageUrl && project.imageTags.length > 0 && (
-          <ul className="img-tags">
+          <ul className="img-tags" role="list">
             {project.imageTags.map((t) => (
               <li key={t} className="img-tag">
                 {t}

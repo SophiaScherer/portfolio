@@ -18,7 +18,7 @@ export default function Experience() {
               {SKILL_GROUPS.map((group) => (
                 <div key={group.label} className="skills-group">
                   <h3 className="skills-group-label">{group.label}</h3>
-                  <ul className="skills-cloud">
+                  <ul className="skills-cloud" role="list">
                     {group.skills.map((skill) => (
                       <li key={skill} className="tag">
                         {skill}
@@ -33,7 +33,7 @@ export default function Experience() {
           <div>
             <span className="label-cap reveal">Work</span>
             <h2 className="h2 reveal reveal-delay-1">Experience</h2>
-            <ol className="timeline reveal reveal-delay-2">
+            <ol className="timeline reveal reveal-delay-2" role="list">
               {TIMELINE.map((item, i) => (
                 <li key={`${item.title}-${item.dates}`} className="timeline-item">
                   <div
