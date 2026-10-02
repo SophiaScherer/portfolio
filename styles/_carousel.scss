@@ -63,3 +63,8 @@
     box-shadow: 0 0 0 2px var(--secondary);
   }
 }
+
+/* Full-bleed on phones, where an outer ring would be clipped at the screen edges. */
+@include bp.down(md) {
+  .carousel-track:focus-visible { box-shadow: inset 0 0 0 3px var(--secondary); border-radius: 0; }
+}
