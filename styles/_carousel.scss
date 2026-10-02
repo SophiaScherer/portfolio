@@ -6,6 +6,10 @@
    next slide peeking in. Pair with `useCarouselIndex` for `.carousel-dots`. */
 
 .carousel-dots { display: none; }
+.carousel-track:focus-visible {
+  @include m.focus-ring;
+  border-radius: var(--card-radius);
+}
 
 @include bp.down(md) {
   .carousel-track {

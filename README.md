@@ -25,6 +25,8 @@ npm run dev
 | `npm run typecheck` | Generates route types, then runs `tsc` |
 | `npm run lint` | ESLint |
 | `npm test` | Unit tests (Vitest) |
+| `npm run test:e2e` | End-to-end and accessibility tests (Playwright, against a production build; run `npx playwright install chromium` once) |
+| `npm run icons` | Regenerates the self-hosted icon font from the list in `scripts/fetch-icons.mjs` |
 
 ## Content
 
