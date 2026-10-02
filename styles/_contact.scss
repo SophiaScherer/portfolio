@@ -60,8 +60,7 @@
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.3s var(--ease-out),
-              background 0.35s;
+  transition: transform 0.3s var(--ease-out);
 }
 @include bp.hover {
   .contact-link:hover .contact-link-icon { transform: rotate(-8deg) scale(1.06); }
@@ -90,8 +89,7 @@
   padding: 14px 18px; border-radius: 14px;
   outline: none;
   resize: none;
-  transition: border-color 0.25s, background 0.35s, color 0.35s,
-              box-shadow 0.25s, transform 0.15s;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.15s;
 }
 .form-group input::placeholder,
 .form-group textarea::placeholder { color: var(--text-muted); opacity: 1; }

@@ -20,7 +20,7 @@
   box-shadow: 0 8px 24px var(--primary-glow);
   transition: transform 0.25s var(--ease-out),
               box-shadow 0.25s var(--ease-out),
-              background 0.35s, opacity 0.25s;
+              opacity 0.25s;
   position: relative; overflow: hidden;
 }
 .btn-primary::after {
@@ -69,7 +69,7 @@
   padding: 14px 30px; border-radius: 14px;
   text-decoration: none; cursor: pointer;
   display: inline-flex; align-items: center; gap: 10px;
-  transition: background 0.25s, color 0.25s, border-color 0.35s, transform 0.25s;
+  transition: background 0.25s, color 0.25s, transform 0.25s;
 }
 @include bp.hover {
   .btn-outline:hover {

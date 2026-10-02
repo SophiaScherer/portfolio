@@ -115,7 +115,7 @@
   align-items: center; justify-content: center;
   margin-bottom: 24px;
   flex-shrink: 0;
-  transition: transform 0.3s, background 0.35s;
+  transition: transform 0.3s;
   rotate: 3deg;
 }
 @include bp.hover {
