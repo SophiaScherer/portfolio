@@ -9,10 +9,8 @@ export default defineConfig([
     rules: {
       // Images are served straight from Hygraph's CDN rather than `next/image`.
       "@next/next/no-img-element": "off",
-      // Existing violations; raised back to errors once fixed.
-      "react-hooks/refs": "warn",
+      // Existing violation in useTheme; raised back to an error once fixed.
       "react-hooks/set-state-in-effect": "warn",
-      "react-hooks/immutability": "warn",
     },
   },
   globalIgnores([".next/**", ".claude/**", "next-env.d.ts", "coverage/**"]),

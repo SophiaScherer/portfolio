@@ -30,28 +30,26 @@
   cursor: pointer;
 }
 
-/* Resets a <button> back to a block container so a card can be the click
-   target without inheriting button chrome. */
-.project-card-button {
-  text-align: left;
+/* Transparent button stretched over the whole card, so the card's content
+   stays outside the button and readable to assistive tech. */
+.project-card-trigger {
+  position: absolute; inset: 0; z-index: 2;
+  background: transparent; border: 0; padding: 0; margin: 0;
+  border-radius: inherit;
   cursor: pointer;
-  font: inherit; color: inherit;
-  width: 100%;
   appearance: none; -webkit-appearance: none;
-  padding: 0; border: 1px solid var(--surface-border);
-  background: var(--surface);
-  transition: background 0.35s, border-color 0.35s, box-shadow 0.35s, transform 0.25s;
 }
-.project-card-button:focus-visible {
+.project-card-trigger:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
+  box-shadow: inset 0 0 0 3px var(--secondary);
 }
 @include bp.hover {
-  .project-card-button:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
+  .project-card:hover,
+  .project-card-icon:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
 }
 /* Touch devices get a light press instead of the hover lift. */
-.project-card-button:active,
-.project-card-wide:active { transform: scale(0.985); }
+.project-card:active,
+.project-card-icon:active { transform: scale(0.985); }
 
 .project-img-wrap {
   height: 260px; overflow: hidden; position: relative; flex-shrink: 0;
@@ -62,15 +60,15 @@
 }
 /* The `image` card variant's screenshots are landscape and top-heavy (title
    bar, live stats); a center crop tends to land on an arbitrary slice of the
-   middle instead. Scoped to this variant (`.project-card-button`, not
-   `.project-card-wide`) since the wide card's image is a continuous texture
-   with no "top" to prefer. */
-.project-card-button .project-img-wrap img { object-position: top; }
+   middle instead. Scoped to this variant (not `.project-card-wide`) since the
+   wide card's image is a continuous texture with no "top" to prefer. */
+.project-card-image .project-img-wrap img { object-position: top; }
 @include bp.hover {
-  .project-card-button:hover .project-img-wrap img { transform: scale(1.06); }
+  .project-card-image:hover .project-img-wrap img { transform: scale(1.06); }
 }
 .img-tags {
   position: absolute; top: 14px; left: 14px; display: flex; gap: 6px;
+  list-style: none;
 }
 .img-tag {
   background: rgba(255,255,255,0.88);
@@ -87,14 +85,6 @@
     45deg, var(--bg-3), var(--bg-3) 10px, var(--bg-2) 10px, var(--bg-2) 20px
   );
   border: 1px dashed var(--outline);
-}
-.project-img-placeholder span {
-  font-family: var(--font-label);
-  font-size: 0.78rem; letter-spacing: 0.02em;
-  color: var(--text-muted);
-  background: var(--surface);
-  padding: 8px 14px; border-radius: 8px;
-  border: 1px solid var(--surface-border);
 }
 [data-theme="dark"] .img-tag {
   background: rgba(30,28,34,0.82);
@@ -115,23 +105,10 @@
 .project-meta-item .material-symbols-outlined { font-size: 14px; }
 
 .project-card-icon {
-  cursor: pointer;
+  position: relative;
   border-radius: var(--card-radius); padding: var(--card-pad);
   display: flex; flex-direction: column; justify-content: space-between;
   min-height: 360px;
-  text-align: left;
-  font: inherit; color: inherit;
-  width: 100%; appearance: none; -webkit-appearance: none;
-  border: 1px solid var(--surface-border);
-  background: var(--surface);
-  transition: background 0.35s, border-color 0.35s, box-shadow 0.35s, transform 0.25s;
-}
-.project-card-icon:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
-}
-@include bp.hover {
-  .project-card-icon:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
 }
 .icon-chip {
   width: 60px; height: 60px;
@@ -194,34 +171,11 @@
   transition: color 0.35s;
 }
 
-.project-card-wide {
-  cursor: pointer;
-  flex-direction: row;
-  border-radius: var(--card-radius); overflow: hidden;
-  position: relative;
-}
-
-/* Invisible click target that turns the entire wide card into a button without
-   changing its visual layout. */
-.project-card-wide-overlay {
-  position: absolute; inset: 0;
-  background: transparent; border: 0; padding: 0; margin: 0;
-  cursor: pointer; z-index: 2;
-  font: inherit; color: inherit;
-  appearance: none; -webkit-appearance: none;
-}
-.project-card-wide-overlay:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 3px var(--secondary);
-  border-radius: var(--card-radius);
-}
-@include bp.hover {
-  .project-card-wide:hover { transform: translateY(-4px); box-shadow: 0 28px 56px var(--primary-glow); }
-}
+.project-card-wide { flex-direction: row; }
 .project-card-wide .project-body { padding: 40px 40px 40px; display: flex; flex-direction: column; justify-content: center; }
 .project-card-wide .h3 { font-size: 1.6rem; margin-bottom: 14px; }
 .project-card-wide .project-img-wrap { height: auto; flex: 0 0 46%; }
-.tech-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.tech-pills { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
 .tech-pill {
   background: var(--glow-a);
   color: #7a1800;

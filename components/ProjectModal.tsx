@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useModal } from "../hooks/useModal";
 import { useInView } from "../hooks/useInView";
+import { useIsClient } from "../hooks/useIsClient";
+import type { GalleryImage } from "../lib/content";
+import { imageSrcSet, resizedImage } from "../lib/images";
 import type { Project } from "../lib/projects";
 import Lightbox, { type LightboxImage } from "./Lightbox";
 
@@ -11,17 +14,29 @@ type ProjectModalProps = {
   project: Project | null;
   open: boolean;
   onClose: () => void;
-  /** Extra screenshots beyond the header image — see `getProjectGalleryMap`. */
-  galleryImages: LightboxImage[];
+  /** Extra screenshots beyond the header image, keyed by project id. */
+  galleries: Record<string, GalleryImage[]>;
 };
+
+const NO_GALLERY: GalleryImage[] = [];
 
 export default function ProjectModal({
   project,
   open,
   onClose,
-  galleryImages,
+  galleries,
 }: ProjectModalProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  // Keep the last project so the dialog still has content while it
+  // transitions out, and close the lightbox whenever the dialog closes.
+  const [shown, setShown] = useState<Project | null>(project);
+  const [wasOpen, setWasOpen] = useState(open);
+  if (project && project !== shown) setShown(project);
+  if (open !== wasOpen) {
+    setWasOpen(open);
+    if (!open) setLightboxIndex(null);
+  }
 
   // The lightbox layers on top of this dialog and runs its own useModal
   // instance. Both listen on `document`, so leaving this one's Escape/Tab
@@ -34,10 +49,6 @@ export default function ProjectModal({
     suspendKeyboard: lightboxIndex !== null,
   });
 
-  useEffect(() => {
-    if (!open) setLightboxIndex(null);
-  }, [open]);
-
   // The scroll body is the observer root for the title, so the slim bar
   // condenses once the full title scrolls out of view.
   const [body, setBody] = useState<HTMLDivElement | null>(null);
@@ -45,31 +56,29 @@ export default function ProjectModal({
 
   // The dialog stays mounted between opens, so start each case study at the top.
   useEffect(() => {
-    if (open && body) body.scrollTop = 0;
+    if (open) body?.scrollTo(0, 0);
   }, [open, body]);
 
-  // Portals need a DOM node to target, which doesn't exist while rendering on
-  // the server.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const isClient = useIsClient();
+  if (!isClient) return null;
 
-  // Hold on to the last project so the card still has content to show while the
-  // dialog transitions out — otherwise it empties a beat before the backdrop
-  // finishes fading.
-  const lastProject = useRef<Project | null>(null);
-  useEffect(() => {
-    if (project) lastProject.current = project;
-  }, [project]);
-  const shown = project ?? lastProject.current;
-
+  const gallery = shown ? (galleries[shown.id] ?? NO_GALLERY) : NO_GALLERY;
   // The header image is also the gallery's first thumbnail — without it,
   // reaching it again after scrolling down to the gallery would mean
   // scrolling all the way back up.
-  const allImages: LightboxImage[] = shown?.imageUrl
-    ? [{ url: shown.imageUrl, alt: shown.imageAlt || shown.title }, ...galleryImages]
-    : galleryImages;
-
-  if (!mounted) return null;
+  const header: LightboxImage[] = shown?.imageUrl
+    ? [{ url: shown.imageUrl, alt: shown.imageAlt || shown.title }]
+    : [];
+  // Numbered by position so the alt text matches the lightbox's "n / total".
+  const allImages: LightboxImage[] = shown
+    ? [
+        ...header,
+        ...gallery.map((image, i) => ({
+          ...image,
+          alt: `${shown.title} screenshot ${header.length + i + 1}`,
+        })),
+      ]
+    : [];
 
   return (
     <>
@@ -100,7 +109,7 @@ export default function ProjectModal({
             >
               <div className="project-modal-bar">
                 {/* Visual repeat of the title for the condensed state; the
-                    dialog is already labelled by the full heading. */}
+                    dialog is already labeled by the full heading. */}
                 <span className="project-modal-bar-title" aria-hidden="true">
                   {shown.title}
                 </span>
@@ -162,7 +171,13 @@ export default function ProjectModal({
                     onClick={() => setLightboxIndex(0)}
                     aria-label={`View larger: ${shown.title}`}
                   >
-                    <img src={shown.imageUrl} alt={shown.imageAlt} />
+                    <img
+                      src={resizedImage(shown.imageUrl, 1200)}
+                      srcSet={imageSrcSet(shown.imageUrl, [800, 1200, 1800])}
+                      sizes="(max-width: 1000px) 100vw, 880px"
+                      alt={shown.imageAlt}
+                      decoding="async"
+                    />
                   </button>
                 )}
 
@@ -231,7 +246,14 @@ export default function ProjectModal({
                           onClick={() => setLightboxIndex(i)}
                           aria-label={`View image ${i + 1} of ${allImages.length}`}
                         >
-                          <img src={img.url} alt={img.alt} />
+                          <img
+                            src={resizedImage(img.url, 520)}
+                            alt={img.alt}
+                            width={img.width ?? undefined}
+                            height={img.height ?? undefined}
+                            loading="lazy"
+                            decoding="async"
+                          />
                         </button>
                       ))}
                     </div>
