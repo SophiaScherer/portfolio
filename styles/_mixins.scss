@@ -1,0 +1,21 @@
+/* Shared declaration groups, so repeated patterns change in one place. */
+
+/* The site's focus ring: a gap in the page color, then a colored ring.
+   `$base` keeps an element's own shadow underneath. */
+@mixin focus-ring($color: var(--secondary), $base: null) {
+  outline: none;
+  @if $base {
+    box-shadow: $base, 0 0 0 3px var(--bg), 0 0 0 5px $color;
+  } @else {
+    box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px $color;
+  }
+}
+
+/* Strips native button chrome so a <button> can be styled from scratch. */
+@mixin button-reset {
+  appearance: none; -webkit-appearance: none;
+  margin: 0; padding: 0;
+  border: 0; background: none;
+  font: inherit; color: inherit;
+  cursor: pointer;
+}

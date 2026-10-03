@@ -1,4 +1,5 @@
 @use 'breakpoints' as bp;
+@use 'mixins' as m;
 
 /* Last section before the footer, so it needs less bottom padding. */
 .contact-section { padding-bottom: min(48px, var(--section-pad-y)); }
@@ -28,14 +29,12 @@
   margin-top: 16px;
   font-size: 1rem; line-height: 1.7;
   max-width: 380px;
-  transition: color 0.35s;
 }
 .contact-kicker {
   display: block;
   font-family: var(--font-label);
   font-size: 0.85rem; font-weight: 500;
   color: var(--secondary);
-  transition: color 0.35s;
 }
 .contact-links {
   display: flex; flex-direction: column;
@@ -61,17 +60,15 @@
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94),
-              background 0.35s;
+  transition: transform 0.3s var(--ease-out);
 }
 @include bp.hover {
   .contact-link:hover .contact-link-icon { transform: rotate(-8deg) scale(1.06); }
 }
-.contact-link-icon .material-symbols-outlined { color: var(--secondary); font-size: 22px; transition: color 0.35s; }
+.contact-link-icon .material-symbols-outlined { color: var(--secondary); font-size: 22px; }
 .contact-link-text {
   font-family: var(--font-display);
   font-weight: 700; font-size: 1.05rem; color: var(--text);
-  transition: color 0.35s;
 }
 
 .contact-form { display: flex; flex-direction: column; gap: 20px; }
@@ -81,23 +78,21 @@
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--secondary);
-  transition: color 0.35s;
 }
 .form-group input,
 .form-group textarea {
   background: var(--contact-form-bg);
-  border: 1.5px solid var(--outline);
+  border: 1.5px solid var(--outline-strong);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 0.95rem;
   padding: 14px 18px; border-radius: 14px;
   outline: none;
   resize: none;
-  transition: border-color 0.25s, background 0.35s, color 0.35s,
-              box-shadow 0.25s, transform 0.15s;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.15s;
 }
 .form-group input::placeholder,
-.form-group textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+.form-group textarea::placeholder { color: var(--text-muted); opacity: 1; }
 .form-group input:hover:not(:focus):not([aria-invalid="true"]),
 .form-group textarea:hover:not(:focus):not([aria-invalid="true"]) {
   border-color: var(--secondary);
@@ -126,68 +121,19 @@
   font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.04em;
   padding: 14px 18px; border-radius: 14px;
-  transition: background 0.35s, color 0.35s;
   display: flex; align-items: center; gap: 10px;
 }
-.form-status .material-symbols-outlined { font-size: 20px; }
 .form-status.success {
   background: var(--secondary-soft);
   color: var(--secondary);
 }
-.form-status.success .material-symbols-outlined { color: var(--secondary); }
 .form-status.error {
   background: var(--primary-glow);
   color: var(--primary);
 }
-.form-status.error .material-symbols-outlined { color: var(--primary); }
 
-.btn-send {
-  background: var(--primary);
-  color: var(--on-primary);
-  border: none; cursor: pointer;
-  font-family: var(--font-display);
-  font-weight: 700; font-size: 1rem;
-  padding: 15px 28px; border-radius: 14px;
-  transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
-              box-shadow 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
-              background 0.35s, opacity 0.25s;
-  box-shadow: 0 8px 24px var(--primary-glow);
-  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  position: relative; overflow: hidden;
-}
-.btn-send::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.35s;
-  pointer-events: none;
-}
-@include bp.hover {
-  .btn-send:hover:not([aria-disabled="true"]) {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 32px var(--primary-glow);
-  }
-  .btn-send:hover:not([aria-disabled="true"])::after { opacity: 1; }
-}
-.btn-send:active:not([aria-disabled="true"]) { transform: translateY(0) scale(0.98); }
-.btn-send:focus-visible {
-  outline: none;
-  box-shadow: 0 8px 24px var(--primary-glow), 0 0 0 3px var(--bg), 0 0 0 5px var(--primary);
-}
-.btn-send[aria-disabled="true"] {
-  opacity: 0.6;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-/* The button keeps focus while sending, so it keeps its focus ring too. */
-.btn-send[aria-disabled="true"]:focus-visible {
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--primary);
-}
-.btn-send .btn-icon { font-size: 18px; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94); }
-@include bp.hover {
-  .btn-send:hover:not([aria-disabled="true"]) .btn-icon { transform: translateX(3px); }
-}
+/* `.btn-primary`, centered in the form column. */
+.btn-send { justify-content: center; padding: 15px 28px; }
 
 @include bp.down(lg) {
   .contact-grid { grid-template-columns: 1fr; }
