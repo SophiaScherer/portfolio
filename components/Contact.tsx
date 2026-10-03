@@ -1,48 +1,153 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import {
+  CONTACT_LIMITS,
+  HONEYPOT_FIELD,
+  validateContact,
+  type ContactErrors,
+  type ContactInput,
+} from "../lib/contact";
 
-type Errors = { name?: string; email?: string; message?: string };
+type FieldName = keyof ContactInput;
+type FieldElement = HTMLInputElement | HTMLTextAreaElement;
 type Status = { kind: "idle" } | { kind: "success" } | { kind: "error"; message: string };
+type ContactResponse = { ok?: boolean; errors?: ContactErrors; error?: string };
 
-function validate(name: string, email: string, message: string): Errors {
-  const errors: Errors = {};
-  if (!name.trim()) errors.name = "Name is required.";
-  if (!email.trim()) errors.email = "Email is required.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
-    errors.email = "Please enter a valid email address.";
-  if (!message.trim()) errors.message = "Message is required.";
-  return errors;
+const FIELD_ORDER: FieldName[] = ["name", "email", "message"];
+const EMPTY: ContactInput = { name: "", email: "", message: "" };
+const UNTOUCHED: Record<FieldName, boolean> = { name: false, email: false, message: false };
+const ALL_TOUCHED: Record<FieldName, boolean> = { name: true, email: true, message: true };
+const FIX_FIELDS = "Please fix the highlighted fields.";
+const GENERIC_ERROR = "Something went wrong. Please try again.";
+const SUCCESS_MESSAGE = "Message sent! Thanks for reaching out.";
+
+async function readResponse(res: Response): Promise<ContactResponse | null> {
+  if (!res.headers.get("content-type")?.includes("json")) return null;
+  try {
+    return (await res.json()) as ContactResponse;
+  } catch {
+    return null;
+  }
+}
+
+type FieldProps = {
+  name: FieldName;
+  label: string;
+  placeholder: string;
+  value: string;
+  error?: string;
+  readOnly: boolean;
+  multiline?: boolean;
+  type?: string;
+  autoComplete?: string;
+  inputRef: (el: FieldElement | null) => void;
+  onChange: (name: FieldName, value: string) => void;
+  onBlur: (name: FieldName) => void;
+};
+
+function Field({
+  name,
+  label,
+  placeholder,
+  value,
+  error,
+  readOnly,
+  multiline,
+  type = "text",
+  autoComplete,
+  inputRef,
+  onChange,
+  onBlur,
+}: FieldProps) {
+  const errorId = `${name}-error`;
+  const shared = {
+    id: name,
+    name,
+    placeholder,
+    value,
+    readOnly,
+    maxLength: CONTACT_LIMITS[name],
+    "aria-invalid": Boolean(error),
+    "aria-describedby": error ? errorId : undefined,
+    onChange: (e: React.ChangeEvent<FieldElement>) => onChange(name, e.target.value),
+    onBlur: () => onBlur(name),
+  };
+
+  return (
+    <div className="form-group">
+      <label htmlFor={name}>{label}</label>
+      {multiline ? (
+        <textarea {...shared} ref={inputRef} rows={4} />
+      ) : (
+        <input {...shared} ref={inputRef} type={type} autoComplete={autoComplete} />
+      )}
+      {error && (
+        <span id={errorId} className="form-error">
+          {error}
+        </span>
+      )}
+    </div>
+  );
 }
 
 export default function Contact() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState<Errors>({});
-  const [touched, setTouched] = useState<{ name: boolean; email: boolean; message: boolean }>({
-    name: false,
-    email: false,
-    message: false,
-  });
+  const [values, setValues] = useState<ContactInput>(EMPTY);
+  const [errors, setErrors] = useState<ContactErrors>({});
+  const [touched, setTouched] = useState(UNTOUCHED);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [sending, setSending] = useState(false);
 
-  const showError = (field: keyof Errors) => touched[field] && Boolean(errors[field]);
+  const fieldRefs = useRef<Partial<Record<FieldName, FieldElement | null>>>({});
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  const mountedAt = useRef(0);
+
+  useEffect(() => {
+    mountedAt.current = Date.now();
+  }, []);
+
+  const visibleError = (field: FieldName) => (touched[field] ? errors[field] : undefined);
+
+  const showErrors = (next: ContactErrors) => {
+    // Commit synchronously so the error text is linked before focus lands on the field.
+    flushSync(() => {
+      setTouched(ALL_TOUCHED);
+      setErrors(next);
+      setStatus({ kind: "error", message: FIX_FIELDS });
+    });
+    const first = FIELD_ORDER.find((f) => next[f]);
+    if (first) fieldRefs.current[first]?.focus();
+  };
+
+  const handleChange = (field: FieldName, value: string) => {
+    const next = { ...values, [field]: value };
+    setValues(next);
+    if (touched[field]) setErrors(validateContact(next));
+    if (status.kind !== "idle") setStatus({ kind: "idle" });
+  };
+
+  const handleBlur = (field: FieldName) => {
+    setTouched((t) => ({ ...t, [field]: true }));
+    setErrors(validateContact(values));
+  };
+
+  const bindRef = (field: FieldName) => (el: FieldElement | null) => {
+    fieldRefs.current[field] = el;
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (sending) return;
 
-    setTouched({ name: true, email: true, message: true });
-    const v = validate(name, email, message);
-    setErrors(v);
-
-    if (Object.keys(v).length > 0) {
-      setStatus({ kind: "error", message: "Please fix the highlighted fields." });
+    const clientErrors = validateContact(values);
+    if (Object.keys(clientErrors).length > 0) {
+      showErrors(clientErrors);
       return;
     }
 
+    setTouched(ALL_TOUCHED);
+    setErrors({});
     setSending(true);
     setStatus({ kind: "idle" });
 
@@ -50,32 +155,26 @@ export default function Contact() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({
+          ...values,
+          [HONEYPOT_FIELD]: honeypotRef.current?.value ?? "",
+          elapsedMs: Date.now() - mountedAt.current,
+        }),
       });
-      const data = (await res.json()) as {
-        ok: boolean;
-        errors?: Errors;
-        error?: string;
-      };
+      const data = await readResponse(res);
 
-      if (res.ok && data.ok) {
+      if (res.ok && data?.ok) {
         setStatus({ kind: "success" });
-        setName("");
-        setEmail("");
-        setMessage("");
-        setTouched({ name: false, email: false, message: false });
+        setValues(EMPTY);
+        setTouched(UNTOUCHED);
         setErrors({});
         return;
       }
 
-      if (data.errors) {
-        setErrors(data.errors);
-        setStatus({ kind: "error", message: "Please fix the highlighted fields." });
+      if (data?.errors && Object.keys(data.errors).length > 0) {
+        showErrors(data.errors);
       } else {
-        setStatus({
-          kind: "error",
-          message: data.error ?? "Something went wrong. Please try again.",
-        });
+        setStatus({ kind: "error", message: data?.error ?? GENERIC_ERROR });
       }
     } catch (err) {
       console.error("Failed to submit contact form", err);
@@ -87,6 +186,16 @@ export default function Contact() {
       setSending(false);
     }
   };
+
+  const fieldProps = (field: FieldName) => ({
+    name: field,
+    value: values[field],
+    error: visibleError(field),
+    readOnly: sending,
+    inputRef: bindRef(field),
+    onChange: handleChange,
+    onBlur: handleBlur,
+  });
 
   return (
     <section className="section-pad contact-section" id="contact">
@@ -106,96 +215,53 @@ export default function Contact() {
               <div className="contact-links">
                 <div className="contact-link">
                   <div className="contact-link-icon">
-                    <span className="material-symbols-outlined">location_on</span>
+                    <span className="material-symbols-outlined" aria-hidden="true">location_on</span>
                   </div>
                   <span className="contact-link-text">Woodinville, WA</span>
                 </div>
               </div>
             </div>
 
-            <form className="contact-form" onSubmit={handleSubmit} noValidate>
-              <div className="form-group">
-                <label htmlFor="name">Full Name</label>
+            {/* `post` keeps a submit that lands before hydration from putting the
+                message in the URL. */}
+            <form
+              className="contact-form"
+              method="post"
+              onSubmit={handleSubmit}
+              noValidate
+              aria-busy={sending}
+            >
+              <Field {...fieldProps("name")} label="Full Name" placeholder="Your name" autoComplete="name" />
+              <Field
+                {...fieldProps("email")}
+                label="Email"
+                placeholder="you@example.com"
+                type="email"
+                autoComplete="email"
+              />
+              <Field {...fieldProps("message")} label="Message" placeholder="Your message..." multiline />
+
+              {/* Honeypot: hidden from people, but naive bots fill it in. */}
+              <div className="visually-hidden" aria-hidden="true">
+                <label htmlFor={HONEYPOT_FIELD}>Leave this field empty</label>
                 <input
-                  id="name"
-                  name="name"
+                  id={HONEYPOT_FIELD}
+                  name={HONEYPOT_FIELD}
                   type="text"
-                  placeholder="Your name"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                    if (touched.name) setErrors(validate(e.target.value, email, message));
-                  }}
-                  onBlur={() => {
-                    setTouched((t) => ({ ...t, name: true }));
-                    setErrors(validate(name, email, message));
-                  }}
-                  aria-invalid={showError("name")}
-                  aria-describedby={showError("name") ? "name-error" : undefined}
-                  disabled={sending}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  ref={honeypotRef}
                 />
-                {showError("name") && (
-                  <span id="name-error" className="form-error">
-                    {errors.name}
-                  </span>
-                )}
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (touched.email) setErrors(validate(name, e.target.value, message));
-                  }}
-                  onBlur={() => {
-                    setTouched((t) => ({ ...t, email: true }));
-                    setErrors(validate(name, email, message));
-                  }}
-                  aria-invalid={showError("email")}
-                  aria-describedby={showError("email") ? "email-error" : undefined}
-                  disabled={sending}
-                />
-                {showError("email") && (
-                  <span id="email-error" className="form-error">
-                    {errors.email}
-                  </span>
-                )}
-              </div>
-              <div className="form-group">
-                <label htmlFor="message">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  placeholder="Your message..."
-                  value={message}
-                  onChange={(e) => {
-                    setMessage(e.target.value);
-                    if (touched.message) setErrors(validate(name, email, e.target.value));
-                  }}
-                  onBlur={() => {
-                    setTouched((t) => ({ ...t, message: true }));
-                    setErrors(validate(name, email, message));
-                  }}
-                  aria-invalid={showError("message")}
-                  aria-describedby={showError("message") ? "message-error" : undefined}
-                  disabled={sending}
-                />
-                {showError("message") && (
-                  <span id="message-error" className="form-error">
-                    {errors.message}
-                  </span>
-                )}
               </div>
 
+              {/* Always rendered: screen readers often skip a live region that
+                  appears already holding its text. */}
+              <p className="visually-hidden" role="status">
+                {status.kind === "success" ? SUCCESS_MESSAGE : ""}
+              </p>
               {status.kind === "success" && (
-                <div className="form-status success" role="status">
-                  Message sent! Thanks for reaching out.
+                <div className="form-status success" aria-hidden="true">
+                  {SUCCESS_MESSAGE}
                 </div>
               )}
               {status.kind === "error" && (
@@ -204,7 +270,8 @@ export default function Contact() {
                 </div>
               )}
 
-              <button className="btn-send" type="submit" disabled={sending}>
+              {/* `aria-disabled` rather than `disabled`, which would drop focus. */}
+              <button className="btn-send" type="submit" aria-disabled={sending}>
                 {sending ? "Sending…" : "Send Message"}
               </button>
             </form>

@@ -112,6 +112,8 @@
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
+.contact-form[aria-busy="true"] input,
+.contact-form[aria-busy="true"] textarea { opacity: 0.7; cursor: progress; }
 .form-error {
   font-family: var(--font-label);
   font-size: 0.72rem; font-weight: 600;
@@ -162,25 +164,29 @@
   pointer-events: none;
 }
 @include bp.hover {
-  .btn-send:hover:not(:disabled) {
+  .btn-send:hover:not([aria-disabled="true"]) {
     transform: translateY(-2px);
     box-shadow: 0 14px 32px var(--primary-glow);
   }
-  .btn-send:hover:not(:disabled)::after { opacity: 1; }
+  .btn-send:hover:not([aria-disabled="true"])::after { opacity: 1; }
 }
-.btn-send:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+.btn-send:active:not([aria-disabled="true"]) { transform: translateY(0) scale(0.98); }
 .btn-send:focus-visible {
   outline: none;
   box-shadow: 0 8px 24px var(--primary-glow), 0 0 0 3px var(--bg), 0 0 0 5px var(--primary);
 }
-.btn-send:disabled {
+.btn-send[aria-disabled="true"] {
   opacity: 0.6;
   cursor: not-allowed;
   box-shadow: none;
 }
+/* The button keeps focus while sending, so it keeps its focus ring too. */
+.btn-send[aria-disabled="true"]:focus-visible {
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--primary);
+}
 .btn-send .btn-icon { font-size: 18px; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94); }
 @include bp.hover {
-  .btn-send:hover:not(:disabled) .btn-icon { transform: translateX(3px); }
+  .btn-send:hover:not([aria-disabled="true"]) .btn-icon { transform: translateX(3px); }
 }
 
 @include bp.down(lg) {
