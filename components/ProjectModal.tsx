@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { useModal } from "../hooks/useModal";
 import { useInView } from "../hooks/useInView";
 import { useIsClient } from "../hooks/useIsClient";
+import { useOverlayHistory } from "../hooks/useOverlayHistory";
 import type { GalleryImage } from "../lib/content";
 import { imageSrcSet, resizedImage } from "../lib/images";
 import type { Project } from "../lib/projects";
@@ -38,6 +39,10 @@ export default function ProjectModal({
     if (!open) setLightboxIndex(null);
   }
 
+  const closeLightbox = useOverlayHistory("lightbox", lightboxIndex !== null, () =>
+    setLightboxIndex(null),
+  );
+
   // The lightbox layers on top of this dialog and runs its own useModal
   // instance. Both listen on `document`, so leaving this one's Escape/Tab
   // handling active while the lightbox is open would double up Escape and
@@ -54,10 +59,12 @@ export default function ProjectModal({
   const [body, setBody] = useState<HTMLDivElement | null>(null);
   const [titleRef, titleInView] = useInView<HTMLHeadingElement>(body);
 
-  // The dialog stays mounted between opens, so start each case study at the top.
+  // The dialog stays mounted between opens (and a URL change can swap the
+  // project while open), so start each case study at the top.
+  const shownId = shown?.id;
   useEffect(() => {
     if (open) body?.scrollTo(0, 0);
-  }, [open, body]);
+  }, [open, body, shownId]);
 
   const isClient = useIsClient();
   if (!isClient) return null;
@@ -269,7 +276,7 @@ export default function ProjectModal({
       <Lightbox
         images={allImages}
         index={lightboxIndex}
-        onClose={() => setLightboxIndex(null)}
+        onClose={closeLightbox}
         onNavigate={setLightboxIndex}
       />
     </>
