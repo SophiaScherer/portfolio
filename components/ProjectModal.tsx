@@ -208,7 +208,7 @@ export default function ProjectModal({
                 <div className="project-modal-cols">
                   <div>
                     <h4 className="project-modal-h4">Technical Details</h4>
-                    <ul className="project-modal-list">
+                    <ul className="project-modal-list" role="list">
                       {shown.technicalDetails.map((d) => (
                         <li key={d}>{d}</li>
                       ))}
@@ -216,7 +216,7 @@ export default function ProjectModal({
                   </div>
                   <div>
                     <h4 className="project-modal-h4">Key Features</h4>
-                    <ul className="project-modal-list project-modal-list-features">
+                    <ul className="project-modal-list project-modal-list-features" role="list">
                       {shown.keyFeatures.map((f) => (
                         <li key={f}>
                           <span
