@@ -24,8 +24,10 @@
 
 /* Reveals use an animation rather than a transition, so their delay never
    leaks into an element's own hover transitions. `backwards` fill only holds
-   the start frame during the delay, leaving transforms free afterwards. */
-.reveal { opacity: 0; }
+   the start frame during the delay, leaving transforms free afterwards.
+   Content is hidden only once the head script marks the page as scripted, so
+   it still shows without JS. */
+[data-js] .reveal { opacity: 0; }
 .reveal.visible,
 .reveal-onload {
   opacity: 1;
@@ -51,4 +53,9 @@
     transition-property: opacity, visibility, color, background-color, border-color !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Printing never scrolls reveals into view, so show them all. */
+@media print {
+  .reveal, .reveal-onload { opacity: 1 !important; animation: none !important; }
 }

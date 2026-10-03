@@ -87,6 +87,9 @@
 [data-theme="dark"] .theme-toggle-knob .material-symbols-outlined {
   color: var(--switch-icon-d);
 }
+.theme-icon-dark,
+[data-theme="dark"] .theme-icon-light { display: none; }
+[data-theme="dark"] .theme-icon-dark { display: inline-block; }
 
 /* 44px square meets the minimum touch-target size. */
 .hamburger {

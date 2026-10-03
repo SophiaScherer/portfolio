@@ -21,7 +21,7 @@ export default function Navbar({ resume }: NavbarProps) {
 
   // The trap wraps both the bar and the menu, so the hamburger (which closes
   // the menu) stays reachable by keyboard while the menu is open.
-  const headerRef = useModal<HTMLDivElement>({ open, onClose: close });
+  const headerRef = useModal<HTMLElement>({ open, onClose: close });
 
   // Menu links close the menu synchronously before scrolling: a smooth scroll
   // started while the scroll lock is still on gets cancelled when it releases.
@@ -38,7 +38,7 @@ export default function Navbar({ resume }: NavbarProps) {
     activeId === id ? { "aria-current": "true" as const } : {};
 
   return (
-    <div className="site-header" ref={headerRef} tabIndex={-1}>
+    <header className="site-header" ref={headerRef} tabIndex={-1}>
       <div className="nav-wrap">
         <nav className="nav" aria-label="Primary">
           <a href="#about" className="nav-logo">
@@ -114,7 +114,7 @@ export default function Navbar({ resume }: NavbarProps) {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 
