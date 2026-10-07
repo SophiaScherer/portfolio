@@ -39,20 +39,20 @@
 .contact-links {
   display: flex; flex-direction: column;
   gap: 16px; margin-top: 36px;
+  list-style: none;
 }
 .contact-link {
   display: flex; align-items: center; gap: 16px;
   text-decoration: none;
   padding: 6px 0;
 }
-.contact-link { transition: opacity 0.25s, transform 0.25s; }
+a.contact-link { transition: opacity 0.25s, transform 0.25s; border-radius: 12px; }
 @include bp.hover {
-  .contact-link:hover { opacity: 0.85; transform: translateX(3px); }
+  a.contact-link:hover { opacity: 0.85; transform: translateX(3px); }
 }
-.contact-link:focus-visible {
-  outline: none;
-  opacity: 0.85;
+a.contact-link:focus-visible {
   transform: translateX(3px);
+  @include m.focus-ring;
 }
 .contact-link-icon {
   width: 48px; height: 48px;
@@ -63,7 +63,7 @@
   transition: transform 0.3s var(--ease-out);
 }
 @include bp.hover {
-  .contact-link:hover .contact-link-icon { transform: rotate(-8deg) scale(1.06); }
+  a.contact-link:hover .contact-link-icon { transform: rotate(-8deg) scale(1.06); }
 }
 .contact-link-icon .material-symbols-outlined { color: var(--secondary); font-size: 22px; }
 .contact-link-text {

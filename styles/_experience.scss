@@ -30,7 +30,7 @@
   color: var(--secondary);
   margin: 0;
 }
-.skills-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+.skills-cloud { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
 .skills-cloud .tag {
   transition: transform 0.2s ease, background 0.35s, color 0.35s, border-color 0.35s;
   cursor: default;
@@ -43,7 +43,7 @@
   }
 }
 
-.timeline { display: flex; flex-direction: column; gap: 0; margin-top: 28px; }
+.timeline { display: flex; flex-direction: column; gap: 0; margin-top: 28px; list-style: none; }
 .timeline-item {
   position: relative;
   padding-left: 32px;
