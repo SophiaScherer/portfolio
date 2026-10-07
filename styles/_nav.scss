@@ -20,7 +20,6 @@
   padding: 0 28px;
   display: flex; align-items: center; justify-content: space-between;
   box-shadow: var(--nav-shadow);
-  transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
 }
 
 .nav-logo {
@@ -105,7 +104,7 @@
 .hamburger span {
   display: block; width: 22px; height: 2px;
   background: var(--text); border-radius: 2px;
-  transition: transform 0.3s, opacity 0.3s, background 0.35s;
+  transition: transform 0.3s, opacity 0.3s;
 }
 .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .hamburger.open span:nth-child(2) { opacity: 0; }
@@ -140,7 +139,7 @@
 .mobile-menu-links li {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: opacity 0.3s ease, transform 0.35s var(--ease-out);
 }
 .mobile-menu.open .mobile-menu-links li {
   opacity: 1;
