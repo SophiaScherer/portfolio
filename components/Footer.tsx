@@ -1,18 +1,19 @@
-import { SOCIAL_LINKS } from "../lib/links";
+import { EXTERNAL_LINK_PROPS, SOCIAL_LINKS } from "../lib/links";
+import SectionLink from "./SectionLink";
 
 export default function Footer() {
   return (
     <footer>
       <div className="footer-inner">
-        <a href="#about" className="footer-logo">
+        <SectionLink id="about" className="footer-logo">
           Sophia Scherer
           <span className="footer-copy">
-            {" "}© 2026
+            {" "}© {new Date().getFullYear()}
           </span>
-        </a>
+        </SectionLink>
         <div className="footer-links">
           {SOCIAL_LINKS.map(({ label, href }) => (
-            <a key={label} href={href}>
+            <a key={label} href={href} {...EXTERNAL_LINK_PROPS}>
               {label}
             </a>
           ))}
