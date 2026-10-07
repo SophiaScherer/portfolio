@@ -14,8 +14,15 @@ export default function Interests() {
         <span className="label-cap reveal">Beyond the Code</span>
         <h2 className="h2 reveal reveal-delay-1">Interests</h2>
 
-        {/* Grid on larger screens, swipe carousel on phones. */}
-        <div className="interests-grid carousel-track" ref={trackRef}>
+        {/* Grid on larger screens, swipe carousel on phones. Focusable so
+            keyboard users can scroll it too. */}
+        <div
+          className="interests-grid carousel-track"
+          ref={trackRef}
+          role="region"
+          aria-label="Interests"
+          tabIndex={0}
+        >
           {INTERESTS.map((interest, i) => (
             <div
               key={interest.id}
