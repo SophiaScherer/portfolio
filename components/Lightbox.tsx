@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
 import { createPortal } from "react-dom";
 import { useIsClient } from "../hooks/useIsClient";
 import { useModal } from "../hooks/useModal";
@@ -26,6 +26,9 @@ const SWIPE_DISTANCE = 50;
 
 const wrap = (i: number, n: number) => (i + n) % n;
 
+/** A drag across a pinch-zoomed screenshot is someone reading it, not a swipe. */
+const isZoomed = () => (window.visualViewport?.scale ?? 1) > 1.01;
+
 /**
  * Full-size viewer for a project's header and gallery images, opened from
  * `ProjectModal`. Always mounted so it can transition out; `index === null`
@@ -40,14 +43,21 @@ export default function Lightbox({
   const open = index !== null;
   const dialogRef = useModal<HTMLDivElement>({ open, onClose });
   const isClient = useIsClient();
-  const swipeStart = useRef<{ x: number; y: number } | null>(null);
+  const swipeStart = useRef<{ id: number; x: number; y: number } | null>(null);
   // A swipe that ends on the backdrop would otherwise also count as a click.
   const swiped = useRef(false);
 
-  const canNavigate = open && images.length > 1;
+  // Held so the image and counter survive the close transition, and clamped
+  // because the gallery can shrink underneath a fading viewer.
+  const [heldIndex, setHeldIndex] = useState(index ?? 0);
+  if (index !== null && index !== heldIndex) setHeldIndex(index);
+  const shownIndex = Math.min(index ?? heldIndex, images.length - 1);
+
+  const hasNav = images.length > 1;
+  const canNavigate = open && hasNav;
   const step = useCallback(
-    (delta: number) => onNavigate(wrap((index ?? 0) + delta, images.length)),
-    [index, images.length, onNavigate],
+    (delta: number) => onNavigate(wrap(shownIndex + delta, images.length)),
+    [shownIndex, images.length, onNavigate],
   );
 
   useEffect(() => {
@@ -61,15 +71,18 @@ export default function Lightbox({
   }, [canNavigate, step]);
 
   const onPointerDown = (event: PointerEvent) => {
-    if (event.pointerType !== "mouse") {
-      swipeStart.current = { x: event.clientX, y: event.clientY };
-    }
+    if (event.pointerType === "mouse") return;
+    // A second finger makes this a pinch or a stray touch, not a swipe.
+    swipeStart.current = event.isPrimary
+      ? { id: event.pointerId, x: event.clientX, y: event.clientY }
+      : null;
   };
   const onPointerUp = (event: PointerEvent) => {
     const start = swipeStart.current;
-    swipeStart.current = null;
     swiped.current = false;
-    if (!start || !canNavigate) return;
+    if (!start || start.id !== event.pointerId) return;
+    swipeStart.current = null;
+    if (!canNavigate || isZoomed()) return;
     const dx = event.clientX - start.x;
     const dy = event.clientY - start.y;
     if (Math.abs(dx) >= SWIPE_DISTANCE && Math.abs(dx) > Math.abs(dy)) {
@@ -84,14 +97,20 @@ export default function Lightbox({
 
   if (!isClient) return null;
 
-  const shown = index !== null ? images[index] : null;
+  const shown = images[shownIndex] ?? null;
 
   // Rendered into <body> so it can layer above the case-study modal, which is
-  // also a body-level portal.
+  // also a body-level portal. The whole layer is the dialog so `useModal`'s
+  // focus trap reaches the controls, which sit outside the image's frame.
   return createPortal(
     <div
-      className={`lightbox ${open ? "is-open" : ""}`}
+      className={`lightbox ${open ? "is-open" : ""}${hasNav ? " has-nav" : ""}`}
       aria-hidden={!open}
+      role="dialog"
+      aria-modal="true"
+      aria-label={shown?.alt || "Image viewer"}
+      tabIndex={-1}
+      ref={dialogRef}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerCancel={() => {
@@ -100,50 +119,7 @@ export default function Lightbox({
     >
       <div className="lightbox-backdrop" onClick={onBackdropClick} aria-hidden="true" />
 
-      <button
-        type="button"
-        className="lightbox-close"
-        onClick={onClose}
-        aria-label="Close image viewer"
-      >
-        <span className="material-symbols-outlined" aria-hidden="true">
-          close
-        </span>
-      </button>
-
-      {images.length > 1 && (
-        <>
-          <button
-            type="button"
-            className="lightbox-nav lightbox-prev"
-            onClick={() => step(-1)}
-            aria-label="Previous image"
-          >
-            <span className="material-symbols-outlined" aria-hidden="true">
-              chevron_left
-            </span>
-          </button>
-          <button
-            type="button"
-            className="lightbox-nav lightbox-next"
-            onClick={() => step(1)}
-            aria-label="Next image"
-          >
-            <span className="material-symbols-outlined" aria-hidden="true">
-              chevron_right
-            </span>
-          </button>
-        </>
-      )}
-
-      <div
-        className="lightbox-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-label={shown?.alt || "Image viewer"}
-        tabIndex={-1}
-        ref={dialogRef}
-      >
+      <div className="lightbox-frame">
         {shown && (
           <img
             src={resizedImage(shown.url, 1600)}
@@ -155,9 +131,47 @@ export default function Lightbox({
         )}
       </div>
 
-      {images.length > 1 && shown && (
-        <div className="lightbox-count" aria-live="polite">
-          {(index ?? 0) + 1} / {images.length}
+      {/* After the frame so the controls paint above a wide image. */}
+      <button
+        type="button"
+        className="lightbox-close"
+        onClick={onClose}
+        aria-label="Close image viewer"
+      >
+        <span className="material-symbols-outlined" aria-hidden="true">
+          close
+        </span>
+      </button>
+
+      {hasNav && (
+        <div className="lightbox-controls">
+          <button
+            type="button"
+            className="lightbox-nav lightbox-prev"
+            onClick={() => step(-1)}
+            aria-label="Previous image"
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">
+              chevron_left
+            </span>
+          </button>
+
+          {shown && (
+            <div className="lightbox-count" aria-live="polite">
+              {shownIndex + 1} / {images.length}
+            </div>
+          )}
+
+          <button
+            type="button"
+            className="lightbox-nav lightbox-next"
+            onClick={() => step(1)}
+            aria-label="Next image"
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">
+              chevron_right
+            </span>
+          </button>
         </div>
       )}
     </div>,

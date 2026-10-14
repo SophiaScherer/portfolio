@@ -52,6 +52,39 @@ test("a shared case study link opens it, and Escape closes it", async ({ page })
   await expect(page).toHaveURL("/");
 });
 
+test("the image viewer is keyboard reachable and steps through images", async ({ page }) => {
+  await page.goto("/#project-dash-detective");
+  const caseStudy = page.getByRole("dialog", { name: "DashDetective" });
+  await expect(caseStudy).toBeVisible();
+
+  // Gallery images come from Hygraph, which CI builds without.
+  const thumb = page.getByRole("button", { name: /^View image 1 of \d+$/ });
+  const label = (await thumb.count()) ? await thumb.getAttribute("aria-label") : null;
+  const total = Number(label?.match(/of (\d+)$/)?.[1] ?? 0);
+  test.skip(total < 2, "Needs at least two project images from Hygraph.");
+
+  await thumb.click();
+  const close = page.getByRole("button", { name: "Close image viewer" });
+  const viewer = page.getByRole("dialog").filter({ has: close });
+  await expect(viewer).toBeVisible();
+
+  await page.keyboard.press("Tab");
+  await expect(close).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("button", { name: "Previous image" })).toBeFocused();
+  await page.keyboard.press("Tab");
+  const next = page.getByRole("button", { name: "Next image" });
+  await expect(next).toBeFocused();
+
+  // A real click, so it fails if the image paints over the button.
+  await next.click();
+  await expect(viewer.locator(".lightbox-count")).toHaveText(`2 / ${total}`);
+
+  await page.keyboard.press("Escape");
+  await expect(viewer).toBeHidden();
+  await expect(caseStudy).toBeVisible();
+});
+
 test("the mobile menu closes with Back and links to sections", async ({ page, isMobile }) => {
   test.skip(!isMobile, "The hamburger menu only shows on small screens.");
   await page.goto("/");
