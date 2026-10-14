@@ -47,11 +47,12 @@ export default function Lightbox({
   // A swipe that ends on the backdrop would otherwise also count as a click.
   const swiped = useRef(false);
 
-  // Held so the image and counter survive the close transition, and clamped
-  // because the gallery can shrink underneath a fading viewer.
-  const [heldIndex, setHeldIndex] = useState(index ?? 0);
+  // Held so the image and counter survive the close transition, then cleared
+  // so a closed viewer doesn't load a full-size image. Clamped because the
+  // gallery can shrink underneath a fading viewer.
+  const [heldIndex, setHeldIndex] = useState(index);
   if (index !== null && index !== heldIndex) setHeldIndex(index);
-  const shownIndex = Math.min(index ?? heldIndex, images.length - 1);
+  const shownIndex = heldIndex === null ? -1 : Math.min(heldIndex, images.length - 1);
 
   const hasNav = images.length > 1;
   const canNavigate = open && hasNav;
@@ -106,6 +107,9 @@ export default function Lightbox({
     <div
       className={`lightbox ${open ? "is-open" : ""}${hasNav ? " has-nav" : ""}`}
       aria-hidden={!open}
+      // Stays visible through the fade-out; this takes the controls out of
+      // reach the moment it starts.
+      inert={!open}
       role="dialog"
       aria-modal="true"
       aria-label={shown?.alt || "Image viewer"}
@@ -115,6 +119,11 @@ export default function Lightbox({
       onPointerUp={onPointerUp}
       onPointerCancel={() => {
         swipeStart.current = null;
+      }}
+      onTransitionEnd={(event) => {
+        if (!open && event.target === event.currentTarget && event.propertyName === "visibility") {
+          setHeldIndex(null);
+        }
       }}
     >
       <div className="lightbox-backdrop" onClick={onBackdropClick} aria-hidden="true" />

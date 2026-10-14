@@ -83,6 +83,7 @@ test("the image viewer is keyboard reachable and steps through images", async ({
   await page.keyboard.press("Escape");
   await expect(viewer).toBeHidden();
   await expect(caseStudy).toBeVisible();
+  await expect(thumb).toBeFocused();
 });
 
 test("the mobile menu closes with Back and links to sections", async ({ page, isMobile }) => {
