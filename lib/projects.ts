@@ -14,7 +14,7 @@
  * the corresponding UI rather than render an empty frame.
  *
  * Array order is display order: `<Projects>` maps this list straight onto the
- * bento grid, so the newest project goes first.
+ * grid, so the newest project goes first.
  */
 
 export type Tech = string;
@@ -25,19 +25,11 @@ export type CaseStudy = {
 };
 
 /**
- * Which bento card renders this project. The variant also picks the grid cell,
- * so the three projects must use three different variants.
- *   image — tall card with a cover image and a `cardMeta` row
- *   icon  — icon chip card with a `perfRows` table, no image
- *   wide  — full-width two-column card with tech pills and an image
+ * One row of a card's spec table. Keep the rows parallel across projects:
+ * platform or rendering approach, a signature technique, then a measured
+ * figure. Three rows keep the cards the same height.
  */
-export type CardVariant = "image" | "icon" | "wide";
-
-/** One entry in the `image` card's meta row. `icon` is a Material Symbols name. */
-export type CardMeta = { icon: string; label: string };
-
-/** One row of the `icon` card's stat table. */
-export type PerfRow = { label: string; value: string };
+export type SpecRow = { label: string; value: string };
 
 export type Project = {
   id: string;
@@ -63,16 +55,10 @@ export type Project = {
   cmsImageFileName: string | null;
   imageUrl: string | null;
   imageAlt: string;
+  /** Overlaid on the card image. Two short entries read best. */
   imageTags: string[];
 
-  /* Presentation. Each field below is read by one variant only. */
-  cardVariant: CardVariant;
-  /** Material Symbols name for the `icon` variant's chip. Null otherwise. */
-  cardIcon: string | null;
-  /** `image` variant only. Empty for the others. */
-  cardMeta: CardMeta[];
-  /** `icon` variant only. Empty for the others. */
-  perfRows: PerfRow[];
+  specs: SpecRow[];
 };
 
 /* -------------------------------------------------------------------------- */
@@ -118,13 +104,11 @@ export const PROJECTS: Project[] = [
     imageAlt: "DashDetective system information console",
     imageTags: ["C#", "Avalonia"],
 
-    cardVariant: "image",
-    cardIcon: null,
-    cardMeta: [
-      { icon: "terminal", label: "C#" },
-      { icon: "devices", label: "Cross-platform" },
+    specs: [
+      { label: "Platform", value: "Windows · Linux Soon" },
+      { label: "Interop", value: "22 P/Invoke Files" },
+      { label: "Dependencies", value: "8 Packages" },
     ],
-    perfRows: [],
   },
   {
     id: "unpawse",
@@ -164,12 +148,9 @@ export const PROJECTS: Project[] = [
     imageAlt: "unPawse block screen",
     imageTags: ["Kotlin", "Compose"],
 
-    cardVariant: "icon",
-    cardIcon: "pets",
-    cardMeta: [],
-    perfRows: [
-      { label: "Kotlin", value: "Jetpack Compose" },
-      { label: "ML Kit", value: "On-Device" },
+    specs: [
+      { label: "Platform", value: "Android" },
+      { label: "Verification", value: "On-Device ML Kit" },
       { label: "Coverage", value: "657 Tests" },
     ],
   },
@@ -211,10 +192,11 @@ export const PROJECTS: Project[] = [
     imageAlt: "2D Vector Field Visualization",
     imageTags: ["OpenGL", "GLSL"],
 
-    cardVariant: "wide",
-    cardIcon: null,
-    cardMeta: [],
-    perfRows: [],
+    specs: [
+      { label: "Rendering", value: "Real-Time GLSL LIC" },
+      { label: "Integrator", value: "RK4 Streamlines" },
+      { label: "Frame Rate", value: "60 fps" },
+    ],
   },
 ];
 
@@ -246,21 +228,3 @@ export const withCmsImages = (
     const url = p.cmsImageFileName ? imagesByFileName[p.cmsImageFileName] : undefined;
     return url ? { ...p, imageUrl: url } : p;
   });
-
-/**
- * The bento is one fixed 12-column row and each variant owns a different span,
- * so two projects sharing a variant overflow it. Nothing in the type system
- * enforces distinctness, so say so loudly in development.
- */
-export const warnOnDuplicateVariants = (projects: Project[]): void => {
-  if (process.env.NODE_ENV === "production") return;
-  const seen = new Set<CardVariant>();
-  for (const p of projects) {
-    if (seen.has(p.cardVariant)) {
-      console.warn(
-        `[Projects] Duplicate cardVariant "${p.cardVariant}" on "${p.id}" — the bento row will not add up to 12 columns.`,
-      );
-    }
-    seen.add(p.cardVariant);
-  }
-};

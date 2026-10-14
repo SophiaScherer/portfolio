@@ -5,7 +5,7 @@ import Interests from "../components/Interests";
 import Contact from "../components/Contact";
 import { getProjectGalleryMap, getProjectImageMap, getResumeDownload } from "../lib/content";
 import { SOCIAL_LINKS } from "../lib/links";
-import { PROJECTS, warnOnDuplicateVariants, withCmsImages } from "../lib/projects";
+import { PROJECTS, withCmsImages } from "../lib/projects";
 import { PROFILE } from "../lib/profile";
 import { SITE_NAME, SITE_URL } from "../lib/site";
 
@@ -27,7 +27,6 @@ export default async function Home() {
   ]);
 
   const projects = withCmsImages(PROJECTS, projectImages);
-  warnOnDuplicateVariants(projects);
 
   return (
     <main id="main" tabIndex={-1}>
