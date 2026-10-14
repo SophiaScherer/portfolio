@@ -58,7 +58,7 @@
     background: var(--secondary);
   }
   .carousel-dot:focus-visible {
-    outline: none;
+    outline: 2px solid transparent;
     border-radius: 999px;
     box-shadow: 0 0 0 2px var(--secondary);
   }

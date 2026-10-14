@@ -1,9 +1,10 @@
 /* Shared declaration groups, so repeated patterns change in one place. */
 
 /* The site's focus ring: a gap in the page color, then a colored ring.
-   `$base` keeps an element's own shadow underneath. */
+   `$base` keeps an element's own shadow underneath. The transparent outline
+   is what forced-colors mode shows, since it drops box shadows. */
 @mixin focus-ring($color: var(--secondary), $base: null) {
-  outline: none;
+  outline: 2px solid transparent;
   @if $base {
     box-shadow: $base, 0 0 0 3px var(--bg), 0 0 0 5px $color;
   } @else {
