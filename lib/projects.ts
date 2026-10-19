@@ -27,7 +27,8 @@ export type CaseStudy = {
 /**
  * One row of a card's spec table. Keep the rows parallel across projects:
  * platform or rendering approach, a signature technique, then a measured
- * figure. Three rows keep the cards the same height.
+ * figure. Keep values short: a value that wraps in the three-column layout
+ * knocks its rows out of line with the neighboring cards.
  */
 export type SpecRow = { label: string; value: string };
 

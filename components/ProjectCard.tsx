@@ -11,9 +11,11 @@ type ProjectCardProps = {
 
 const CARD_WIDTHS = [480, 800, 1200];
 
-/** Rendered image width: one card per row up to `lg`, the left column of a row
-    card up to `xl`, then a third of the container. See `styles/_projects.scss`. */
-const CARD_SIZES = "(max-width: 900px) 100vw, (max-width: 1150px) 35vw, 380px";
+/** Rendered image width (measured): full card width up to `lg`, the left
+    column of a row card up to `xl`, then a third of the container. See
+    `styles/_projects.scss`. */
+const CARD_SIZES =
+  "(max-width: 600px) calc(100vw - 110px), (max-width: 900px) 71vw, (max-width: 1300px) 28vw, 320px";
 
 function CardImage({ project }: { project: Project }) {
   if (!project.imageUrl) {
