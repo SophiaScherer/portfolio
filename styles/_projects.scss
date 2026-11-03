@@ -1,4 +1,5 @@
 @use 'breakpoints' as bp;
+@use 'mixins' as m;
 
 .projects-header {
   display: flex; justify-content: space-between; align-items: flex-end;
@@ -6,7 +7,6 @@
 }
 .projects-header p {
   max-width: 340px; color: var(--text-muted); font-size: 0.975rem;
-  transition: color 0.35s;
 }
 
 .bento {
@@ -33,11 +33,9 @@
 /* Transparent button stretched over the whole card, so the card's content
    stays outside the button and readable to assistive tech. */
 .project-card-trigger {
+  @include m.button-reset;
   position: absolute; inset: 0; z-index: 2;
-  background: transparent; border: 0; padding: 0; margin: 0;
   border-radius: inherit;
-  cursor: pointer;
-  appearance: none; -webkit-appearance: none;
 }
 .project-card-trigger:focus-visible {
   outline: none;
@@ -56,7 +54,7 @@
 }
 .project-img-wrap img {
   width: 100%; height: 100%; object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: transform 0.8s var(--ease-out);
 }
 /* The `image` card variant's screenshots are landscape and top-heavy (title
    bar, live stats); a center crop tends to land on an arbitrary slice of the
@@ -117,7 +115,7 @@
   align-items: center; justify-content: center;
   margin-bottom: 24px;
   flex-shrink: 0;
-  transition: transform 0.3s, background 0.35s;
+  transition: transform 0.3s;
   rotate: 3deg;
 }
 @include bp.hover {
@@ -127,7 +125,6 @@
 .project-card-icon p {
   color: var(--text-muted);
   font-size: 0.9rem; line-height: 1.65;
-  transition: color 0.35s;
 }
 .icon-chip .material-symbols-outlined {
   font-size: 28px; color: #fff;
@@ -146,7 +143,7 @@
 .project-card-icon-img-wrap img {
   width: 100%; height: 100%; object-fit: cover; object-position: top;
   display: block;
-  transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: transform 0.8s var(--ease-out);
 }
 @include bp.hover {
   .project-card-icon:hover .project-card-icon-img-wrap img { transform: scale(1.06); }
@@ -168,7 +165,6 @@
 .perf-value {
   font-family: var(--font-display);
   font-weight: 700; font-size: 0.95rem; color: var(--text);
-  transition: color 0.35s;
 }
 
 .project-card-wide { flex-direction: row; }
@@ -183,7 +179,6 @@
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
   padding: 5px 13px; border-radius: 8px;
-  transition: background 0.35s, color 0.35s;
 }
 [data-theme="dark"] .tech-pill {
   background: rgba(255,138,112,0.15);

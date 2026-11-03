@@ -271,7 +271,7 @@ export default function Contact() {
               )}
 
               {/* `aria-disabled` rather than `disabled`, which would drop focus. */}
-              <button className="btn-send" type="submit" aria-disabled={sending}>
+              <button className="btn-primary btn-send" type="submit" aria-disabled={sending}>
                 {sending ? "Sending…" : "Send Message"}
               </button>
             </form>

@@ -1,4 +1,5 @@
 @use 'breakpoints' as bp;
+@use 'mixins' as m;
 
 /* Full-size image viewer opened from the case-study modal's header image or
    gallery thumbnails. Layers above it (z-index 200 vs. 100) — both are
@@ -24,7 +25,7 @@
   position: absolute; inset: 0;
   background: rgba(10, 8, 8, 0.86);
   opacity: 0;
-  transition: opacity 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: opacity 0.3s var(--ease-out);
   cursor: pointer;
 }
 .lightbox.is-open .lightbox-backdrop { opacity: 1; }
@@ -35,8 +36,8 @@
   max-height: 100%;
   opacity: 0;
   transform: scale(0.97);
-  transition: opacity 0.3s cubic-bezier(0.25,0.46,0.45,0.94),
-              transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: opacity 0.3s var(--ease-out),
+              transform 0.3s var(--ease-out);
 }
 .lightbox.is-open .lightbox-dialog { opacity: 1; transform: scale(1); }
 .lightbox-dialog:focus { outline: none; }
@@ -64,8 +65,7 @@
 }
 .lightbox-close:focus-visible,
 .lightbox-nav:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
+  @include m.focus-ring;
 }
 
 .lightbox-close {

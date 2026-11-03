@@ -1,4 +1,5 @@
 @use 'breakpoints' as bp;
+@use 'mixins' as m;
 
 /* Case-study dialog opened from the project cards. Rendered into <body> via a
    portal, so it sits outside the section's rounded/clipped wrappers. */
@@ -29,7 +30,7 @@
   background: rgba(20, 16, 14, 0.55);
   backdrop-filter: blur(6px);
   opacity: 0;
-  transition: opacity 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: opacity 0.35s var(--ease-out);
   cursor: pointer;
 }
 .project-modal.is-open .project-modal-backdrop { opacity: 1; }
@@ -42,8 +43,8 @@
   border-radius: 2rem;
   opacity: 0;
   transform: translateY(16px) scale(0.97);
-  transition: opacity 0.4s cubic-bezier(0.25,0.46,0.45,0.94),
-              transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: opacity 0.4s var(--ease-out),
+              transform 0.4s var(--ease-out);
 }
 .project-modal.is-open .project-modal-dialog {
   opacity: 1;
@@ -83,7 +84,7 @@
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 0.25s, transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: opacity 0.25s, transform 0.25s var(--ease-out);
 }
 .project-modal-card.is-condensed .project-modal-bar { border-bottom-color: var(--outline); }
 .project-modal-card.is-condensed .project-modal-bar-title {
@@ -132,8 +133,7 @@
 }
 .project-modal-close:active { transform: rotate(90deg) scale(0.92); }
 .project-modal-close:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
+  @include m.focus-ring;
 }
 
 .project-modal-body {
@@ -168,21 +168,18 @@
      applies) — this was the one child with no floor, so all the squeeze
      collapsed it to nothing while its siblings held their size. */
   flex-shrink: 0;
+  @include m.button-reset;
   border-radius: 1.25rem;
   overflow: hidden;
   border: 1px solid var(--surface-border);
   background: var(--bg-3);
-  padding: 0;
-  appearance: none; -webkit-appearance: none;
-  cursor: pointer;
   transition: border-color 0.35s, transform 0.25s;
 }
 @include bp.hover {
   .project-modal-img-wrap:hover { transform: translateY(-2px); border-color: var(--secondary); }
 }
 .project-modal-img-wrap:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
+  @include m.focus-ring;
 }
 .project-modal-img-wrap img {
   display: block;
@@ -206,6 +203,7 @@
    ratio, so a landscape screenshot and a portrait phone shot both read as
    actual previews instead of being cropped to the same square. */
 .project-modal-gallery-thumb {
+  @include m.button-reset;
   flex: 0 0 auto;
   display: block;
   height: 180px;
@@ -215,9 +213,6 @@
   overflow: hidden;
   border: 1px solid var(--surface-border);
   background: var(--bg-3);
-  padding: 0;
-  appearance: none; -webkit-appearance: none;
-  cursor: pointer;
   scroll-snap-align: start;
   transition: border-color 0.35s, transform 0.25s;
 }
@@ -232,8 +227,7 @@
   .project-modal-gallery-thumb:hover { transform: translateY(-2px); border-color: var(--secondary); }
 }
 .project-modal-gallery-thumb:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
+  @include m.focus-ring;
 }
 
 .project-modal-meta {
@@ -246,7 +240,6 @@
   border: 1px solid var(--outline);
   border-radius: 1rem;
   padding: 18px 20px;
-  transition: background 0.35s, border-color 0.35s;
 }
 .project-modal-meta-label {
   display: inline-flex; align-items: center; gap: 6px;
@@ -266,7 +259,6 @@
   font-size: 0.78rem; font-weight: 600;
   letter-spacing: 0.04em;
   padding: 5px 12px; border-radius: 8px;
-  transition: background 0.35s, border-color 0.35s, color 0.35s;
 }
 
 .project-modal-cols {

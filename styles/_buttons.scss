@@ -1,4 +1,5 @@
 @use 'breakpoints' as bp;
+@use 'mixins' as m;
 
 /**
  * Shared button primitives.
@@ -17,9 +18,9 @@
   text-decoration: none; border: none; cursor: pointer;
   display: inline-flex; align-items: center; gap: 10px;
   box-shadow: 0 8px 24px var(--primary-glow);
-  transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
-              box-shadow 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
-              background 0.35s;
+  transition: transform 0.25s var(--ease-out),
+              box-shadow 0.25s var(--ease-out),
+              opacity 0.25s;
   position: relative; overflow: hidden;
 }
 .btn-primary::after {
@@ -31,23 +32,32 @@
   pointer-events: none;
 }
 @include bp.hover {
-  .btn-primary:hover {
+  .btn-primary:hover:not([aria-disabled="true"]) {
     transform: translateY(-2px);
     box-shadow: 0 14px 32px var(--primary-glow);
   }
-  .btn-primary:hover::after { opacity: 1; }
+  .btn-primary:hover:not([aria-disabled="true"])::after { opacity: 1; }
 }
-.btn-primary:active { transform: translateY(0) scale(0.98); }
+.btn-primary:active:not([aria-disabled="true"]) { transform: translateY(0) scale(0.98); }
 .btn-primary:focus-visible {
-  outline: none;
-  box-shadow: 0 8px 24px var(--primary-glow), 0 0 0 3px var(--bg), 0 0 0 5px var(--primary);
+  @include m.focus-ring(var(--primary), 0 8px 24px var(--primary-glow));
+}
+/* `aria-disabled` rather than `disabled` keeps a busy button focusable, so it
+   keeps its focus ring too. */
+.btn-primary[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.btn-primary[aria-disabled="true"]:focus-visible {
+  @include m.focus-ring(var(--primary));
 }
 .btn-primary .btn-icon {
   font-size: 18px;
-  transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: transform 0.3s var(--ease-out);
 }
 @include bp.hover {
-  .btn-primary:hover .btn-icon { transform: translateX(3px); }
+  .btn-primary:hover:not([aria-disabled="true"]) .btn-icon { transform: translateX(3px); }
 }
 
 .btn-outline {
@@ -59,7 +69,7 @@
   padding: 14px 30px; border-radius: 14px;
   text-decoration: none; cursor: pointer;
   display: inline-flex; align-items: center; gap: 10px;
-  transition: background 0.25s, color 0.25s, border-color 0.35s, transform 0.25s;
+  transition: background 0.25s, color 0.25s, transform 0.25s;
 }
 @include bp.hover {
   .btn-outline:hover {
@@ -69,7 +79,6 @@
 }
 .btn-outline:active { transform: translateY(0) scale(0.98); }
 .btn-outline:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--secondary);
+  @include m.focus-ring;
 }
 .btn-outline .btn-icon { font-size: 18px; }

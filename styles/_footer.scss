@@ -2,7 +2,6 @@ footer {
   background: var(--footer-bg);
   border-top: 1px solid var(--footer-border);
   padding: 40px var(--gutter);
-  transition: background 0.35s, border-color 0.35s;
 }
 .footer-inner {
   max-width: 1200px; margin: 0 auto;
@@ -15,12 +14,10 @@ footer {
   font-weight: 900; font-style: italic;
   font-size: 1rem; color: var(--primary); text-decoration: none;
   letter-spacing: -0.01em;
-  transition: color 0.35s;
 }
 .footer-copy {
   font-size: 0.8rem; color: var(--text-muted);
   letter-spacing: 0.08em; text-transform: uppercase;
-  transition: color 0.35s;
 }
 .footer-links { display: flex; gap: 24px; }
 .footer-links a {
