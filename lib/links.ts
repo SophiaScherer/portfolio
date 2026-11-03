@@ -12,6 +12,8 @@ export type NavLink = {
 export type SocialLink = {
   label: string;
   href: string;
+  /** Material Symbols name shown beside the link in the Contact section. */
+  icon: string;
 };
 
 export const NAV_LINKS: readonly NavLink[] = [
@@ -32,6 +34,6 @@ export const sectionHref = (id: string): string => `/#${id}`;
 export const EXTERNAL_LINK_PROPS = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 export const SOCIAL_LINKS: readonly SocialLink[] = [
-  { label: "GitHub", href: "https://github.com/SophiaScherer" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/sophia-scherer/" },
+  { label: "GitHub", href: "https://github.com/SophiaScherer", icon: "code" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/sophia-scherer/", icon: "work" },
 ];

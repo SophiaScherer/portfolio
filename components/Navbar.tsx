@@ -2,6 +2,7 @@
 
 import type { CSSProperties, MouseEvent } from "react";
 import { flushSync } from "react-dom";
+import ResumeLink from "./ResumeLink";
 import SectionLink from "./SectionLink";
 import ThemeToggle from "./ThemeToggle";
 import { useNavActive } from "../hooks/useNavActive";
@@ -15,6 +16,7 @@ import {
   SOCIAL_LINKS,
   sectionHref,
 } from "../lib/links";
+import { PROFILE } from "../lib/profile";
 import { toIndexLabel } from "../lib/format";
 
 type NavbarProps = {
@@ -56,7 +58,7 @@ export default function Navbar({ resume }: NavbarProps) {
       <div className="nav-wrap">
         <nav className="nav" aria-label="Primary">
           <SectionLink id="about" className="nav-logo">
-            Sophia Scherer
+            {PROFILE.name}
           </SectionLink>
           <ul className="nav-links">
             {NAV_LINKS.map(({ id, label }) => (
@@ -69,7 +71,7 @@ export default function Navbar({ resume }: NavbarProps) {
           </ul>
           <div className="nav-right">
             <ThemeToggle />
-            {resume && <ResumeLink resume={resume} className="nav-resume" />}
+            {resume && <ResumeLink resume={resume} className="btn-primary nav-resume" />}
             <button
               type="button"
               className={`hamburger${open ? " open" : ""}`}
@@ -115,7 +117,7 @@ export default function Navbar({ resume }: NavbarProps) {
           {resume && (
             <ResumeLink
               resume={resume}
-              className="mobile-menu-resume"
+              className="btn-primary mobile-menu-resume"
               onClick={close}
             />
           )}
@@ -132,26 +134,3 @@ export default function Navbar({ resume }: NavbarProps) {
   );
 }
 
-function ResumeLink({
-  resume,
-  className,
-  onClick,
-}: {
-  resume: ResumeDownload;
-  className: string;
-  onClick?: () => void;
-}) {
-  return (
-    <a
-      href={resume.url}
-      {...EXTERNAL_LINK_PROPS}
-      className={`btn-primary ${className}`}
-      onClick={onClick}
-    >
-      Resume
-      <span className="visually-hidden">
-        {/\.pdf$/i.test(resume.fileName) ? " (PDF, opens in a new tab)" : " (opens in a new tab)"}
-      </span>
-    </a>
-  );
-}

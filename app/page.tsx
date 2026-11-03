@@ -3,9 +3,10 @@ import Projects from "../components/Projects";
 import Experience from "../components/Experience";
 import Interests from "../components/Interests";
 import Contact from "../components/Contact";
-import { getProjectGalleryMap, getProjectImageMap } from "../lib/content";
+import { getProjectGalleryMap, getProjectImageMap, getResumeDownload } from "../lib/content";
 import { SOCIAL_LINKS } from "../lib/links";
 import { PROJECTS, warnOnDuplicateVariants, withCmsImages } from "../lib/projects";
+import { PROFILE } from "../lib/profile";
 import { SITE_NAME, SITE_URL } from "../lib/site";
 
 /** Structured data so search engines can show a profile card. */
@@ -14,14 +15,15 @@ const PERSON_JSON_LD = {
   "@type": "Person",
   name: SITE_NAME,
   url: SITE_URL,
-  affiliation: { "@type": "CollegeOrUniversity", name: "Oregon State University" },
+  affiliation: { "@type": "CollegeOrUniversity", name: PROFILE.school },
   sameAs: SOCIAL_LINKS.map((link) => link.href),
 };
 
 export default async function Home() {
-  const [projectImages, projectGalleries] = await Promise.all([
+  const [projectImages, projectGalleries, resume] = await Promise.all([
     getProjectImageMap(),
     getProjectGalleryMap(),
+    getResumeDownload(),
   ]);
 
   const projects = withCmsImages(PROJECTS, projectImages);
@@ -35,7 +37,7 @@ export default async function Home() {
           __html: JSON.stringify(PERSON_JSON_LD).replace(/</g, "\\u003c"),
         }}
       />
-      <Hero />
+      <Hero resume={resume} />
       <Projects projects={projects} projectGalleries={projectGalleries} />
       <Experience />
       <Interests />

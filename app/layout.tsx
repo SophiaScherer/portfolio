@@ -4,6 +4,7 @@ import "../styles/main.scss";
 import { FONT_VARIABLES } from "./fonts";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import RevealObserver from "../components/RevealObserver";
 import { getResumeDownload } from "../lib/content";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "../lib/site";
 import { THEME_INIT_SCRIPT } from "../lib/theme";
@@ -79,6 +80,7 @@ export default async function RootLayout({
         {children}
 
         <Footer />
+        <RevealObserver />
         <Analytics />
         <SpeedInsights />
       </body>

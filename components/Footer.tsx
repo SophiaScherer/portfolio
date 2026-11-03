@@ -1,4 +1,5 @@
 import { EXTERNAL_LINK_PROPS, SOCIAL_LINKS } from "../lib/links";
+import { PROFILE } from "../lib/profile";
 import SectionLink from "./SectionLink";
 
 export default function Footer() {
@@ -6,7 +7,7 @@ export default function Footer() {
     <footer>
       <div className="footer-inner">
         <SectionLink id="about" className="footer-logo">
-          Sophia Scherer
+          {PROFILE.name}
           <span className="footer-copy">
             {" "}© {new Date().getFullYear()}
           </span>

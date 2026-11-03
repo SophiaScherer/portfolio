@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
+import { PROFILE } from "../lib/profile";
 import { SITE_NAME, SITE_URL } from "../lib/site";
 
-export const alt = `${SITE_NAME} — Computer Science at Oregon State University`;
+export const alt = `${SITE_NAME} — Computer Science at ${PROFILE.school}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -22,7 +23,7 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ fontSize: 30, color: "#aa314d", letterSpacing: 4, textTransform: "uppercase" }}>
-          {`${SITE_NAME} · CS @ Oregon State`}
+          {`${SITE_NAME} · CS @ ${PROFILE.schoolShort}`}
         </div>
         <div style={{ fontSize: 88, lineHeight: 1.05, marginTop: 24 }}>
           Building high-performance software
