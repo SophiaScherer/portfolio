@@ -134,9 +134,15 @@ test("the 404 page links back to the home page sections", async ({ page, isMobil
 
   if (isMobile) {
     await page.getByRole("button", { name: "Open menu" }).click();
-    await page.getByRole("navigation", { name: "Mobile" }).getByRole("link", { name: /Projects/ }).click();
+    await page
+      .getByRole("navigation", { name: "Mobile" })
+      .getByRole("link", { name: /Projects/ })
+      .click();
   } else {
-    await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Projects" }).click();
+    await page
+      .getByRole("navigation", { name: "Primary" })
+      .getByRole("link", { name: "Projects" })
+      .click();
   }
   await expect(page).toHaveURL(/\/#projects$/);
   await expect(page.locator("#projects")).toBeAttached();

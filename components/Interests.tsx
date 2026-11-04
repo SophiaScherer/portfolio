@@ -5,8 +5,7 @@ import { INTERESTS } from "../lib/interests";
 import { revealDelayClass, toIndexLabel } from "../lib/format";
 
 export default function Interests() {
-  const { trackRef, activeIndex, scrollable, scrollToIndex } =
-    useCarouselIndex<HTMLDivElement>();
+  const { trackRef, activeIndex, scrollable, scrollToIndex } = useCarouselIndex<HTMLDivElement>();
 
   return (
     <section className="section-pad" id="interests">

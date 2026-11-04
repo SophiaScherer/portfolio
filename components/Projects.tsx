@@ -20,10 +20,7 @@ type ProjectsProps = {
 const HASH_PREFIX = "#project-";
 const OVERLAY = "project";
 
-export default function Projects({
-  projects,
-  projectGalleries,
-}: ProjectsProps) {
+export default function Projects({ projects, projectGalleries }: ProjectsProps) {
   const hash = useLocationHash();
 
   const expanded = hash.startsWith(HASH_PREFIX)
@@ -43,10 +40,7 @@ export default function Projects({
   }, []);
 
   return (
-    <section
-      className="panel-section section-pad"
-      id="projects"
-    >
+    <section className="panel-section section-pad" id="projects">
       <div className="container">
         <div className="projects-header">
           <div>
@@ -54,23 +48,15 @@ export default function Projects({
             <h2 className="h2 reveal reveal-delay-1">Personal Projects</h2>
           </div>
           <p className="reveal reveal-delay-2">
-            A selection of projects showcasing my work in desktop systems
-            programming, mobile development, on-device machine learning, and
-            real-time data visualization.
+            A selection of projects showcasing my work in desktop systems programming, mobile
+            development, on-device machine learning, and real-time data visualization.
           </p>
         </div>
 
         <div className="projects-grid">
           {projects.map((project, i) => (
-            <div
-              key={project.id}
-              className={`reveal ${revealDelayClass(i)}`.trim()}
-            >
-              <ProjectCard
-                project={project}
-                expanded={expandedId === project.id}
-                onOpen={open}
-              />
+            <div key={project.id} className={`reveal ${revealDelayClass(i)}`.trim()}>
+              <ProjectCard project={project} expanded={expandedId === project.id} onOpen={open} />
             </div>
           ))}
         </div>

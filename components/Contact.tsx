@@ -210,9 +210,10 @@ export default function Contact() {
                 Open to internship &amp; research opportunities
               </span>
               <p className="contact-intro">
-                I&apos;m currently seeking internship and research opportunities in software engineering,
-                data visualization, and high-performance computing. If you&apos;re interested in collaborating
-                on a project or discussing opportunities, I&apos;d be glad to connect.
+                I&apos;m currently seeking internship and research opportunities in software
+                engineering, data visualization, and high-performance computing. If you&apos;re
+                interested in collaborating on a project or discussing opportunities, I&apos;d be
+                glad to connect.
               </p>
               <ul className="contact-links" role="list">
                 <li className="contact-link">
@@ -243,7 +244,12 @@ export default function Contact() {
               noValidate
               aria-busy={sending}
             >
-              <Field {...fieldProps("name")} label="Full Name" placeholder="Your name" autoComplete="name" />
+              <Field
+                {...fieldProps("name")}
+                label="Full Name"
+                placeholder="Your name"
+                autoComplete="name"
+              />
               <Field
                 {...fieldProps("email")}
                 label="Email"
@@ -251,7 +257,12 @@ export default function Contact() {
                 type="email"
                 autoComplete="email"
               />
-              <Field {...fieldProps("message")} label="Message" placeholder="Your message..." multiline />
+              <Field
+                {...fieldProps("message")}
+                label="Message"
+                placeholder="Your message..."
+                multiline
+              />
 
               {/* Honeypot: hidden from people, but naive bots fill it in. */}
               <div className="visually-hidden" aria-hidden="true">

@@ -34,7 +34,8 @@ export function validateContact(input: ContactInput): ContactErrors {
   else if (name.length > CONTACT_LIMITS.name) errors.name = tooLong("name", CONTACT_LIMITS.name);
 
   if (!email) errors.email = "Email is required.";
-  else if (email.length > CONTACT_LIMITS.email) errors.email = tooLong("email", CONTACT_LIMITS.email);
+  else if (email.length > CONTACT_LIMITS.email)
+    errors.email = tooLong("email", CONTACT_LIMITS.email);
   else if (!EMAIL_RE.test(email)) errors.email = "Please enter a valid email address.";
 
   if (!message) errors.message = "Message is required.";

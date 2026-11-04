@@ -14,42 +14,30 @@ export default function Hero({ resume }: { resume: ResumeDownload | null }) {
             <span className="hero-kicker reveal-onload">
               {PROFILE.name} · CS @ {PROFILE.schoolShort}
             </span>
-            <h1 className="h1 reveal-onload reveal-delay-1">
-              Building high-performance software
-            </h1>
+            <h1 className="h1 reveal-onload reveal-delay-1">Building high-performance software</h1>
             <p className="reveal-onload reveal-delay-2">
-              Honors <strong>Computer Science</strong> student at {PROFILE.school}{" "}
-              specializing in systems programming, data visualization, and
-              high-performance computing. I enjoy solving complex technical
-              problems and building software that is efficient, reliable, and
-              easy to use.
+              Honors <strong>Computer Science</strong> student at {PROFILE.school} specializing in
+              systems programming, data visualization, and high-performance computing. I enjoy
+              solving complex technical problems and building software that is efficient, reliable,
+              and easy to use.
             </p>
             <div className="hero-ctas reveal-onload reveal-delay-3">
               <a href="#projects" className="btn-primary">
                 Projects
-                <span
-                  className="material-symbols-outlined btn-icon"
-                  aria-hidden="true"
-                >
+                <span className="material-symbols-outlined btn-icon" aria-hidden="true">
                   arrow_forward
                 </span>
               </a>
               <a href="#contact" className="btn-outline">
                 Contact Me
-                <span
-                  className="material-symbols-outlined btn-icon"
-                  aria-hidden="true"
-                >
+                <span className="material-symbols-outlined btn-icon" aria-hidden="true">
                   mail
                 </span>
               </a>
               {resume && (
                 <ResumeLink resume={resume} className="btn-outline">
                   Resume
-                  <span
-                    className="material-symbols-outlined btn-icon"
-                    aria-hidden="true"
-                  >
+                  <span className="material-symbols-outlined btn-icon" aria-hidden="true">
                     description
                   </span>
                 </ResumeLink>

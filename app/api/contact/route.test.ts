@@ -23,7 +23,7 @@ const post = (body: unknown, headers: Record<string, string> = {}) =>
       method: "POST",
       headers: { "content-type": "application/json", "x-forwarded-for": "203.0.113.1", ...headers },
       body: typeof body === "string" ? body : JSON.stringify(body),
-    })
+    }),
   );
 
 beforeEach(async () => {
@@ -57,7 +57,7 @@ describe("POST /api/contact", () => {
         connectionTimeout: 10_000,
         greetingTimeout: 10_000,
         socketTimeout: 15_000,
-      })
+      }),
     );
     expect(sendMail).toHaveBeenCalledTimes(1);
     expect(sendMail).toHaveBeenCalledWith(
@@ -65,7 +65,7 @@ describe("POST /api/contact", () => {
         to: "inbox@example.com",
         replyTo: "ada@example.com",
         subject: "Portfolio contact from Ada Lovelace",
-      })
+      }),
     );
   });
 
@@ -94,7 +94,9 @@ describe("POST /api/contact", () => {
     expect((await blocked.json()).error).toMatch(/too many/i);
     expect(sendMail).toHaveBeenCalledTimes(5);
 
-    expect((await post(valid, { "x-forwarded-for": "198.51.100.7, 203.0.113.1" })).status).toBe(200);
+    expect((await post(valid, { "x-forwarded-for": "198.51.100.7, 203.0.113.1" })).status).toBe(
+      200,
+    );
   });
 
   it("stops reading a streamed body once it passes the cap", async () => {
@@ -111,7 +113,7 @@ describe("POST /api/contact", () => {
         method: "POST",
         body: stream,
         duplex: "half",
-      } as RequestInit)
+      } as RequestInit),
     );
     expect(res.status).toBe(413);
     expect(pulled).toBeLessThan(10);
@@ -194,7 +196,9 @@ describe("POST /api/contact", () => {
     vi.stubEnv("SMTP_PORT", "99999");
     const res = await post(valid);
     expect(res.status).toBe(500);
-    expect((await res.json()).error).toBe("Messaging is temporarily unavailable. Please try again later.");
+    expect((await res.json()).error).toBe(
+      "Messaging is temporarily unavailable. Please try again later.",
+    );
     expect(sendMail).not.toHaveBeenCalled();
   });
 

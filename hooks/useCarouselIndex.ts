@@ -21,11 +21,7 @@ export function useCarouselIndex<T extends HTMLElement = HTMLElement>(): {
   // Offset of a slide from the track's snap edge (its inline-start padding).
   const offsetFromStart = useCallback((track: T, slide: Element) => {
     const padding = parseFloat(getComputedStyle(track).paddingLeft) || 0;
-    return (
-      slide.getBoundingClientRect().left -
-      track.getBoundingClientRect().left -
-      padding
-    );
+    return slide.getBoundingClientRect().left - track.getBoundingClientRect().left - padding;
   }, []);
 
   useEffect(() => {

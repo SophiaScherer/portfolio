@@ -38,13 +38,13 @@ function resolveConfig(): HygraphConfig {
 
   if (!endpoint) {
     throw new HygraphConfigError(
-      "HYGRAPH_ENDPOINT is not set. Configure it in .env.local before using the Hygraph client."
+      "HYGRAPH_ENDPOINT is not set. Configure it in .env.local before using the Hygraph client.",
     );
   }
 
   if (!token) {
     throw new HygraphConfigError(
-      "HYGRAPH_TOKEN is not set. Configure it in .env.local before using the Hygraph client."
+      "HYGRAPH_TOKEN is not set. Configure it in .env.local before using the Hygraph client.",
     );
   }
 
@@ -69,7 +69,7 @@ type RequestOptions = {
 
 async function requestUncached<T>(
   query: string,
-  { variables, revalidate = 60, tags = ["hygraph"] }: RequestOptions = {}
+  { variables, revalidate = 60, tags = ["hygraph"] }: RequestOptions = {},
 ): Promise<T> {
   const { endpoint, token } = resolveConfig();
 
@@ -85,17 +85,13 @@ async function requestUncached<T>(
   });
 
   if (!res.ok) {
-    throw new Error(
-      `Hygraph request failed: ${res.status} ${res.statusText}`
-    );
+    throw new Error(`Hygraph request failed: ${res.status} ${res.statusText}`);
   }
 
   const payload = (await res.json()) as GraphQLResponse<T>;
 
   if (payload.errors?.length) {
-    throw new Error(
-      `Hygraph returned errors: ${payload.errors.map((e) => e.message).join("; ")}`
-    );
+    throw new Error(`Hygraph returned errors: ${payload.errors.map((e) => e.message).join("; ")}`);
   }
 
   if (payload.data === undefined) {
@@ -114,9 +110,8 @@ async function requestUncached<T>(
  *   2. Next.js's Data Cache stores the response across requests for
  *      `revalidate` seconds, invalidatable via `revalidateTag`.
  */
-export const request = cache(
-  <T>(query: string, options?: RequestOptions): Promise<T> =>
-    withTimeout(requestUncached<T>(query, options), REQUEST_TIMEOUT_MS),
+export const request = cache(<T>(query: string, options?: RequestOptions): Promise<T> =>
+  withTimeout(requestUncached<T>(query, options), REQUEST_TIMEOUT_MS),
 );
 
 /**
@@ -127,10 +122,7 @@ export const request = cache(
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined;
   const timeout = new Promise<never>((_, reject) => {
-    timer = setTimeout(
-      () => reject(new Error(`Hygraph request timed out after ${ms} ms.`)),
-      ms,
-    );
+    timer = setTimeout(() => reject(new Error(`Hygraph request timed out after ${ms} ms.`)), ms);
   });
   return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
