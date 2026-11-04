@@ -98,7 +98,7 @@
   background: none; border: none; border-radius: 12px; cursor: pointer; padding: 0;
 }
 .hamburger:focus-visible {
-  outline: none;
+  outline: 2px solid transparent;
   box-shadow: 0 0 0 2px var(--secondary);
 }
 .hamburger span {
