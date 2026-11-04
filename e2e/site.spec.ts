@@ -33,6 +33,8 @@ test("responses carry the security headers", async ({ request }) => {
     const headers = (await request.get(path)).headers();
     expect(headers["content-security-policy"]).toContain("frame-ancestors 'none'");
     expect(headers["x-content-type-options"]).toBe("nosniff");
+    expect(headers["x-frame-options"]).toBe("DENY");
+    expect(headers["permissions-policy"]).toContain("camera=()");
     expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
     expect(headers["x-powered-by"]).toBeUndefined();
   }
