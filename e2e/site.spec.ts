@@ -213,6 +213,11 @@ test.describe("theme", () => {
 
     await page.reload();
     expect(await themeAtFirstPaint(page)).toBe("light");
+    // The init script's meta still leads after hydration, against the dark OS.
+    await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute(
+      "content",
+      "#f9f4e8",
+    );
   });
 });
 
