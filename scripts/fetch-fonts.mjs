@@ -4,7 +4,7 @@
 
 import { writeFile } from "node:fs/promises";
 
-/** `fetch` that fails on an error status instead of saving the error page as a font. */
+/** `fetch` that fails on an error status instead of parsing or saving the error page. */
 async function fetchOk(url, init) {
   const res = await fetch(url, init);
   if (!res.ok) throw new Error(`${res.status} ${res.statusText} from ${url}`);

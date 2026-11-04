@@ -7,11 +7,17 @@ import { createServer } from "node:http";
 const PORT = Number(process.env.HYGRAPH_STUB_PORT ?? 3101);
 const ORIGIN = `http://localhost:${PORT}`;
 
-// 1x1 PNG.
-const PNG = Buffer.from(
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
-  "base64",
-);
+const FILES = {
+  // 1x1 PNG.
+  ".png": [
+    "image/png",
+    Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+      "base64",
+    ),
+  ],
+  ".pdf": ["application/pdf", Buffer.from("%PDF-1.4\n%%EOF\n")],
+};
 
 const asset = (fileName) => ({
   url: `${ORIGIN}/assets/${fileName}`,
@@ -42,9 +48,10 @@ createServer((req, res) => {
   if (req.method === "POST") {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(PORTFOLIO));
-  } else if (req.url?.startsWith("/assets/") && req.url.endsWith(".png")) {
-    res.writeHead(200, { "Content-Type": "image/png" });
-    res.end(PNG);
+  } else if (req.url?.startsWith("/assets/") && FILES[req.url.slice(req.url.lastIndexOf("."))]) {
+    const [type, body] = FILES[req.url.slice(req.url.lastIndexOf("."))];
+    res.writeHead(200, { "Content-Type": type });
+    res.end(body);
   } else if (req.url === "/") {
     res.writeHead(200);
     res.end("ok");
