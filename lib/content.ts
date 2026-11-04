@@ -81,8 +81,7 @@ type PortfolioQueryResponse = {
  * outage would fail its render.
  */
 const isProductionServer = () =>
-  process.env.NODE_ENV === "production" &&
-  process.env.NEXT_PHASE !== "phase-production-build";
+  process.env.NODE_ENV === "production" && process.env.NEXT_PHASE !== "phase-production-build";
 
 /**
  * Fetch the singleton Portfolio entry. Returns `null` if no entry exists.
@@ -103,10 +102,7 @@ export const getPortfolioContent = async (): Promise<PortfolioContent | null> =>
     data = await request<PortfolioQueryResponse>(PORTFOLIO_QUERY);
   } catch (error) {
     if (!(error instanceof HygraphConfigError) && isProductionServer()) throw error;
-    console.error(
-      "[content] Hygraph request failed; rendering without CMS content.",
-      error
-    );
+    console.error("[content] Hygraph request failed; rendering without CMS content.", error);
     return null;
   }
 
@@ -148,9 +144,7 @@ export const getProjectImageMap = async (): Promise<Record<string, string>> => {
     if (!image.fileName || !image.url) continue;
     // Two assets sharing a name would otherwise silently swap a card's image.
     if (byFileName[image.fileName]) {
-      console.warn(
-        `[content] Duplicate asset fileName "${image.fileName}" — keeping the first.`,
-      );
+      console.warn(`[content] Duplicate asset fileName "${image.fileName}" — keeping the first.`);
       continue;
     }
     byFileName[image.fileName] = image.url;
@@ -171,9 +165,7 @@ const GALLERY_FILENAME = /^(.+)-gallery-(\d+)\.[a-z0-9]+$/i;
  * A project with no gallery-named assets simply gets no entry — callers treat
  * a missing key the same as an empty list.
  */
-export const getProjectGalleryMap = async (): Promise<
-  Record<string, GalleryImage[]>
-> => {
+export const getProjectGalleryMap = async (): Promise<Record<string, GalleryImage[]>> => {
   const content = await getPortfolioContent();
   // Keyed by index per project so two assets at the same position collide
   // explicitly instead of both silently appearing — same intent as the

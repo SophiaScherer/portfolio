@@ -6,5 +6,4 @@ import { PROFILE } from "./profile";
 export const SITE_URL = "https://www.sophiasch.com";
 export const SITE_NAME = PROFILE.name;
 export const SITE_TITLE = `${PROFILE.name} | Portfolio`;
-export const SITE_DESCRIPTION =
-  `Honors B.S. Computer Science student at ${PROFILE.school} specializing in high-performance computing, visualization, and full-stack development.`;
+export const SITE_DESCRIPTION = `Honors B.S. Computer Science student at ${PROFILE.school} specializing in high-performance computing, visualization, and full-stack development.`;

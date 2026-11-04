@@ -19,10 +19,10 @@ export function useInView<T extends Element>(
     // A `null` root means the container hasn't mounted yet; wait for it.
     if (!node || root === null) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { root, rootMargin },
-    );
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      root,
+      rootMargin,
+    });
     observer.observe(node);
     return () => observer.disconnect();
   }, [node, root, rootMargin]);

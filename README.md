@@ -26,6 +26,7 @@ npm run dev
 | `npm run build` / `npm start` | Production build and server |
 | `npm run typecheck` | Generates route types, then runs `tsc` |
 | `npm run lint` | ESLint, failing on warnings |
+| `npm run format` / `npm run format:check` | Prettier for the TypeScript, JavaScript, JSON, and YAML (SCSS and Markdown keep their hand alignment) |
 | `npm run knip` | Unused files, dependencies, and exports |
 | `npm test` | Unit tests (Vitest) |
 | `npm run test:e2e` | End-to-end and accessibility tests (Playwright, against a production build; run `npx playwright install chromium` once) |
@@ -43,7 +44,7 @@ Project copy lives in `lib/projects.ts`. Images come from the single Hygraph `Po
 
 GitHub Actions runs on every pull request and on pushes to `main`. Vercel builds each commit separately.
 
-- **CI:** typecheck, lint, knip, unit tests, and `npm audit` on production dependencies, then a production build and the Playwright suite. CI has no Hygraph secrets, so `e2e/hygraph-stub.mjs` serves fixture content. To reproduce that locally:
+- **CI:** typecheck, lint, format check, knip, unit tests, and `npm audit` on production dependencies, then a production build and the Playwright suite. CI has no Hygraph secrets, so `e2e/hygraph-stub.mjs` serves fixture content. To reproduce that locally:
 
   ```bash
   node e2e/hygraph-stub.mjs &
