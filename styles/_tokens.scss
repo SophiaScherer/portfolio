@@ -52,6 +52,8 @@
   --outline-strong:  #937e78;
   --tag-bg:          #fff;
   --tag-text:        #aa314d;
+  /* Tags overlaid on a project screenshot. */
+  --img-tag-bg:      rgba(255,255,255,0.88);
   --nav-bg:          rgba(255,255,255,0.78);
   --nav-border:      rgba(255,255,255,0.4);
   --nav-shadow:      0 8px 32px rgba(214,83,109,0.12);
@@ -92,6 +94,7 @@
   --outline-strong:  #a08c86;
   --tag-bg:          rgba(255,178,188,0.1);
   --tag-text:        #ffb2bc;
+  --img-tag-bg:      rgba(30,28,34,0.82);
   --nav-bg:          rgba(28,26,32,0.85);
   --nav-border:      rgba(255,255,255,0.08);
   --nav-shadow:      0 8px 32px rgba(0,0,0,0.4);

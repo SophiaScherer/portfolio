@@ -6,7 +6,7 @@ import type { GalleryImage } from "../lib/content";
 import { revealDelayClass } from "../lib/format";
 import { currentOverlay, historyBack } from "../lib/history";
 import { getProjectById, type Project } from "../lib/projects";
-import ProjectCard, { BENTO_CLASS } from "./ProjectCard";
+import ProjectCard from "./ProjectCard";
 import ProjectModal from "./ProjectModal";
 
 type ProjectsProps = {
@@ -60,11 +60,11 @@ export default function Projects({
           </p>
         </div>
 
-        <div className="bento">
+        <div className="projects-grid">
           {projects.map((project, i) => (
             <div
               key={project.id}
-              className={cellClass(project.cardVariant, i)}
+              className={`reveal ${revealDelayClass(i)}`.trim()}
             >
               <ProjectCard
                 project={project}
@@ -84,9 +84,4 @@ export default function Projects({
       />
     </section>
   );
-}
-
-/** Grid cell plus the staggered reveal for this card's position. */
-function cellClass(variant: Project["cardVariant"], index: number) {
-  return `${BENTO_CLASS[variant]} reveal ${revealDelayClass(index)}`.trim();
 }
