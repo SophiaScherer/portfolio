@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import RevealObserver from "../components/RevealObserver";
 import { getResumeDownload } from "../lib/content";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "../lib/site";
-import { THEME_INIT_SCRIPT } from "../lib/theme";
+import { THEME_COLORS, THEME_INIT_SCRIPT } from "../lib/theme";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from '@vercel/analytics/next';
 
@@ -44,8 +44,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f9f4e8" },
-    { media: "(prefers-color-scheme: dark)", color: "#18181a" },
+    { media: "(prefers-color-scheme: light)", color: THEME_COLORS.light },
+    { media: "(prefers-color-scheme: dark)", color: THEME_COLORS.dark },
   ],
 };
 

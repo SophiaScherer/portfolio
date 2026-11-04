@@ -4,17 +4,19 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from "react"
 
 /**
  * Tracks the active slide of a horizontal scroll-snap track and scrolls to a
- * slide on demand. The track's direct children are the slides. Harmless when
- * the track isn't scrollable (e.g. the desktop grid layout): no scroll events
- * fire, so the index simply stays at 0.
+ * slide on demand. The track's direct children are the slides. `scrollable`
+ * reports whether the track currently overflows, which is false for layouts
+ * that aren't a carousel (e.g. the desktop grid).
  */
 export function useCarouselIndex<T extends HTMLElement = HTMLElement>(): {
   trackRef: RefObject<T | null>;
   activeIndex: number;
+  scrollable: boolean;
   scrollToIndex: (index: number) => void;
 } {
   const trackRef = useRef<T>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [scrollable, setScrollable] = useState(false);
 
   // Offset of a slide from the track's snap edge (its inline-start padding).
   const offsetFromStart = useCallback((track: T, slide: Element) => {
@@ -33,6 +35,7 @@ export function useCarouselIndex<T extends HTMLElement = HTMLElement>(): {
     let frame = 0;
     const update = () => {
       frame = 0;
+      setScrollable(track.scrollWidth > track.clientWidth);
       const slides = Array.from(track.children);
       if (slides.length === 0) return;
 
@@ -59,8 +62,13 @@ export function useCarouselIndex<T extends HTMLElement = HTMLElement>(): {
     };
 
     track.addEventListener("scroll", onScroll, { passive: true });
+    // Resizing can switch layouts or shift the scroll position without a
+    // scroll event. It also fires once on observe, for the initial state.
+    const resizeObserver = new ResizeObserver(onScroll);
+    resizeObserver.observe(track);
     return () => {
       track.removeEventListener("scroll", onScroll);
+      resizeObserver.disconnect();
       cancelAnimationFrame(frame);
     };
   }, [offsetFromStart]);
@@ -77,5 +85,5 @@ export function useCarouselIndex<T extends HTMLElement = HTMLElement>(): {
     [offsetFromStart],
   );
 
-  return { trackRef, activeIndex, scrollToIndex };
+  return { trackRef, activeIndex, scrollable, scrollToIndex };
 }

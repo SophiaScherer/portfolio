@@ -58,14 +58,15 @@
 
 .nav-right { display: flex; align-items: center; gap: 12px; }
 
+/* The border gives the track 3:1 contrast against the page in both themes. */
 .theme-toggle {
   background: var(--switch-track);
-  border: none; cursor: pointer;
+  border: 1px solid var(--outline-strong); cursor: pointer;
   border-radius: 999px;
   width: 52px; height: 28px;
   position: relative;
   display: flex; align-items: center;
-  padding: 3px;
+  padding: 2px;
   transition: background 0.3s;
   flex-shrink: 0;
 }

@@ -46,6 +46,10 @@ export default function Navbar({ resume }: NavbarProps) {
     }
     flushSync(dismiss);
     section.scrollIntoView();
+    // Like a native anchor jump, so the next Tab continues from the section
+    // rather than from the hamburger, which the menu's cleanup refocused.
+    if (!section.hasAttribute("tabindex")) section.tabIndex = -1;
+    section.focus({ preventScroll: true });
     window.history.replaceState(null, "", `#${id}`);
   };
 

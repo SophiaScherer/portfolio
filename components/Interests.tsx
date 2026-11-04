@@ -5,7 +5,7 @@ import { INTERESTS } from "../lib/interests";
 import { revealDelayClass, toIndexLabel } from "../lib/format";
 
 export default function Interests() {
-  const { trackRef, activeIndex, scrollToIndex } =
+  const { trackRef, activeIndex, scrollable, scrollToIndex } =
     useCarouselIndex<HTMLDivElement>();
 
   return (
@@ -14,14 +14,14 @@ export default function Interests() {
         <span className="label-cap reveal">Beyond the Code</span>
         <h2 className="h2 reveal reveal-delay-1">Interests</h2>
 
-        {/* Grid on larger screens, swipe carousel on phones. Focusable so
-            keyboard users can scroll it too. */}
+        {/* Grid on larger screens, swipe carousel on phones. Focusable while
+            it scrolls, so keyboard users can scroll it too. */}
         <div
           className="interests-grid carousel-track"
           ref={trackRef}
           role="region"
           aria-label="Interests"
-          tabIndex={0}
+          tabIndex={scrollable ? 0 : undefined}
         >
           {INTERESTS.map((interest, i) => (
             <div
