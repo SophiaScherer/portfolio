@@ -17,8 +17,8 @@ export const HONEYPOT_FIELD = "bot_field";
 export type ContactInput = { name: string; email: string; message: string };
 export type ContactErrors = Partial<Record<"name" | "email" | "message", string>>;
 
-// Rejecting `,;<>` keeps address lists and display names out of `replyTo`.
-const EMAIL_RE = /^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/;
+// Rejecting `,;<>"` keeps address lists, display names, and quoted parts out of `replyTo`.
+const EMAIL_RE = /^[^\s@,;<>"]+@[^\s@,;<>"]+\.[^\s@,;<>"]+$/;
 
 const tooLong = (label: string, limit: number) =>
   `Keep your ${label} under ${limit.toLocaleString("en-US")} characters.`;

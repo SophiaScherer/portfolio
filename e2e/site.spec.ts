@@ -28,6 +28,16 @@ test("home page renders without client errors", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test("responses carry the security headers", async ({ request }) => {
+  for (const path of ["/", "/no-such-page"]) {
+    const headers = (await request.get(path)).headers();
+    expect(headers["content-security-policy"]).toContain("frame-ancestors 'none'");
+    expect(headers["x-content-type-options"]).toBe("nosniff");
+    expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
+    expect(headers["x-powered-by"]).toBeUndefined();
+  }
+});
+
 test("a case study opens with its own URL and Back closes it", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Open case study: unPawse" }).click();
