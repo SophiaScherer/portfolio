@@ -1,0 +1,35 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # Lets a bad release get caught and pulled before it's proposed here.
+    # Security updates ignore this and open right away.
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      # Released together and must stay on the same version.
+      next:
+        patterns: [next, eslint-config-next]
+      react:
+        patterns: [react, react-dom, "@types/react", "@types/react-dom"]
+      playwright:
+        patterns: ["@playwright/test", "@axe-core/playwright"]
+      # Everything else, one PR per week. Majors still get their own PRs.
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ["*"]
