@@ -13,6 +13,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "icons": "node scripts/fetch-icons.mjs",
@@ -38,6 +40,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.5",
     "knip": "^5.88.1",
+    "prettier": "^3.9.10",
     "sass": "^1.105.0",
     "typescript": "6.0.3",
     "vitest": "^5.1.0"
