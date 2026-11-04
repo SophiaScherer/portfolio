@@ -58,4 +58,6 @@
 /* Printing never scrolls reveals into view, so show them all. */
 @media print {
   .reveal, .reveal-onload { opacity: 1 !important; animation: none !important; }
+  /* The fixed nav would repeat on every page, and the rest is decoration or UI. */
+  .nav-wrap, .mobile-menu, .skip-link, .ambient, .hero-dots, .carousel-dots { display: none !important; }
 }
