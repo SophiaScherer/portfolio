@@ -5,16 +5,20 @@
   "description": "Personal portfolio site for Sophia Scherer.",
   "author": "Sophia Scherer",
   "license": "MIT",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "icons": "node scripts/fetch-icons.mjs",
     "fonts": "node scripts/fetch-fonts.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "knip": "knip"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -33,6 +37,7 @@
     "@types/react-dom": "^19.3.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.5",
+    "knip": "^5.88.1",
     "sass": "^1.105.0",
     "typescript": "6.0.3",
     "vitest": "^5.1.0"

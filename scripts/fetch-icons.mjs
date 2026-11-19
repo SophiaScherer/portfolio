@@ -4,6 +4,13 @@
 
 import { writeFile } from "node:fs/promises";
 
+/** `fetch` that fails on an error status instead of parsing or saving the error page. */
+async function fetchOk(url, init) {
+  const res = await fetch(url, init);
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText} from ${url}`);
+  return res;
+}
+
 const ICONS = [
   "arrow_forward",
   "arrow_outward",
@@ -37,10 +44,10 @@ const cssUrl =
 const userAgent =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36";
 
-const css = await (await fetch(cssUrl, { headers: { "User-Agent": userAgent } })).text();
+const css = await (await fetchOk(cssUrl, { headers: { "User-Agent": userAgent } })).text();
 const fontUrl = css.match(/url\((https:[^)]+)\)\s*format\(['"]woff2['"]\)/)?.[1];
 if (!fontUrl) throw new Error(`No woff2 URL in the stylesheet:\n${css}`);
 
-const font = Buffer.from(await (await fetch(fontUrl)).arrayBuffer());
+const font = Buffer.from(await (await fetchOk(fontUrl)).arrayBuffer());
 await writeFile(OUTPUT, font);
 console.log(`Wrote ${font.length} bytes for ${ICONS.length} icons to ${OUTPUT.pathname}`);

@@ -69,11 +69,13 @@ test("the image viewer is keyboard reachable and steps through images", async ({
   const caseStudy = page.getByRole("dialog", { name: "DashDetective" });
   await expect(caseStudy).toBeVisible();
 
-  // Gallery images come from Hygraph, which CI builds without.
+  // Gallery images come from Hygraph. CI serves them from e2e/hygraph-stub.mjs,
+  // so there a missing gallery is a failure rather than a skip.
   const thumb = page.getByRole("button", { name: /^View image 1 of \d+$/ });
   const label = (await thumb.count()) ? await thumb.getAttribute("aria-label") : null;
   const total = Number(label?.match(/of (\d+)$/)?.[1] ?? 0);
-  test.skip(total < 2, "Needs at least two project images from Hygraph.");
+  if (process.env.CI) expect(total, "gallery images from the stub").toBeGreaterThanOrEqual(2);
+  else test.skip(total < 2, "Needs at least two project images from Hygraph.");
 
   await thumb.click();
   const close = page.getByRole("button", { name: "Close image viewer" });
