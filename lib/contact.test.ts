@@ -31,6 +31,8 @@ describe("validateContact", () => {
     "a@x.y;b@x.y",
     "Ada <ada@example.com>",
     "<ada@example.com>",
+    '"ada"@example.com',
+    'a"b@example.com',
   ])("rejects the invalid email %j", (email) => {
     expect(validateContact({ ...valid, email }).email).toBe("Please enter a valid email address.");
   });
