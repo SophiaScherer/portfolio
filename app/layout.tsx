@@ -9,7 +9,7 @@ import { getResumeDownload } from "../lib/content";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "../lib/site";
 import { THEME_COLORS, THEME_INIT_SCRIPT } from "../lib/theme";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -30,16 +30,16 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
   },
   keywords: [
-      "portfolio",
-      "C++",
-      "C++ developer",
-      "C",
-      "JavaScript",
-      "CUDA",
-      "OpenCL",
-      "Data visualization",
-      "Web development",
-  ]
+    "portfolio",
+    "C++",
+    "C++ developer",
+    "C",
+    "JavaScript",
+    "CUDA",
+    "OpenCL",
+    "Data visualization",
+    "Web development",
+  ],
 };
 
 export const viewport: Viewport = {
@@ -49,21 +49,13 @@ export const viewport: Viewport = {
   ],
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
   const resume = await getResumeDownload();
 
   // The head script sets `data-theme` and `data-js` before hydration, hence
   // `suppressHydrationWarning`.
   return (
-    <html
-      lang="en"
-      className={FONT_VARIABLES}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={FONT_VARIABLES} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>

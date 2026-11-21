@@ -61,10 +61,7 @@ export function useModal<T extends HTMLElement = HTMLElement>({
   // menu's trap), which can't take focus and would break the wrap-around.
   const getFocusable = useCallback(
     () =>
-      Array.from(
-        dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR) ??
-          [],
-      ).filter(
+      Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR) ?? []).filter(
         (el) =>
           typeof el.checkVisibility !== "function" ||
           el.checkVisibility({ visibilityProperty: true }),

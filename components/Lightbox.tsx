@@ -34,12 +34,7 @@ const isZoomed = () => (window.visualViewport?.scale ?? 1) > 1.01;
  * `ProjectModal`. Always mounted so it can transition out; `index === null`
  * is the closed state.
  */
-export default function Lightbox({
-  images,
-  index,
-  onClose,
-  onNavigate,
-}: LightboxProps) {
+export default function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) {
   const open = index !== null;
   const dialogRef = useModal<HTMLDivElement>({ open, onClose });
   const isClient = useIsClient();

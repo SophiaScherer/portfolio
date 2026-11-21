@@ -8,9 +8,7 @@ export default function Footer() {
       <div className="footer-inner">
         <SectionLink id="about" className="footer-logo">
           {PROFILE.name}
-          <span className="footer-copy">
-            {" "}© {new Date().getFullYear()}
-          </span>
+          <span className="footer-copy"> © {new Date().getFullYear()}</span>
         </SectionLink>
         <div className="footer-links">
           {SOCIAL_LINKS.map(({ label, href }) => (

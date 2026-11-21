@@ -5,10 +5,7 @@ const MAX_DIM = 3;
 
 export default function Experience() {
   return (
-    <section
-      className="experience-section panel-section section-pad"
-      id="experience"
-    >
+    <section className="experience-section panel-section section-pad" id="experience">
       <div className="container">
         <div className="exp-grid">
           <div>

@@ -21,12 +21,7 @@ type ProjectModalProps = {
 
 const NO_GALLERY: GalleryImage[] = [];
 
-export default function ProjectModal({
-  project,
-  open,
-  onClose,
-  galleries,
-}: ProjectModalProps) {
+export default function ProjectModal({ project, open, onClose, galleries }: ProjectModalProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   // Keep the last project so the dialog still has content while it
@@ -92,186 +87,161 @@ export default function ProjectModal({
       {/* Rendered into <body> so the fixed overlay escapes the rounded,
           clipped section wrappers it would otherwise be nested inside. */}
       {createPortal(
-      <div
-        className={`project-modal ${open ? "is-open" : ""}`}
-        aria-hidden={!open}
-      >
-        <div
-          className="project-modal-backdrop"
-          onClick={onClose}
-          aria-hidden="true"
-        />
-        <div
-          className="project-modal-dialog"
-          id="project-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="project-modal-title"
-          tabIndex={-1}
-          ref={dialogRef}
-        >
-          {shown && (
-            <div
-              className={`card project-modal-card${titleInView ? "" : " is-condensed"}`}
-            >
-              <div className="project-modal-bar">
-                {/* Visual repeat of the title for the condensed state; the
+        <div className={`project-modal ${open ? "is-open" : ""}`} aria-hidden={!open}>
+          <div className="project-modal-backdrop" onClick={onClose} aria-hidden="true" />
+          <div
+            className="project-modal-dialog"
+            id="project-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-modal-title"
+            tabIndex={-1}
+            ref={dialogRef}
+          >
+            {shown && (
+              <div className={`card project-modal-card${titleInView ? "" : " is-condensed"}`}>
+                <div className="project-modal-bar">
+                  {/* Visual repeat of the title for the condensed state; the
                     dialog is already labeled by the full heading. */}
-                <span className="project-modal-bar-title" aria-hidden="true">
-                  {shown.title}
-                </span>
-                <button
-                  type="button"
-                  className="project-modal-close"
-                  onClick={onClose}
-                  aria-label="Close case study"
-                >
-                  <span className="material-symbols-outlined" aria-hidden="true">
-                    close
+                  <span className="project-modal-bar-title" aria-hidden="true">
+                    {shown.title}
                   </span>
-                </button>
-              </div>
-
-              <div className="project-modal-body" ref={setBody}>
-                <div className="project-modal-head">
-                  <div>
-                    <span className="label-cap">Case Study</span>
-                    <h3
-                      className="h2 project-modal-title"
-                      id="project-modal-title"
-                      ref={titleRef}
-                    >
-                      {shown.title}
-                    </h3>
-                    <p className="project-modal-role">
-                      <span className="material-symbols-outlined" aria-hidden="true">
-                        person
-                      </span>
-                      {shown.role}
-                    </p>
-                  </div>
-                  {shown.githubUrl && (
-                    <a
-                      href={shown.githubUrl}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="btn-primary project-modal-github"
-                    >
-                      <span className="material-symbols-outlined" aria-hidden="true">
-                        code
-                      </span>
-                      GitHub
-                      <span
-                        className="material-symbols-outlined btn-icon"
-                        aria-hidden="true"
-                      >
-                        arrow_outward
-                      </span>
-                    </a>
-                  )}
-                </div>
-
-                {shown.imageUrl && (
                   <button
                     type="button"
-                    className="project-modal-img-wrap"
-                    onClick={() => setLightboxIndex(0)}
-                    aria-label={`View larger: ${shown.title}`}
+                    className="project-modal-close"
+                    onClick={onClose}
+                    aria-label="Close case study"
                   >
-                    <img
-                      src={resizedImage(shown.imageUrl, 1200)}
-                      srcSet={imageSrcSet(shown.imageUrl, [800, 1200, 1800])}
-                      sizes="(max-width: 1000px) 100vw, 880px"
-                      alt={shown.imageAlt}
-                      decoding="async"
-                    />
+                    <span className="material-symbols-outlined" aria-hidden="true">
+                      close
+                    </span>
                   </button>
-                )}
-
-                <p className="project-modal-description">
-                  {shown.longDescription}
-                </p>
-
-                <div className="project-modal-meta">
-                  <MetaBlock
-                    label="Languages"
-                    items={shown.languages}
-                    icon="terminal"
-                  />
-                  <MetaBlock
-                    label="Technologies"
-                    items={shown.technologies}
-                    icon="layers"
-                  />
                 </div>
 
-                <div className="project-modal-cols">
-                  <div>
-                    <h4 className="project-modal-h4">Technical Details</h4>
-                    <ul className="project-modal-list" role="list">
-                      {shown.technicalDetails.map((d) => (
-                        <li key={d}>{d}</li>
-                      ))}
-                    </ul>
+                <div className="project-modal-body" ref={setBody}>
+                  <div className="project-modal-head">
+                    <div>
+                      <span className="label-cap">Case Study</span>
+                      <h3
+                        className="h2 project-modal-title"
+                        id="project-modal-title"
+                        ref={titleRef}
+                      >
+                        {shown.title}
+                      </h3>
+                      <p className="project-modal-role">
+                        <span className="material-symbols-outlined" aria-hidden="true">
+                          person
+                        </span>
+                        {shown.role}
+                      </p>
+                    </div>
+                    {shown.githubUrl && (
+                      <a
+                        href={shown.githubUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="btn-primary project-modal-github"
+                      >
+                        <span className="material-symbols-outlined" aria-hidden="true">
+                          code
+                        </span>
+                        GitHub
+                        <span className="material-symbols-outlined btn-icon" aria-hidden="true">
+                          arrow_outward
+                        </span>
+                      </a>
+                    )}
                   </div>
-                  <div>
-                    <h4 className="project-modal-h4">Key Features</h4>
-                    <ul className="project-modal-list project-modal-list-features" role="list">
-                      {shown.keyFeatures.map((f) => (
-                        <li key={f}>
-                          <span
-                            className="material-symbols-outlined"
-                            aria-hidden="true"
-                          >
-                            check_circle
-                          </span>
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
+
+                  {shown.imageUrl && (
+                    <button
+                      type="button"
+                      className="project-modal-img-wrap"
+                      onClick={() => setLightboxIndex(0)}
+                      aria-label={`View larger: ${shown.title}`}
+                    >
+                      <img
+                        src={resizedImage(shown.imageUrl, 1200)}
+                        srcSet={imageSrcSet(shown.imageUrl, [800, 1200, 1800])}
+                        sizes="(max-width: 1000px) 100vw, 880px"
+                        alt={shown.imageAlt}
+                        decoding="async"
+                      />
+                    </button>
+                  )}
+
+                  <p className="project-modal-description">{shown.longDescription}</p>
+
+                  <div className="project-modal-meta">
+                    <MetaBlock label="Languages" items={shown.languages} icon="terminal" />
+                    <MetaBlock label="Technologies" items={shown.technologies} icon="layers" />
                   </div>
-                </div>
 
-                <div className="project-modal-case">
-                  <h4 className="project-modal-h4">{shown.caseStudy.label}</h4>
-                  {shown.caseStudy.body.map((para, i) => (
-                    <p key={i} className="project-modal-case-body">
-                      {para}
-                    </p>
-                  ))}
-                </div>
-
-                {allImages.length > 0 && (
-                  <div className="project-modal-gallery">
-                    <h4 className="project-modal-h4">Gallery</h4>
-                    <div className="project-modal-gallery-track">
-                      {allImages.map((img, i) => (
-                        <button
-                          key={img.url}
-                          type="button"
-                          className="project-modal-gallery-thumb"
-                          onClick={() => setLightboxIndex(i)}
-                          aria-label={`View image ${i + 1} of ${allImages.length}`}
-                        >
-                          <img
-                            src={resizedImage(img.url, 520)}
-                            alt={img.alt}
-                            width={img.width ?? undefined}
-                            height={img.height ?? undefined}
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        </button>
-                      ))}
+                  <div className="project-modal-cols">
+                    <div>
+                      <h4 className="project-modal-h4">Technical Details</h4>
+                      <ul className="project-modal-list" role="list">
+                        {shown.technicalDetails.map((d) => (
+                          <li key={d}>{d}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="project-modal-h4">Key Features</h4>
+                      <ul className="project-modal-list project-modal-list-features" role="list">
+                        {shown.keyFeatures.map((f) => (
+                          <li key={f}>
+                            <span className="material-symbols-outlined" aria-hidden="true">
+                              check_circle
+                            </span>
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-                )}
+
+                  <div className="project-modal-case">
+                    <h4 className="project-modal-h4">{shown.caseStudy.label}</h4>
+                    {shown.caseStudy.body.map((para, i) => (
+                      <p key={i} className="project-modal-case-body">
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+
+                  {allImages.length > 0 && (
+                    <div className="project-modal-gallery">
+                      <h4 className="project-modal-h4">Gallery</h4>
+                      <div className="project-modal-gallery-track">
+                        {allImages.map((img, i) => (
+                          <button
+                            key={img.url}
+                            type="button"
+                            className="project-modal-gallery-thumb"
+                            onClick={() => setLightboxIndex(i)}
+                            aria-label={`View image ${i + 1} of ${allImages.length}`}
+                          >
+                            <img
+                              src={resizedImage(img.url, 520)}
+                              alt={img.alt}
+                              width={img.width ?? undefined}
+                              height={img.height ?? undefined}
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </div>,
-      document.body,
+            )}
+          </div>
+        </div>,
+        document.body,
       )}
       <Lightbox
         images={allImages}
@@ -283,15 +253,7 @@ export default function ProjectModal({
   );
 }
 
-function MetaBlock({
-  label,
-  items,
-  icon,
-}: {
-  label: string;
-  items: string[];
-  icon: string;
-}) {
+function MetaBlock({ label, items, icon }: { label: string; items: string[]; icon: string }) {
   return (
     <div className="project-modal-meta-block">
       <span className="project-modal-meta-label">

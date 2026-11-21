@@ -17,7 +17,7 @@ jobs:
   # Vercel builds every commit too, so the production build only runs in `e2e`,
   # which needs it anyway.
   check:
-    name: Lint, types, unit tests, audit
+    name: Lint, format, types, unit tests, audit
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -31,6 +31,7 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
+      - run: npm run format:check
       - name: Unused files, dependencies, and exports
         run: npm run knip
       - run: npm test

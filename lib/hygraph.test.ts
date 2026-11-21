@@ -23,7 +23,10 @@ describe("request", () => {
 
   it("times out even if fetch ignores its abort signal", async () => {
     vi.useFakeTimers();
-    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => {})));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => new Promise(() => {})),
+    );
     const pending = request("{ slow }");
     const assertion = expect(pending).rejects.toThrow(/timed out/);
     await vi.advanceTimersByTimeAsync(8_000);

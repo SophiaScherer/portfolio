@@ -50,7 +50,7 @@ async function readText(req: Request, limit: number): Promise<string | null> {
 const tooLarge = () =>
   NextResponse.json(
     { ok: false, error: "Your message is too long. Please shorten it and try again." },
-    { status: 413 }
+    { status: 413 },
   );
 
 export async function POST(req: Request) {
@@ -66,10 +66,7 @@ export async function POST(req: Request) {
     if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) throw new Error();
     body = parsed as ContactPayload;
   } catch {
-    return NextResponse.json(
-      { ok: false, error: "Invalid JSON body" },
-      { status: 400 }
-    );
+    return NextResponse.json({ ok: false, error: "Invalid JSON body" }, { status: 400 });
   }
 
   // Pretend success so bots don't learn they were caught.
@@ -82,7 +79,7 @@ export async function POST(req: Request) {
   if (typeof elapsed !== "number" || !Number.isFinite(elapsed) || elapsed < MIN_FILL_MS) {
     return NextResponse.json(
       { ok: false, error: "Please take a moment before sending." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -103,7 +100,9 @@ export async function POST(req: Request) {
   const to = process.env.CONTACT_TO ?? user;
 
   if (!host || !user || !pass) {
-    console.error("Contact form is not configured. Set SMTP_HOST, SMTP_PORT, SMTP_USER, and SMTP_PASS.");
+    console.error(
+      "Contact form is not configured. Set SMTP_HOST, SMTP_PORT, SMTP_USER, and SMTP_PASS.",
+    );
     return NextResponse.json({ ok: false, error: UNAVAILABLE }, { status: 500 });
   }
 
@@ -118,7 +117,7 @@ export async function POST(req: Request) {
   if (!limiter.take(ip)) {
     return NextResponse.json(
       { ok: false, error: "Too many messages. Please try again in an hour." },
-      { status: 429 }
+      { status: 429 },
     );
   }
 
@@ -157,7 +156,7 @@ export async function POST(req: Request) {
     console.error("Failed to send contact message", err);
     return NextResponse.json(
       { ok: false, error: "Failed to send message. Please try again later." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

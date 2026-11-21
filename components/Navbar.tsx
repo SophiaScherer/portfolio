@@ -54,8 +54,7 @@ export default function Navbar({ resume }: NavbarProps) {
   };
 
   // Styled through `[aria-current]`, so one attribute drives both a11y and CSS.
-  const activeProps = (id: string) =>
-    activeId === id ? { "aria-current": "true" as const } : {};
+  const activeProps = (id: string) => (activeId === id ? { "aria-current": "true" as const } : {});
 
   return (
     <header className="site-header" ref={headerRef} tabIndex={-1}>
@@ -92,11 +91,7 @@ export default function Navbar({ resume }: NavbarProps) {
         </nav>
       </div>
 
-      <div
-        className={`mobile-menu${open ? " open" : ""}`}
-        id="mobileMenu"
-        inert={!open}
-      >
+      <div className={`mobile-menu${open ? " open" : ""}`} id="mobileMenu" inert={!open}>
         <nav aria-label="Mobile">
           <ol className="mobile-menu-links">
             {NAV_LINKS.map(({ id, label }, i) => (
@@ -137,4 +132,3 @@ export default function Navbar({ resume }: NavbarProps) {
     </header>
   );
 }
-

@@ -26,7 +26,7 @@ export function useNavActive(sectionIds: readonly string[]): string | null {
           if (entry.isIntersecting) setActive({ pathname, id: entry.target.id });
         });
       },
-      { rootMargin: ACTIVE_BAND }
+      { rootMargin: ACTIVE_BAND },
     );
 
     sections.forEach((s) => observer.observe(s));

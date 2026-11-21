@@ -24,7 +24,9 @@ const userAgent =
 for (const [file, family] of Object.entries(FONTS)) {
   const cssUrl = `https://fonts.googleapis.com/css2?family=${family}&display=swap`;
   const css = await (await fetchOk(cssUrl, { headers: { "User-Agent": userAgent } })).text();
-  const fontUrl = css.match(/\/\* latin \*\/[^}]*?url\((https:[^)]+)\)\s*format\(['"]woff2['"]\)/)?.[1];
+  const fontUrl = css.match(
+    /\/\* latin \*\/[^}]*?url\((https:[^)]+)\)\s*format\(['"]woff2['"]\)/,
+  )?.[1];
   if (!fontUrl) throw new Error(`No Latin woff2 URL for ${family}:\n${css}`);
 
   const font = Buffer.from(await (await fetchOk(fontUrl)).arrayBuffer());

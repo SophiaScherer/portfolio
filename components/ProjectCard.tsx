@@ -38,11 +38,7 @@ function CardImage({ project }: { project: Project }) {
  * case-study modal through a transparent button stretched over the card, so
  * the card's own content stays readable to assistive tech.
  */
-export default function ProjectCard({
-  project,
-  expanded,
-  onOpen,
-}: ProjectCardProps) {
+export default function ProjectCard({ project, expanded, onOpen }: ProjectCardProps) {
   return (
     <article className="card project-card">
       <div className="project-img-wrap">

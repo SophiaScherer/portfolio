@@ -20,9 +20,7 @@ function applyTheme(theme: Theme): void {
   root.dataset.themeSwitching = "";
   root.dataset.theme = theme;
   setThemeColor(theme);
-  requestAnimationFrame(() =>
-    requestAnimationFrame(() => delete root.dataset.themeSwitching),
-  );
+  requestAnimationFrame(() => requestAnimationFrame(() => delete root.dataset.themeSwitching));
   listeners.forEach((listener) => listener());
 }
 

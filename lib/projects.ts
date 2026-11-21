@@ -212,10 +212,8 @@ export const PROJECTS: Project[] = [
  * Prefer this over indexing into the array: once projects come from the CMS,
  * their order is not guaranteed.
  */
-export const getProjectById = (
-  projects: Project[],
-  id: string,
-): Project | null => projects.find((p) => p.id === id) ?? null;
+export const getProjectById = (projects: Project[], id: string): Project | null =>
+  projects.find((p) => p.id === id) ?? null;
 
 /**
  * Swaps in each project's CMS image, claimed by file name. An unpublished name

@@ -9,11 +9,7 @@ import { currentOverlay, historyBack } from "../lib/history";
  * page. Close the overlay through the returned function, which pops that
  * entry, so the history stays balanced.
  */
-export function useOverlayHistory(
-  key: string,
-  open: boolean,
-  onClose: () => void,
-): () => void {
+export function useOverlayHistory(key: string, open: boolean, onClose: () => void): () => void {
   const onCloseRef = useRef(onClose);
   useEffect(() => {
     onCloseRef.current = onClose;
