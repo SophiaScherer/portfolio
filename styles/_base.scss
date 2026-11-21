@@ -85,4 +85,5 @@
   transform: none;
   @include m.focus-ring(var(--primary));
 }
-main:focus { outline: none; }
+main:focus,
+section[tabindex="-1"]:focus { outline: none; }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
-import { DARK_QUERY, THEME_STORAGE_KEY, type Theme } from "../lib/theme";
+import { DARK_QUERY, THEME_STORAGE_KEY, setThemeColor, type Theme } from "../lib/theme";
 
 const listeners = new Set<() => void>();
 
@@ -19,6 +19,7 @@ function applyTheme(theme: Theme): void {
   // Skip every element's color transition for the switch itself.
   root.dataset.themeSwitching = "";
   root.dataset.theme = theme;
+  setThemeColor(theme);
   requestAnimationFrame(() =>
     requestAnimationFrame(() => delete root.dataset.themeSwitching),
   );
@@ -35,7 +36,10 @@ let systemQuery: MediaQueryList | null = null;
 function subscribe(listener: () => void) {
   // One shared query object, so the listener is removed from the same one it was added to.
   const query = (systemQuery ??= window.matchMedia(DARK_QUERY));
-  if (listeners.size === 0) query.addEventListener("change", onSystemChange);
+  if (listeners.size === 0) {
+    query.addEventListener("change", onSystemChange);
+    setThemeColor(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+  }
   listeners.add(listener);
   return () => {
     listeners.delete(listener);

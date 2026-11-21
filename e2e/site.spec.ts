@@ -116,6 +116,15 @@ test("the mobile menu closes with Back and links to sections", async ({ page, is
   await menu.getByRole("link", { name: /Interests/ }).click();
   await expect(menu).toBeHidden();
   await expect(page).toHaveURL(/#interests$/);
+  // Focus moves to the section, as a native anchor jump would.
+  await expect(page.locator("#interests")).toBeFocused();
+});
+
+test("the interests track is a tab stop only when it scrolls", async ({ page, isMobile }) => {
+  await page.goto("/");
+  const track = page.getByRole("region", { name: "Interests" });
+  if (isMobile) await expect(track).toHaveAttribute("tabindex", "0");
+  else await expect(track).not.toHaveAttribute("tabindex");
 });
 
 test("the 404 page links back to the home page sections", async ({ page, isMobile }) => {
@@ -195,9 +204,20 @@ test.describe("theme", () => {
     await toggle.click();
     await expect(root).toHaveAttribute("data-theme", "light");
     await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    // The browser chrome follows the site's choice, not the OS: the first
+    // theme-color meta is the one browsers use.
+    await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute(
+      "content",
+      "#f9f4e8",
+    );
 
     await page.reload();
     expect(await themeAtFirstPaint(page)).toBe("light");
+    // The init script's meta still leads after hydration, against the dark OS.
+    await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute(
+      "content",
+      "#f9f4e8",
+    );
   });
 });
 
