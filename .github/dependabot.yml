@@ -11,6 +11,10 @@ updates:
     cooldown:
       default-days: 7
     open-pull-requests-limit: 5
+    ignore:
+      # knip and typescript-eslint cap their typescript peer below 7. Remove once they support it.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
     groups:
       # Released together and must stay on the same version.
       next:
